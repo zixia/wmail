@@ -5,3 +5,6 @@ last update: year 2004
 wMail project home page - https://github.com/zixia/wmail
 
 http://wmail.aka.cn
+
+## Author
+lfan [at] lfan.net
