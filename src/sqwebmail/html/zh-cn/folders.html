@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+  <title>邮件夹[#d#]</title>
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+</head>
+
+<!--
+
+[#$INVALID=<FONT CLASS="error" color="#FF0000">不合法的邮件夹名称</FONT>#]
+[#$EXISTS=<FONT CLASS="error" color="#FF0000">邮件夹已存在</FONT>#]
+[#$DELETE=<FONT CLASS="error" color="#FF0000">该邮件夹无法被删除或改 - 邮件夹包含有邮件或它用于邮件过滤</FONT>#]
+[#$WASSENT=<FONT COLOR="#008000" CLASS="sentmsg">您的邮件已经送出。</FONT>#]
+[#$INBOX=收件箱#]
+[#$DRAFTS=草稿箱#]
+[#$SENT=发件箱#]
+[#$TRASH=垃圾箱#]
+[#$SPAM=垃圾邮件箱#]
+[#$QUOTAUSAGE=<P>您的邮箱容量: %dMB 已经占用: %.1fMB 剩余容量: %.1fMB</P>#]
+[#$QUOTANOUSE=<P>欢迎您使用新邮箱！</P>#]
+[#$REFRESH_LEFT=<SCRIPT LANGUAGE="JAVASCRIPT">parent.menu.document.location.reload()</SCRIPT>#]
+
+-->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" action="[#p#]">
+  <table width="90%" align=center border="0" cellspacing="0" cellpadding="3" class="csmtype">
+    <tr> 
+      <td> 
+        <table style="border: #93bee2 1px solid;" cellSpacing=0 cellPadding=5 width=100% border=0 bgcolor=#eff7ff>
+ 	  <tr bgcolor=#336699><td class="wmtype"><b>存储空间使用情况</b></td></tr>
+	  <tr><td>
+           [#QUOTA#]
+	  </td></tr><tr><td height=15></td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td height="30"></td></tr>
+    <tr> 
+      <td> 
+        <table width="100%" bgcolor="#336699" border="0" cellspacing="1" cellpadding="3" class="csmtype">
+	  <tr align="center" bgcolor="#336699" class="wmtype">
+	    <td width=5%><b>选择</b></td>
+	    <td width=28%><b>邮件夹</b></td>
+	    <td width=22%><b>邮件总数</b></td>
+	    <td width=22%><b>新邮件</b></td>
+	    <td width=23%><b>占用空间(KB)</b></td>
+	  </tr>
+	  [#L#]
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFC"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="csmtype">
+          <tr> 
+            <td align=center> 
+              <p> 
+                <input type="hidden" name="form" value="folders">
+                <input type="hidden" name="folder" value="INBOX">
+		<input class="mybtn" type="submit" value="删除邮箱" name="do.delete">
+	        <input class="mybtn" type="submit" value="更名为" name="do.rename">
+                <input class="myinput" type="text" size="16" name="foldername" maxlength="128">
+		<input class="mybtn" type="submit" value="新建邮箱" name=do.create>
+	      </p>
+              [#l#]
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

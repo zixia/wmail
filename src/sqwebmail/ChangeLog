@@ -1,0 +1,1735 @@
+2003-04-23  Rodrigo Severo <rodrigo.lists@fabricadeideias.com>
+
+	* authlib/authmysqlrc: Fix comments
+
+2003-04-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Updated toolchain to automake 1.6.3, autoconf 2.57,
+	libtool 1.4.3, gettext 0.11.4, new Docbooks tyle sheets.
+
+	* bdbobj/bdbobj2.c (bdbobj_nextkey): Eliminate 0-length malloc.
+
+2003-04-19  Dmitriy Kuznetsov <eth0@dol.ru>
+
+	* maildir/maildirfilter.c (maildir_filter_saverules): webmail:
+	Do not explicitly set MAILDIRQUOTA -- recent versions of maildrop
+	take care of this automatically.
+
+2003-04-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authmysqllib.c (validateMyPassword): Rename
+	validate_password to validateMyPassword (MySQL 4 conflict).
+
+2003-04-13  Jesse Guardiani <jesse@wingnet.net>
+
+	* sqwebmail.c (do_output_form_loop): Fix logindomainlist.
+
+2003-04-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* All beta and releases will now be signed by
+	http://www.courier-mta.org/KEYS.bin
+
+2003-04-12  Jesse Guardiani <jesse@wingnet.net>
+
+	* logindomainlist.c: Enhanced drop-down domain listing on the login
+	screen.
+
+2003-04-09  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/README.authpostgres.html: Documentation updates.
+
+2003-04-04  Mr. Sam  <mrsam@courier-mta.com>
+
+	* autoconf 2.57 fixes.
+
+2003-04-03  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2045/rfc2045.c (content_location): Plug a leak.
+
+	* unicode/unicode.c (unicode_xconvert): Plug a memory leak.
+
+2003-03-22  Brian Candler <B.Candler@pobox.com>
+
+	* sqwebmail.c (main): FastCGI update.
+
+2003-03-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirpurgetmp.c (maildir_purge): Fix maildir_purge(".");
+
+2003-03-20  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2047.c (rfc2047_encode_callback): Fix MIME encoding of "_".
+
+2003-03-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* courier.spec.in (BuildPreReq): Default to /var/www
+
+	* unicode/iso2022jp.c (read_jis_char): Fix various bugs that result
+	in crashes, as a result of invalid character sequences.
+
+2003-03-19  James A Baker <jabaker@mac.com>
+
+	* configure.in: Search additional directories for mime.types
+
+3.5.1
+
+2003-03-10  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/preauthvchkpw.c (auth_vchkpw_pre): Disable open_smtp_relay()
+	until fixed by authvchkpw devs.
+
+2003-03-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirpurgetmp.c (maildir_purge): Adjust quota when
+	autopurging Trash --with-trashquota.
+
+	* rfc2045/configure.in: rename config.h to rfc2045_config.h
+
+	* unicode/configure.in: rename config.h to unicode_config.h
+
+2003-03-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* autoresponse.c (read_headers): Use rfc2045_parse_partial() to
+	properly size-up content without trailing newlines.
+
+	* folder.c: Ditto.
+
+	* cgi/cgi.c (cgi_formdata): Ditto.
+
+	* rfc2045/reformime.c (read_message): Ditto.
+
+	* rfc2045/rfc2646create.c (rfc2646create_free): Emit the trailing
+	newline.
+
+	* configure.in: Conditionally probe if SA_NOCLDWAIT could be used.
+	
+	* pcpd.c (start): Use SA_NOCLDWAIT, if blessed by configure.
+
+2003-02-22  Toshikazu Ichikawa <ichikawa@toshikazu.org>
+
+	* unicode/iso2022jp.pl: iso2022jp update.
+
+2003-02-17  Kurt Bigler <kkb@breathhost.net>
+
+	* HTML template cleanup.
+
+2003-02-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (folder_list):  Recalculate maildir quota after
+	a DELETE or RENAME (new function: maildir_quote_recalculate).
+
+2003-02-11  Kurt Bigler <kkb@breathhost.net>
+
+	* HTML template cleanup.
+
+2003-01-30  Mr. Sam  <mrsam@courier-mta.com>
+
+	* configure.in: Fix search path for binaries.
+
+3.5.0
+
+2003-01-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (download_func): Fix platforms with broken putchar()s.
+
+	* authlib/authmysqllib.c (append_username): Same fix as authpgsqllib,
+	even though mysql does not need it.
+
+2003-01-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* FInal maildir creation revision.
+
+2003-01-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authpgsqllib.c (append_username): Escape 's too.
+
+2003-01-20  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildircreate.c (maildir_tmpcreate_fd): Move maildir create
+	retry loop into maildir_tmpcreate_fd.
+
+2003-01-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildircreate.c: Removed old maildir creation code.
+
+	* maildir/maildirfilter2.c: New maildir creation code.
+
+	* images/sqwebmail.css: Cleanup.
+
+	* pcp.c: New maildir creation code.
+
+	* ldaplist.c: New maildir creation code.
+
+	* folder.c: New maildir creation code.
+
+	* maildir.c: New maildir creation code.
+
+	* maildir/maildircreateh.c: Optimizations.
+
+2003-01-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en/Makefile.am (clonedist): Replace $(TAR) with $(AMTAR)
+
+2003-01-16  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/deliverquota: Initial implementation of new maildir
+	creation library.  Converted deliverquota.
+
+2003-01-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* courier/module.local/deliver.c (savemessage): Use maildir_movetmpnew.
+
+	* webmail/maildir.c (do_msgmove): Use maildir_movetmpnew.
+	(maildir_closemsg): Use maildir_movetmpnew.
+
+	* maildir/deliverquota.c (deliver): Use maildir_movetmpnew.
+
+	* maildir/maildircreateh.c (maildir_try_create_hostname): Include
+	microseconds in message filename.
+	(maildir_movetmpnew): Encapsulate move from tmp to new by trying
+	link first, and only if it fails with exdev try rename.
+
+2003-01-04  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir: rename mf_ and autoresponse_ functions to maildir_filter_
+	and maildir_autoresponse_ (namespace cleanup).
+
+2003-01-03  "Thomas T. Thai" <tom@minnesota.com>
+
+	* Custom query patch for authpgsql
+
+3.4.1
+
+2002-12-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2047.c (rfc2047_encode_callback): Fix hang on
+	locales where isspace(U+0x00A0) is true.
+
+2002-12-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2045/rfc2231.c (rfc2231_attrCreate): Do not use RFC 2231
+	MIME attribute encoding for attribute values that fit in the US-ASCII
+	charset.
+
+2002-12-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en-us/readmsg.html: Typo.
+
+2002-12-11  John D. Rowell <jdrowell@exerciseyourbrain.com>
+
+	* md5/md5_hash.c:  Rename md5_has to md5_hash_courier (namespace
+	conflict with postgres).
+
+2002-11-23  John Morrissey <jwm@horde.net>
+
+	* Move quota warning code from deliverquota to libmaildir.a,
+	to be reused by maildrop.
+
+2002-11-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* unicode/mkultcase.pl: Fix titlecase mapping.
+
+	* unicode: all unicode functions now receive the ptr to the unicode
+	structure as their first argument.  Added a flags field to the unicode
+	structure to describe charset properties (multibyte, utf, uses shift
+	sequences...)
+
+2002-11-17  Dr. Peter Bieringer <pb@bieringer.de>
+
+	* html/en-us/quickadd.html: <title> fix.
+
+2002-11-11  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en-us/preferences.html: Remove double-dashes in the comment
+	to fix some stupid mozilla parser bug.
+
+2002-11-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en-us: Typos
+
+2002-11-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* NEWS.html: added a few more links.
+
+2002-10-31  Christian Hammers <ch@westend.com>
+
+	* maildir.c (maildir_save_start): More verbose logging messages
+
+2002-10-29  Mr. Sam  <mrsam@courier-mta.com>
+
+	* courier.spec.in (BuildPreReq): Fix build prereqs.
+
+2002-10-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (main2): Drop root privs before showing invalid.html
+	and printnocookie.html
+
+3.4.0
+
+2002-10-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/debug.c (auth_debug_login_init): Make it work if
+	DEBUG_LOGIN_ENV is not set.
+
+2002-10-14  Olivier Girondel <olivier.girondel@cw.com>
+	
+	* authlib/authldaplib.c (authldap_read_config): LDAP_FILTER fix.
+
+2002-10-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Major toolchain upgrade - gcc 3.2, automake 1.6, autoconf 2.53,
+	libtool 1.4.
+
+2002-10-03  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/*.c: various cleanups.
+
+2002-09-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html.c (filtered_tag): Allow type= in <blockquote>
+
+	* html: Amaya 6.4 is out. iso-8859-1 0xA0 chars replaced with &nbsp;
+
+2002-09-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* autobloat: check for gmake, check for gcc in top level makefile.
+
+2002-09-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail/makemime/reformime: RFC 2231 support.
+
+2002-09-10 Alessandro Vesely <vesely@tana.it>
+
+	* authlib/authdaemond.c: Fix error logging.
+
+2002-08-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* http11/contentlanguage.c (parse_accept_language): Fix
+	Accept-Language: header parsing.
+
+2002-08-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* newmsg.c (dosendmsg): Added an option to request delivery
+	confirmation receipts (for mail servers that implement RFC 1894).
+
+2002-08-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authdaemond.c (start): After 5 mins of inactivity call
+	the newly-defined module 'idle' function.
+
+2002-08-16  kenp@infospace.com
+
+	* sqwebmail/maildir.c: Tolerate NFS clock skew.
+
+2002-08-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirsearch.h: added a C++ wrapper.
+
+	* imap/utf8.c: cleanup, exposed internal unicode-to-utf8 conversion
+	function.
+
+2002-08-11  Alessandro Vesely <vesely@tana.it>
+
+	* authlib/authmysqllib.c (validate_password): Fix password change
+	buffer overflow.
+
+2002-08-08  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2047.c (rfc2047_encode_callback): Fix MIME encoding of words
+	with = and ? characters.
+
+2002-08-05  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.spec.in: Fix %is_not_mandrake.
+
+3.3.7
+
+2002-07-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/configure.in: Fix invocation of pg_config.
+
+	* authlib/authsyschangepwd.c (dochangepwd): Call setsid() and
+	setlogin() on OpenBSD (make webmail passwd change work).
+
+	* ldapaddressbook/abooksearch.c (ldapabook_search): Fix ldapsearch
+	option.
+
+2002-07-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirquota.c (maildir_quota_delundel_end): Typo fix.
+
+2002-07-07  Yu Kobayasi <mail@yukoba.jp>
+
+	* shift-JIS encoding.
+
+2002-07-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* gpg: Bless GnuPG 1.0.7; add a dropdown to set the keysig trust
+	level.
+
+2002-06-29  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp: Refreshed to gettext 0.11.1-2
+
+3.3.6
+	
+2002-06-27  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldaplib.c: Fix null ptr deref in new LDAP_MAILROOT
+	code.
+
+3.3.5
+
+2002-06-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp.c (do_login): Squash bad error message if initial groupware
+	calendar login fails for some reason.
+
+	* sqwebmail.spec/README: ... and the initial groupware calendar
+	login was failing on platform that use PAM because PAM needs to
+	be configured to authenticate the "calendar" service.  Updated the
+	RPM spec file to set this up, and update pcp/README to indicate that.
+
+2002-06-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirfilter.c: Fix FROM being incorrectly set for mailbot
+	autoreplies.
+
+	* maildir/maildirfilter.c: Do not use the -t flag when running
+	SENDMAIL to forward a message.
+
+2002-06-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirquota.h: Renamed maildirsize struct member to
+	maildirsizefile - some compiler is having a cow about a struct member
+	having the same name as the struct.
+
+2002-06-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildrop/configure.in: Fix SPOOLDIR to ./Maildir
+
+	* maildir/maildirquota.c (do_maildir_openquotafile): Fix quotas
+	on FreeBSD (fcntl("/dev/null", F_SETFL) doesn't work on FreeBSD)
+
+	* authlib/cryptpassword.c: Added missing include of stdlib.h
+
+2002-06-11  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldaprc: Added LDAP_MAILROOT
+
+2002-06-09  Mr. Sam  <mrsam@courier-mta.com>
+
+	* numlib/strofft.c: off_t may be negative.
+
+	* +++ maildirquota API update +++
+
+	   + allows documented way to change the set quota on a maildir
+
+	   + major internal cleanup, established a sane API library
+
+	External changes:
+
+	   + quota no longer set by deliverquota or MAILDIRQUOTA, new -q
+	     option to maildirmake.  Both deliverquota, maildrop, and
+	     Courier now read the maildirsize no matter what, and observe
+	     the quota
+
+	   + maildirmake and deliverquota now installed by the Courier-IMAP,
+	     maildrop, and sqwebmail standalone builds.
+
+	   + updated README.maildirquota, and man pages to reflect all these
+	     changes.
+
+2002-05-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* configure.in: Do not use qmail-inject, use sendmail.
+
+2002-05-26  Ron van den Dungen <ron@dse.nl>
+
+	* authlib/authmysqllib.c (do_connect): Fix server connect via
+	filesystem socket.
+
+2002-05-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c: Generate and validate a hash for redirect requests, to
+	prevent unauthorized use of the redirector.
+
+2002-05-20  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc822_parsedt.c (rfc822_parsedt): Ignore obviously invalid years
+	(someone else can worry about Y10K).
+
+2002-05-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (open_langform): Fix crash if a form template cannot be
+	opened.
+
+2002-05-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* newmsg.c (dosendmsg): Fix quota update when new message is NOT
+	saved in the Sent folder.
+
+2002-05-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en-us/readmsg.html: Mozilla bug workaround
+
+2002-05-09  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/Makefile.am (libauth-modules): Get rid of some cruft in
+	the Makefile.
+
+2002-05-08  Norihisa Washitake <nori@washitake.com>
+
+	* iso-2022-jp charset update
+
+2002-05-07  Keith T. Garner <kgarner@kgarner.com>
+
+	* authlib: Additional LDAP authentication filter. 
+
+2002-05-07  John Morrissey <jwm@horde.net>
+
+	* authlib: Solaris LDAP fix.
+
+3.3.4
+	
+2002-05-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp.c (createcache): Get rid of a spurious error message.
+
+	* maildir/maildirquota.c (qcalc): Fix quota calculation for large
+	maildir quotas.
+
+2002-04-30  Mr. Sam  <mrsam@courier-mta.com>
+
+	* unicode/big5.c (c2u): Fixed a crash caused by invalid big5 chars.
+
+2002-04-17  Norihisa Washitake <nori@washitake.com>
+
+	* iso-2022-jp unicode map.
+
+2002-04-08  "tonix (Antonio Nati)" <tonix@interazioni.it>
+
+	* maildir.c, html/en/folder.html: use strftime string from
+	folder.html to format message dates.
+
+	* folder.c, html/en/readmsg.html: selectively replace rfc822 mail
+	headers from readmsg.html
+
+2002-04-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc822/rfc822_mkdate.c (rfc822_mkdate_buf): Explicit (int) cast gets
+	the file compiled under Cygwin.
+
+2002-04-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authmysqllib.c (auth_mysql_setpass): Fix password change in
+	the custom MySQL driver.
+
+2002-03-31  Brian Grossman <brian@SoftHome.net>
+
+	* FastCGI patches + update.
+
+3.3.3
+
+2002-03-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldaplib: Added an option to implement two-stage
+	LDAP lookups, for authentication purposes.
+
+2002-03-22  Mr. Sam  <mrsam@courier-mta.com>
+
+	* newmsg_create.c (sentmsg_reformat): Use SQWEBMAIL_TEMPLATEDIR,
+	if defined, instead of HTMLLIBDIR.
+
+2002-03-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/configure.in: Fix broken vpopmail_home test.
+
+2002-03-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* ldaplist.c (parsesearch): Attempt to decode base64-encoded LDAP
+	attributes.  Allow configuration of LDAP server SASL parameters.
+
+2002-03-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html.c: Tighten up HTML parsing.
+
+2002-03-14  Brian Candler <B.Candler@pobox.com>
+
+	* maildir/maildirmkdir.c (maildir_mkdir): Create tmp subdir last,
+	when creating a maildir.
+
+2002-03-14  Toshikazu Ichikawa <ichikawa@toshikazu.org>
+
+	* sqwebmail.c (main2): Optionally disable monthly Sent folder rename.
+
+2002-03-04  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc822/rfc822.c (rfc822_prname_orlist): Dequote quoted-strings.
+
+2002-03-01  "Peter C. Norton" <spacey-courier@lenin.nu>
+
+	* Added authlib/README.authpostgres.html
+
+2002-03-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* fix configure and makefile scripts for autoconf 2.52 and automake 1.5
+
+2002-02-27  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/configure.in: Replace test ~vpopmail (home directory) with
+	a Perl script (~username not supported by Solaris's sh).
+
+	* mimegpg: when encrypting, include Mime-Version: 1.0 header in
+	the headers of the encrypted portion of the message.
+
+	* folder.c (folder_initnextprev): Remove spurious hidden field
+	left outside a form.
+
+3.3.2
+
+2002-02-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* ldaplist.c (parsesearch): Expect LDIF-formatted output from
+	ldapsearch, now.
+
+2002-02-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* gpglib/mimegpgfork.c (gpgmime_fork): set O_NONBLOCK on pipes
+	to gpg.
+
+2002-02-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/configure.in: Link against $CRYPTLIBS when probing for
+	open_smtp_relay()
+
+2002-02-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildirfilter: import SENDER from the environment, use that for
+	forwarded mail.
+
+2002-02-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.spec: Fix crontab.
+
+2002-02-12  "Stefan Hornburg (Racke)" <racke@linuxia.de>
+
+	* webmail: Disable Trash folder autopurge by setting # of days to 0.
+
+2002-02-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp: Initial set of changes for the forthcoming remote calendaring
+	proxy:  build pcp/uids.h from the Makefile; added pcpuid() and
+	pcpgid() functions; moved auth_myhostname() into a separate module;
+	split pcp_open_proxy() function into two functions: pcp_find_proxy()
+	(with an extra parameter that specifies which pcp servers to skip,
+	we want to make sure a remote proxy connection doesn't multihop) and
+	pcp_set_proxy().
+
+2002-02-02  Ken Jones <kbo@inter7.com>
+
+	* authvchkpw update: vpopmail 5.2
+
+2002-01-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2045/rfc2045.c (doline): Fix incorrect calculation of the
+	end of a multipart MIME section that's inside another multipart
+	MIME section.
+
+3.3.1
+
+2002-01-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (folder_nextprev): Add "Download Message" option.
+
+	* attachments.c (attachments_head): Display a meaningful error message
+	if makemime fails.
+
+	* pcp.c (sqpcp_displayevent): Add class=calendarevent to event time
+	table.
+
+2002-01-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldaplib.c (auth_ldap_do): Escape punctuation in
+	userid string.
+
+2002-01-10  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en/eventshow.html: Added some missing tags for displaying
+	attachments.
+
+2002-01-08  Robert L Mathews <rob@tigertech.com>
+
+	* sqwebmail/ispell.c (ispell_run): Handle '?' replies from ispell.
+
+2002-01-08  Oliver Hitz <oliver@net-track.ch>
+
+	* authlib/Makefile.am (libauth-modules):  Fix Makefile build
+	with no authentication modules selected.
+
+2002-01-07  Pawel Wilk <siefca@kernel.pl>
+
+	* authlib/authmysqllib.c: Major update to the authmysql driver
+	that adds the option to create hand-crafted SQL queries.
+
+2002-01-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirfilter.c (mf_saverules): Add -t option to sendmail
+	is maildirfilter-generated recipe.
+
+3.3
+	
+2001-12-30  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp/pcpnet.c (bookevent): Fix memory corruption.
+
+2001-12-28  Iustin Pop <iusty@intensit.de>
+
+	* authldap: if LDAP_TLS and LDAP_AUTHBIND were enabled, use TLS for
+	the authenticated bind also.
+
+2001-12-28  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (showaddressheader_printc): Properly decode 8-bit characters
+	for the quick addressbook add link.
+
+2001-12-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (scriptptrget): URL-encode the mailboxid in sqwebmail's
+	URL.
+
+2001-12-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Calendar: attempting to delete an event placed on a calendar by
+	proxy results in a warning message.
+
+2001-12-22  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authpam: Fix failover to the next auth module if userid not found.
+
+2001-12-10  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Calendar: mail notices to event participants when the event is
+	updated.
+
+2001-12-08  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Converted maildir documentation to Docbook SGML
+
+2001-12-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Added groupware calendaring.
+
+2001-12-04  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail/folder.c: close the maildir cache file before responding
+	with an http redirect - rare race condition.
+
+2001-11-27  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authmod.c (authmod_success): Adjust error reporting after
+	a failed exec().
+
+2001-11-25  John Morrissey <jwm@horde.net>
+
+	* authlib/authldaplib.c: make user uid/gid optional, default to global
+	uid/gid.
+
+2001-11-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Add pcp/README.html to the RPM.
+
+	* SGML work resulted in elimination of some makefile cruft.
+	sqwebmail man pages will now be installed in <prefix>/man instead of
+	<prefix>/man/man.
+
+	* Begin conversion of man/html documentation to Docbook SGML.
+	Created a docbook directory in CVS, and added it to all modules.
+	This directory won't get packaged into tarballs, the tarballs will
+	have just the compiled man and html documentation, and the docbook
+	directory (module name 'docbook-scripts') will contain only the
+	scripts to convert SGML to HTML and MAN.
+
+	* Converted authlib and userdb man/html pages to sgml.
+
+2001-11-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Fix pcp/po/Makefile mess, by creating it from autobloat
+
+2001-11-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldaplib.c (auth_ldap_do): Fix incorrect soft/hard
+	error indication for a failure in ldap_search_st().
+
+2001-11-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* configure.in (all): use a different test for -lnsl and -lsocket
+	that works on BSD/I.
+
+2001-11-16  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir.c (do_msgmove): Do not change the quota counter when
+	moving a message between the folders.
+
+2001-11-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp: Rename getpw() to do_getpw(), Solaris has something like that.
+
+2001-11-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html: Move the navigation bar into a separate file (three, actually)
+	and add an 'include'-type directive that inserts the navigation bar
+	into the other template files.  This should prove to be useful later.
+
+2001-11-12  Charlie Watts <cewatts@frontier.net>
+
+	* html: optimizations - remove redundant tables.
+
+3.2
+
+2001-11-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html.c: html filter - adjust handling of invalid markup tags.
+
+2001-11-05  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pcp: Add additional localization information to pcp/README.html
+
+	* pcp: Add -Iintl to cpp flags - required on systems that use
+	builtin gettext.
+
+2001-11-03  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Fix bugs with display of recurring events.
+
+	* html/en/newevent.html: Fix it.
+
+	* html/en/spellchk.html: Fix it.
+
+2001-11-03  Abhijit Menon-Sen <ams@wiw.org>
+
+	* rfc2045/rfc2045.c (rfc2045_free): Plug a memory leak.
+
+2001-11-02  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Add monthly and weekly recurring events.
+
+	* pref.c (pref_displayweekstart): Add a preferences setting for
+	a Saturday start of the calendar week.
+
+2001-11-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* clean up rfc1035, md5, sha1, libhmac, configure scripts.
+
+2001-10-31  Mr. Sam  <mrsam@courier-mta.com>
+
+	* calendar: Add a preferences setting for start of calendar week:
+	sunday/monday.
+
+	* maildir.c (get_msginfo): fix - do not save date_s in cache file,
+	instead build it when the cache file is read, from date_n.
+
+	* html: Add link to new event form on all calendar view pages.
+
+2001-10-29  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html: provide TITLE tags for images, used instead of ALT by newer
+	browser to provide popups when pointer is over the image.
+
+	* pcp.c (sqpcp_monthlylink): Create a link from the weekly calendar
+	view to the monthly calendar view
+
+2001-10-28  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (convertcid): Workaround for broken linkage in
+	multipart/related content from certain MS mailers.
+
+	* Select alternative timezone from dropdown on the login screen.
+	Populate the timezone file with US timezones, for now.
+
+2001-10-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Check in initial implementation of the personal calendaring
+	protocol.  Added pcp library to top level configure/makefile.
+
+2001-10-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.spec: stub out call to libtoolize in configure.in -
+	messes up RH 7.1 builds
+
+2001-10-06  Vittorio Ballestra <vittorio.ballestra@infogestnet.it>
+
+	* Added experimental PostgreSQL authentication module.
+
+2001-10-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Restore current mailbox quota usage display to folder listing.
+
+	* Enhance new message preview to display any attachments to the
+	new message (basically, call folder_showmsg to preview the message).
+	Changed folder_showmsg()+derivatives to omit certain links when in
+	preview mode (such as a link to download an attachment, etc...)
+
+2001-10-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Drop many useless BGCOLOR attribute tags from most HTML.
+
+3.1.0
+
+2001-10-01  Alessandro Vesely <vesely@tana.it>
+
+	* gpglib/testgpg.c: fix missing return code from poll_wait()
+
+2001-09-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Import of cniconsulting.com's HTML templates.
+
+2001-08-28  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authuserdbpwd.c (auth_userdb_passwd): Fix trashed pointer
+	dereference.  Problem noted by James Knight <jknight@fuhm.net>
+
+2001-08-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Added unicode mappings for windows-874/tis-620.  Refresh to
+	Unicode 3.1.1
+
+2001-08-22  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html.c (filtered_tag): delete TYPE attribute from html mail.
+
+2001-08-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* GnuPG passphrase support.
+
+	* newmsg.c (dosendmsg): Fix - if new message is sent without
+	previewing, if signing or encrypting fails, the error message screen
+	will not return to the composition window.
+
+	* gpg: fix error message not showing up if failed to sign a message.
+
+2001-08-20  Mr. Sam  <mrsam@courier-mta.com>
+
+	* logincache: converted logincache into a libmaildir.a module.
+
+2001-08-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* auth.c (badstr): Adjust illegal characters in username/login/pwd
+	to be control chars, ', and " only.
+
+2001-08-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* mailfilter.c: Option to specify whether the filter matching
+	pattern is plain text string or a regular expression
+
+	* mailfilter.c: Fixed bug where invalid filter input that results
+	in an error message forgetting the active filter number, so when the
+	filter input error is corrected, the filter rule is saved as a new
+	rule, instead of updating the former rule.
+
+2001-09-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Enigma update: fixes for new autoconfig/automake.
+
+2001-08-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (list_folder_xlate): Added wrapper for list_folder()
+	that subs reserved folder names with parametrized names.
+
+2001-08-10  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldaplib.c (ldapopen): LDAP_OPT_DEREF is not available
+	in openldap 1.0
+
+2001-08-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Fix --with-random configure.in option.  Problem noted by William
+	Hue <williamhue@telus.net>
+
+2001-08-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirshared.c (maildir_shared_subscribe): Fix a bug in
+	shared folder subscribe logic.
+	Problem noted by Vojtech Karny <karny@datalite.cz>
+
+	* maildir/maildirmake.c (add): Explicitly fseek() to start of file,
+	for system where fopen("a+") initially positions to EOF.
+	Problem noted by Vojtech Karny <karny@datalite.cz>
+
+2001-08-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authmysql.h: Drop mysql/ prefix from paths to mysql header
+	files (should be included in mysql_config).
+
+3.0.0
+
+2001-07-28  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Mail filter: prepend a backslash to a body search string that
+	begins with a space (avoid a parsing error in maildrop).
+
+2001-07-25  inter7.com
+
+	* Updated authvchkpw module.
+
+2001-07-24  Christophe Sollet <csollet@coleebris.com>
+
+	* authlib/authldaplib.c (authldap_read_config):  Add LDAP_DEREF option
+	to authldaprc that sets the LDAP_OPT_DEREF option.
+
+2001-07-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/maildirquota.c (qcalc): Prevent a division by 0 if
+	someone specified a quota of 0.
+
+2001-07-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* cgi/cgi.c (cgi_setup_1): Fix to allow extra arguments in the
+	Content-Type: header on http POSTs.  Problem noted by
+	Marcin Owsiany <porridge@expro.pl>
+
+2001-07-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (output_form): Enable gzip compress on folder.html
+	and folders.html
+
+2001-07-16  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir.c (dodirscan): Fix a potential race condition that might
+	result in the folder content index not to be refreshed if the cur
+	directory got updated in the middle of folder message totals being
+	calculated.
+
+2001-07-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Rename HAVE_UNICODE to HAVE_SQWEBMAIL_UNICODE to fix the link
+	error caused by --disable-utf7-folder-encoding.
+
+2001-07-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authdaemond.c (start): close stdin/stdout/stderr after
+	becoming a background process.
+
+2001-07-03  Mr. Sam  <mrsam@courier-mta.com>
+
+	* imap, pop3, webmail, ldap, mysql: minor changes to the default
+	settings in associated configuration files, to accomodate webadmin.
+	Be sure to verify your system configuration after doing make
+	install-configure
+
+2001-07-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldap.schema: Added - a sample LDAP schema.
+
+2001-06-27  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2047.c (a_rfc2047_encode_str): Fix incorrect MIME encoding of
+	address name in old-style RFC-822 format.
+
+2001-06-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Disable MSIE 6.0 smart tags in all html files
+
+2001-06-22  Mr. Sam  <mrsam@courier-mta.com>
+
+ 	* configure.in: SCO needs -lsocket for inet_addr().
+
+2001-06-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib: updated authvchkpw code.
+
+2001-06-20  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib: implement password changing in the authmysql module.
+	Added optional MYSQL_NAME_FIELD.
+
+2001-06-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib: implement password changing in the authldap module.
+	Switch the default setting of LDAP_CLEARPW and LDAP_CRYPTPW in
+	order to better match the LDAP schema.  Add password change code
+	to authtest.
+
+2001-06-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2045/rfc2045decodemimesectionu.c(txtflush): fix a null ptr
+	deref caused by a message with an empty body.
+
+2001-06-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* First phase of a major rewrite of the authentication layer that
+	will allow passwords to be updated back on the original authentication
+	database.  This is going to pretty much guarantee a major version
+	upgrade.  Eventually sqwebmail-pass is going to go away (not just
+	yet), so after upgrading to 3.0, mail account passwords will have
+	to be reset.  Since we've already thrown out a bunch of stuff, also
+	clean up lots of cruft in the configure script and Makefile.  The
+	end result is that some of the stuff that went into
+	/usr/local/libexec/sqwebmail is going to move back into
+	/usr/local/share/sqwebmail.
+
+2001-06-11  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Bless GnuPG 1.0.6
+
+2.1.1
+
+2001-06-08  Mr. Sam  <mrsam@courier-mta.com>
+
+	* autoresponse.c (read_headers): Fix a crash caused by an
+	autoresponse to a message with an unknown charset.  Problem noted
+	by porridge@mail1.expro.pl.
+
+2001-06-06  Mr. Sam  <mrsam@courier-mta.com>
+
+	* liblock/lockdaemon.c: fix several improper tests for failed fopen().
+
+2.1.0
+	
+2001-05-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Fix handling of --imageurl to not require a trailing slash.
+
+2001-05-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Show size of the MIME attachment (reformatted attachment indicator).
+
+2001-05-20  Ken Pizzini <kenp@go2net.com>
+
+	* Add the 'env' keyword to template files that inserts
+	environment variables.
+
+2001-05-20  "John A. Barbuto" <jbarbuto@bizland-inc.com>
+
+	* Add quota support to authmysql (not used in the sqwebmail build).
+
+2001-05-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Added makemime to the install, use makemime to MIME-ify uploaded
+	attachments.  Benefits: better MIME encoding, consistency.
+
+	* Fix random failures in mimegpg from unexpected child process
+	termination.
+
+2001-05-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Bless GnuPG 1.0.5.  If we detect 1.0.5, default to including utf-8
+	charset in the unicode map.
+
+2001-05-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Added autoreply capability.  maildrop 1.3.2 required.
+
+	* rfc2045/makereply.c - manually handle copy of message for
+	forwardatt(), it got broke by the 4/8 change to rfc2045_mimepos.
+
+2001-05-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* rfc2045/rfc2646create.c (rfc2646create_alloc): Fix incorrect
+	flowed wrapping of first paragraph.
+
+2001-05-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en-us: Added style sheet codes to mailfilter.html, created
+	autoresponder.html
+
+2001-05-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authlib.html.in: authldap and authmysql are now battle-
+	tested, and are no longer marked "experimental".
+
+2001-05-01  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (folder_list): block attempt to delete INBOX (which ends
+	up blowing away preferences).  Problem noted by gourgen@acc.am.
+
+2001-04-24  "Roland Hänel" <rh@ginko.net>  
+
+	* authlib/authmysql: applied patch to replace the remaining
+	hardcoded mysql table field names with configurable values from
+	authmysqlrc.
+
+2001-04-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* tcpd/starttls.c (create_tls): Log an error if
+	PEM_read_bio_DHparams() call fails.
+
+	* rfc822.c (rfc822t_alloc): Explicitly cast arg to (void *).
+
+	* authlib/configure.in (AUTHLDAP): Test for -lresolv before -lber.
+
+2001-04-14  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authldap: minor fixes for OpenLDAP 2.0.7.  Suppress a
+	spurious ldap_get_values msg.  Fail authentication completely if LDAP
+	server is unreachable (installing of falling over to the next
+	authentication mode).  IMPORTANT: some people might be relying on
+	this behavior to fail over to another authentication module.  Make
+	sure to note this in release notes.
+
+
+2001-04-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Cosmetic fixes.  Replace // with /* */ comments in some .c files
+	and replace return of void datatype with an explicit return.
+	Other misc stuff too.
+	
+2001-04-11  Mr. Sam  <mrsam@courier-mta.com>
+
+	* userdb/makeuserdb.html.in: Fix some documentation typos.
+
+	* authlib/authldaplib.c: refuse to authenticate if we end up running
+	as uid 0 or gid 0, this indicates a config file problem.
+
+2001-04-08  Mr. Sam  <mrsam@courier-mta.com>
+
+	* authlib/authmysqllib.c (auth_mysql_getuserinfo): Better error
+	recovery when the mysql server goes down (from
+	oliver.blasnik@nextra.de).
+
+	* rfc2045/rfc2045.c (rfc2045_mimepos): Fix a long-time glitch where
+	a garbled message with no body will have its headers logically placed
+	in the body section, and the supposed headers will be NULL -- this was
+	a benign artifact of the parsing logic.
+
+	* Added /usr/local/bin to AC_PATH macros in all configure.in scripts
+	
+2001-04-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* gpglib/mimegpg.c (isgpg): Drop the check for micalg=pgp-sha1
+
+	* Added /usr/local/bin to AC_PATH macros in all configure.in scripts.
+
+2001-04-04  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir.c (do_msgmove): Fix trashed free() on a failure to
+	remove the message from a shared folder.
+
+	* maildir/maildirshared.c (maildir_unlinksharedmsg): Check if we
+	failed to remove a message from a shared folder because we do not
+	have the permission to do so.  If so, do not remove our private
+	link, and instead drop the T flag from link's name (if it had one).
+
+2.0
+
+2001-03-29  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pref.c (pref_pagesize): Add option to display 100 or 250 messages
+	per folder index page.
+
+	* authlib/preauthcustom.c (authcustomcommon):  Fix the framework of
+	the custom authentication function to properly call the callback
+	ptr, and set the exit code appropriately.
+
+2001-03-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* misc: miscellaneous style sheet patches from einar@bordewich.net
+
+	* authlib/preauthvchkpw.c: add configure script probe for the
+	existence of vlogauth()
+
+2001-03-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Converted HTML templates to use style sheet.  Rebuilt dynamic
+	HTML generation to use labeled tags.
+
+2001-03-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* gpglib: probe for --allow-secret-key-import
+
+	* folder.c (void): Detect application/pgp-keys no matter what
+	Content-Disposition: says.
+
+2001-03-19  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (setlang): Put sqwebmail_content_locale into environment
+	as LANG=, in order to get localized messages from GnuPG.
+
+2001-03-19  Ken Jones <kbo@inter7.com>
+
+	* preauthvchkpw.c update.
+
+2001-03-17  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.spec.in: minor updates.
+
+	* rfc2045/configure.in:  --disable-unicode overrides libunicode.a
+	autodetect
+
+2001-03-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Added GnuPG support (1.0.4).
+
+2001-03-12  Mr. Sam  <mrsam@courier-mta.com>
+
+	* newmsg_newdraft.c (newmsg_newdraft): Clear out rfc2045_mkreplyinfo
+	struct (extra fld commited from oak branch was not being initialized).
+
+2001-03-11  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (get_textlink): Detect https links in text/plain.
+
+2001-03-10  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir.c (maildir_delete): Added option to delete folder contents,
+	before deleting the folder.
+
+	* sqwebmail.c (rename_sent_folder): Change the names of archived
+	sent folders to Sent.YYYY.mm-name, so that they sort correctly.
+
+2001-03-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir.c (do_msgmove): Check return code from link(), in order to properly
+	report screwed up maildir permissions.
+
+2001-02-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c: fixed bad free call in modified-utf7 folder logic,
+	for shared folders.
+
+1.2.5
+
+2001-02-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* maildir/deliverquota.c: replace snprintf with sprintf, for better
+	compatibility.
+
+2001-02-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* unicode/utf8.c (unicode_utf8_tou): Fixed memory corruption in UTF8
+	code.
+
+2001-02-13  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (output_form): Complain to syslog if we can't exec gzip.
+
+2001-02-09  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Patch: tobi@tobi.nu - replace --with-dyn-mysql with --with-mysql-libs
+	and --with-mysql-includes
+
+2001-02-08  Chris Seawood <cls@radiate.com>
+
+	* authlib: Added check for open_smtp_relay in -lvpopmail
+
+2001-02-07  Mr. Sam  <mrsam@courier-mta.com>
+
+	* newmsg_create.c (sentmsg_reformat): Fix crash when appending footer
+	to sent message from the attachment window.
+
+	* Makefile.am: delete MAKEFLAGS
+
+2001-02-05  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c: Tweaks for mozilla.
+
+	* newmsg.c (newmsg_init): More misorders of TD & TR tags.
+
+2001-02-02  Mr. Sam  <mrsam@courier-mta.com>
+
+	* configure.in (INSTALL_SCRIPT): added sqwebmail-system-auth.pamconf
+	and added a script to set webmail.authpam to either that, or the
+	original sqwebmail.pamconf, if we do not find /etc/pam.d/system-auth
+	
+
+2001-01-30  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c (showunknown): Fix misorder of TD & TR tags.
+
+1.2.4
+	
+2001-01-27  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pref.c: Add option not to archive sent mail.
+
+2001-01-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* pref.c: Add a preferences option to suppress flowed text format
+	display.
+
+	* rfc2045searchcontenttype.c - fix stack overflow due to incorrect
+	recursion logic.
+
+1.2.3
+	
+2001-01-25  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Added a hook for passing some additional flags to the
+	RPM spec script, using --define 'xflags [flags]' option.
+
+	* all: Fix authldap connection failure recovery    (Brian Candler)
+
+	* Fix big5/gb2312 conversion bug.
+
+1.2.2
+	
+2001-01-24  Mr. Sam  <mrsam@courier-mta.com>
+
+	* cgi/cgirelscriptptr.c: Fixed bug in automatic http/https selection
+	(it doesn't work for HTTP redirects).
+
+	* Fixed bug in charset conversion logic.
+
+2001-01-22  Mr. Sam  <mrsam@courier-mta.com>
+
+	* html/en-us/spellchk.html: get rid of some leftover javascript
+	calls.
+
+1.2.1
+
+2001-01-16  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Remove spurious filter_end() from newmsg_create.
+
+2001-01-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* auth.c (do_login): explicitly announce the fact that maildir is
+	broken.
+
+1.2.0
+
+2000-12-30  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Implemented flowed text format.
+
+2000-12-27  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Fixed off-by-one in attachment upload code.
+
+2000-12-23  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (output_form): Explicitly set the charset in the HTTP
+	header.
+
+	* Removed Content-Type: metatag from all .html files, it's now in the
+	HTTP header.
+
+	* Implemented unicode support.  Added message that will be printed
+	whenever the message character set does not match the display
+	character set.
+
+	* Added unicode subdirectory from CVS, in preparation for adding
+	unicode-related code.
+
+2000-12-22  Mr. Sam  <mrsam@courier-mta.com>
+
+	* logincache.c (prepare_login_cache): get rid of spurious error message
+	with vchkpw with webpass optional enabled being installed suid root.
+
+2000-12-22  Mr. Sam  <mrsam@courier-mta.com>
+
+	* sqwebmail.c (rename_sent_folder): First login of the month rename
+	Sent to Sent.MMM-YYYY.
+
+2000-12-21  Mr. Sam  <mrsam@courier-mta.com>
+
+	* newmsg_newdraft: major code cleanup.  Took most of what was in here
+	and moved it to librfc2045.a as a generic function that generates
+	replies to MIME messages.  Got rid of a lot of cruft.  The reply
+	and forward function needs to be heavily tested now.  Changes:
+
+	+ mailing list address compare now case insensitive.
+
+	+ new functions in librfc2045.a: rfc2045_makereply(), which contains
+	most of the original code from newmsg_newdraft;
+	rfc2045_searchcontenttype(), search for a MIME section to reply to;
+	rfc2045_decodemimesection() - decode a MIME section.
+	rfc2045header_start(), rfc2045header_get(), rfc2045header_end() -
+	read headers from a MIME section.
+
+	+ librfc2045 now has a make check action to check header parsing.
+
+1.1.2
+
+2000-12-18  Mr. Sam  <mrsam@courier-mta.com>
+
+	* folder.c: fix null ptr deref in RFC 2369 header processing.
+
+1.1.1
+
+2000-12-16  Mr. Sam  <mrsam@gwl.email-scan.com>
+
+	* mailinglist.c: getname() should be getaddr() in checkmailinglist().
+
+1.1.0
+
+2000-12-09  Mr. Sam  <mrsam@gwl.email-scan.com>
+
+	* maildir.c: Fix quota update breaking in move to trash.
+
+	* Fix crash if quota is exceeded on a message move.
+
+	* Set LC_CTYPE localte to "C", because glibc is broken.
+
+2000-12-08  Mr. Sam  <mrsam@courier-mta.com>
+
+	* logincache.c (check_login_cache): another place to move setuid and
+	setgid before chdir.
+
+2000-12-02  Mr. Sam  <mrsam@gwl.email-scan.com>
+
+	* Created "Reply To List"
+
+	* Created address book quick add.
+
+	* newmsg_create.c (newmsg_createdraft_do): get rid of extra blank
+	line that was being prepended to the new message.
+
+	* Made maildirquotas work with mail filters.  This is done entirely
+	in libmaildir.a -- mf_saverules() reads maildirsize(), if it exists,
+	and uses it to initialize MAILDIRQUOTA in the generated recipe.
+
+2000-11-26  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Replaced rfc822t_alloc() with rfc822t_alloc_new().
+
+2000-11-20  Mr. Sam  <mrsam@courier-mta.com>
+
+	* preauthvchkpw.c update.
+
+2000-11-16  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Properly set the return address on mail forwarded from a mail
+	filter.
+
+2000-11-15  Mr. Sam  <mrsam@courier-mta.com>
+
+	* Potential (but irrelevant) file descriptor leak in soft quota
+	checking.
+
+1.0.3
+	Minor fixes -- bad stat in maildir_try_create, move chdir to homedir
+	after setting uid/gid.
+
+	Fix for a memory leak in OpenLDAP.
+
+1.0.2   Additional tweaks to mysql configuration script.
+
+        Fixed bad label for authvchkpw module.
+
+1.0.1 - maintenance update.
+
+	Authentication overhaul.  authdaemond split into alternate versions,
+	one for each database back end.  The original "authdaemond" replaced
+	by a shell script that checks for the installed authdaemond
+	alternates, and run whatever's installed.  The idea is to allow
+	LDAP and MySQL support to be separately packaged, and for LDAP and
+	MySQL support to be added simply by installing the extra package
+	(the base packaged for the garden variety and the LDAP/MySQL back
+	end remains the same).
+
+	Some tweaks to MySQL configuration and detection logic.
+
+	Some tweaks for the MSIE breakage.
+	
+	Added a "custom" authentication module -- a stub that doesn't
+	authenticate anything.  It takes care of all the low level details
+	relating to interfacing with the authentication library.  Just insert
+	site-specific code in the right spot.
+
+	Fixed bug where nicknames were automatically lowercased.
+
+	Allow TIMEOUTSOFT to be adjusted via SQWEBMAIL_TIMEOUTSOFT environment
+	variable.  TIMEOUTHARD is adjustable via SQWEBMAIL_TIMEOUTHARD (but
+	read the warning in INSTALL carefully).
+
+09/13/2000 - 1.0
+
+             Spec file updated for RH 7.0
+
+             Fixed several bugs in the spec file.  The old spec file
+             sets wrong permissions on /home/httpd/cgi-bin, fix existing
+             installs by running chmod 755 /home/httpd/cgi-bin.
+
+             Add cc to maildirfilter.
+
+             Fix an obscure bug in incorrect encoding of multiple RFC2047
+             encoded words.
+
+             Finally RFC2047-decode headers in message preview.
+
+             Push back authpam to the tail end of the module list, because
+             authpam wants to be the last called module.
+
+             Slightly changed how name attributes in LDAP are handled.
+
+             Display current quota usage.
+
+             Added %define in spec file for some hardcoded values.
+
+07/27/2000 - 0.99
+             Fixed bug with random envelope return address corruption.
+
+             Berkeley DB 3 support.
+
+             Completely rewritten authmysql module.
+
+             Added mail filtering.
+             jbj@redhat's optimization suggestions.
+
+06/16/2000 - 0.37
+
+             Added "show for printing option" -- based on an external
+             patch.  Created my own icon for this option.
+
+             Added a config file - logindomainlist.  If exists, login screens
+             will include a drop down list of domains.
+
+             Added LDAP address book import.
+
+             Other miscellaneous address book enhancements.
+
+             Forwarding a message with attachments preserves the attachments.
+
+05/30/2000 - 0.36a maintenance release.  A major Courier debugging session
+             uncovered several potential bugs in the authentication layer.
+             The patches are brought back into the sqwebmail tree.
+
+05/25/2000 - 0.36 Slightly changed semantics of maildir file creation.  Don't
+             loop on non-ENOENT errors. DJB is wrong - you'll get stuck in an
+             infinite loop if, say, directory permissions are wrong.  Abort
+             instead.
+
+             Added optional images and icons.
+
+05/10/2000 - 0.35 Changed footer to a per-lang parameter (html/lang/footer
+             read instead of html/footer)
+             Fixed cid: URL bug (didn't work :-( )
+             Fixed RFC2047 bug introduced in 0.32 series.
+             Bug fix in quota support.  Properly implemented.
+             multipart/related.
+	     Added address book.
+	     Added authdaemon.
+	     When vpopmail is used, change password via vpopmail.
+	     Bug fix -- concurrent access failure in displaying of inline
+	     images.
+             Nuke ACTION attribute in HTML tags (disable FORM posts).
+
+03/16/2000 - 0.34 Several fixes to allow sqwebmail to be manually installed
+             suid to non-root, as long as all mailboxes are owned by the
+             same uid.  --with-maxmsgsize patch (default 2 MB).
+	
+03/13/2000 - 0.33 MySQL patch.  Courier integration.  Added LINK to the list
+             of banned HTML tags.  Content-Base:/Content-Location support.
+
+02/28/2000 - 0.32 Removed --enable-mimecharset option.  The MIME character set
+             for outgoing messages is now set in the CHARSET file located
+             in the HTML template directory.  Upgrade to 0.32 during quiet
+             time, because people will get kicked off.  Note that the default
+             character set is now iso-8859-1.  It was previously us-ascii.
+
+             Complete RFC 2047 implementation.  SqWebMail should now
+             automatically encode and decode MIME headers.  "Send Preview"
+             is an exception, I'll take care of that one later.
+
+             You can use ${sysconfdir}/footer to define a footer that will
+             be appended to every message.
+
+01/26/2000 - 0.31 Authlib enhancements.  Updated vpopmail support.  Updated
+	     authldap support: mailDir, userPassword optional to suppress
+	     spurious error messages.  Added option to use authenticated
+	     LDAP binds and have the LDAP server validate the password,
+	     instead of sqwebmail.
+
+01/22/2000 - 0.30 More authlib tweaks - Makefile.  Authvchkw will now
+             recognize : as a domain separator, since there are still many
+             old dump Netscape versions lying around.  No need to chgrp mail
+             on sqwebmail.
+
+01/04/2000 - 0.29 LDAP fixes.  Reformatted HTML files with Amaya 2.2.  The
+             logged on user's E-mail address will be shown now in the upper
+             right hand corner.  Optionally attach X-Sender to sent messages.
+             More authvchkpw fixes (hopefully that's it).  With authvchkpw,
+             you will now have to login as user@domain.  user%domain never
+             worked, and it has been removed.  Replaced --enable-hostname
+             config file with a runtime config file,
+             /usr/local/share/sqwebmail/hostname
+
+01/03/2000 - 0.28 makefile fixes.  Added experimental LDAP module.
+
+12/15/1999 - 0.27 resumed maintaining this ChangeLog.  A lot of new stuff.
+Changes from 0.26: new authentication code.   Eliminated --enable-multidir
+option.  New authentication includes option to maintain virtual mailboxes.
+That, plus the pseudo-hierarchical folders can support the functionality of
+--enable-multidir.
+
+No more separate sqwebmail/vsqwebmail.  Only sqwebmail will be built, and
+configuration time options will select whether vpopmail's vpasswd support
+gets compiled in as an authentication module.  The Red Hat package stills
+builds two versions.  That's implemented by actually configuring and
+building the package twice :-(.  Well, that's the price of progress.
+
+New authentication: pretty much wiped auth.c clean, and started from
+scratch.  Added authentication modules from Courier-IMAP.  This code will
+now be shared :-).
+
+Some installation directories have now been changed.  Previous, all
+html template subdirectories were created in /usr/local/share/sqwebmail
+(such as /usr/local/share/sqwebmail/en-us).  They are now moved into a
+separate subdirectory of their own, so the English html are now installed
+in /usr/local/share/sqwebmail/html/en-us.  If you have a custom installation,
+it will have to be moved into /usr/local/share/sqwebmail/html.
+
+NOTE: although .html files have NOT been changed in this version, the
+configuration scripts: configure.in, Makefile.am, Makefile.in, and configure
+HAVE been slightly changed.  If you maintain your custom HTML, you must
+update the configuration scripts.  The easiest thing to do is to simply
+copy over your .html files only into the subdirectory sqwebmail/html/en-us,
+after unpacking the tarball.
+
+Extra bonus: RFC 2111 support (cid: IMG URLs in text/html messages will
+be resolved!!! )
+
+04/14/1999 - 0.16 released. Bug fixes and subpackage updates.  Small bits of
+HTML were hardcoded in sqwebmail - moved to HTML templates.  Refreshed rfc822
+and rfc2045 with the latest versions from RCS.  Fixed obscure bug in parsing
+RFC822 headers containing old-style () comments.  Replies now have a
+References: header.  Redesigned "Create Message" page to take up less
+horizontal real estate.
+
+03/16/1999 - 0.15 released. Bug fixes. SqWebMail now handles mailto: links.
+RFC2369 support.
+
+03/01/1999 - 0.14 released.  Security.  Nifty trick used to greatly reduce
+the amount of code that needs to be run as root.  Consequently to this,
+I no longer need to use /tmp for temporary files used to decode file uploads,
+that will now go into Maildir/tmp.  Added "Full Headers" button which will
+appear on the message display page if preferences are set not to display
+full headers by default.  The "Full Headers" button will show full headers
+for the current message only.
+
+02/23/1999 - 0.13 released.  Minor bug fixes.  Modularized functions for
+displaying messages, word wrapping messages, and processing input into a
+separate module - filter.c.  This will break the ground for
+internationalization work to follow.  If you run configure with
+--enable-webpass=no, the preferences page will not have the password change
+dialog.  Replaced the @ character in HTML templates with a less likely
+character combination.
+
+01/31/1999 - 0.11 released.  Improved caching - better performance for large
+Maildirs.  Number of days before messages are purged can be set via
+preferences.  New "Trash" folder.  Deleted messages no longer show up
+as a separate "deleted" section of the original folder.  When you delete
+a message, it is moved into the "Trash" folder, and shows up marked as "D"
+in the original folder, until you leave that folder.  Fixed bug where some
+messages may be purged early.  HTTP redirects now HTTP/1.1 compliant.  There
+may be some occasional problems with older HTTP/1.0 browsers.  Checkmarks for
+deleted messages marked as DISABLED (ignored by Netscape Communicator).
+"Select All" checkmark.  Fixed some quoting issues when handling URL
+redirects.  Improved URL recognition logic in text/plain.  Long subject lines
+are truncated in the folder contents window.  Removing a folder now actually
+works (stupid bug).
+
+Clicking on message data will also bring up the message, just like clicking
+on the subject.  This is sometimes needed for lynx, which does not present
+empty links (if message has an empty subject, you won't be able to select
+it, in lynx).
+
+01/04/1999 - 0.10 released.
+
+           - 0.10a update
+  No longer strip out [] when building the Re: subject.
+  Changed so that "Message X of Y", "Reply To All", doesn't wordwrap.
+  Fixed obsolete Makefile code causing spurious error.
+  Removed '+=' from Makefile, old makes can't handle it.
+  Added /usr/local/apache/conf to the list of places we search mime.conf in.

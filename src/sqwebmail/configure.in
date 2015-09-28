@@ -1,0 +1,476 @@
+dnl $Id: configure.in,v 1.1.1.1 2003/05/07 02:15:24 lfan Exp $
+dnl
+dnl Copyright 1998 - 2002 Double Precision, Inc.  See COPYING for
+dnl distribution information.
+
+AC_INIT(sqwebmail.c)
+LPATH="$PATH:/usr/local/bin"
+AM_INIT_AUTOMAKE(sqwebmail, 3.5.1, 0)
+
+AM_CONFIG_HEADER(config.h)
+AC_PROG_MAKE_SET
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_RANLIB
+
+AC_ISC_POSIX
+AC_AIX
+AC_MINIX
+
+if test "$GCC" = yes ; then
+        CXXFLAGS="$CXXFLAGS -Wall"
+        CFLAGS="$CFLAGS -Wall"
+fi
+
+AC_PATH_PROGS(PERL,perl5 perl, perl, $LPATH)
+AC_PATH_PROGS(GZIP,gzip,gzip,$LPATH)
+
+if test "$PERL" = "perl"
+then
+	AC_MSG_ERROR(Perl not found)
+fi
+
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+
+eval "prefix=$prefix"
+eval "exec_prefix=$exec_prefix"
+eval "datadir=$datadir"
+eval "bindir=$bindir"
+eval "localstatedir=$localstatedir"
+
+if test -d ${srcdir}/../courier
+then
+	htmldir="$datadir/sqwebmail/html"
+	scriptdir="$datadir/sqwebmail"
+else
+	htmldir="$prefix/html"
+	scriptdir="$prefix"
+fi
+
+AC_ARG_WITH(htmldir, [], , ac_configure_args="--with-htmldir=$htmldir $ac_configure_args")
+AC_SUBST(htmldir)
+AC_SUBST(scriptdir)
+
+AC_ARG_WITH(mailer,
+[  --with-mailer=prog  Your mail submission program],
+	mailer="$withval",
+
+[
+	if test -d ${srcdir}/../courier
+	then
+		mailer="$bindir/sendmail"
+	else
+		SENDMAIL_PATH=$PATH:/etc:/sbin:/usr/sbin:/usr/local/bin:/var/qmail/bin
+		AC_PATH_PROG(sendmail, sendmail, /usr/bin/sendmail, $SENDMAIL_PATH)
+		mailer="$sendmail -oi -t"
+	fi
+]
+)
+
+AC_SUBST(mailer)
+
+AC_ARG_WITH(fcgi,
+[  --without-fcgi      Do not compile fastcgi support
+  --with-fcgi         Compile with fastcgi support],
+	[ AC_CHECK_LIB(fcgi, FCGX_GetChar) ] )
+
+AC_ARG_WITH(ispell,
+[  --without-ispell      Do not compile ispell support
+  --with-ispell=prog    Pathname to ispell (if not in default path)],
+	ispell="$withval", [ AC_PATH_PROG(ispell, ispell, N, $LPATH) ] )
+
+case $ispell in
+"/"*)
+	AC_DEFINE_UNQUOTED(ISPELL, "$ispell",
+	[ Path to ispell or aspell ])
+	;;
+*)
+	ispell=""
+	;;
+esac
+
+AM_CONDITIONAL(ISPELL, test "$ispell" != "")
+
+AC_ARG_ENABLE(autorenamesent, [
+  --enable-autorenamesent   Enable Autorename Sent folder periodically (default)
+  --disable-autorenamesent  Disable Autorename Sent folder periodically
+], , enable_autorenamesent=yes)
+if test ! "$enable_autorenamesent" = no; then
+        AC_DEFINE(AUTORENAMESENT, "yes",
+	[ Whether the Sent directory is automatically renamed monthly ])
+else
+        AC_DEFINE(AUTORENAMESENT, "no",
+	[ Whether the Sent directory is automatically renamed monthly ])
+fi
+
+dnl Checks for libraries.
+
+AC_CHECK_LIB(sun,getpwnam)
+AC_CHECK_LIB(crypt, crypt)
+
+dnl Check whether we should use gdbm, or db.
+
+needs_withdb=0
+
+. ../dbobj.config
+
+if test "$dblibrary" = ""
+then
+	AC_MSG_ERROR(--with-db option required)
+fi
+
+dblibrary="../$dblibrary"
+AC_SUBST(LIBDB)
+AC_SUBST(LIBGDBM)
+AC_SUBST(dblibrary)
+
+USENSL=no
+saveLIBS="$LIBS"
+AC_CHECK_LIB(socket,socket,result=yes,result=no)
+if test $result = yes; then
+        NETLIBS="-lsocket"
+else
+        AC_CHECK_LIB(socket,socket,result=yes,result=no,-lnsl)
+        if test $result = yes; then
+                NETLIBS = "-lsocket -lnsl"
+                USENSL=yes
+        else
+                AC_CHECK_LIB(socket,connect,result=yes,result=no)
+                if test $result = yes; then
+                        NETLIBS="-lsocket"
+                else
+                        AC_CHECK_LIB(socket,connect,result=yes,result=no,-lnsl)
+                        if test $result = yes; then
+                                NETLIBS="-lsocket -lnsl"
+                                USENSL=yes
+                        fi
+                fi
+        fi
+fi
+
+if test $USENSL != yes; then
+	LIBS="$LIBS $NETLIBS"
+	AC_TRY_LINK_FUNC(inet_addr, [ : ],
+	[
+	        AC_CHECK_LIB(nsl,inet_addr,result=yes,result=no)
+	        if test $result = yes; then
+	                NETLIBS="$NETLIBS -lnsl"
+	        fi
+	])
+fi
+LIBS="$saveLIBS"
+
+AC_SUBST(NETLIBS)
+
+dnl Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS(syslog.h fcntl.h sys/wait.h sys/stat.h sys/time.h utime.h unistd.h locale.h crypt.h)
+AC_HEADER_SYS_WAIT
+AC_HEADER_TIME
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_STRUCT_TM
+AC_TYPE_PID_T
+AC_TYPE_UID_T
+AC_TYPE_SIGNAL
+
+AC_TRY_RUN( [
+
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<limits.h>
+
+int main()
+{
+FILE	*fp=fopen("conftestval", "w");
+
+	if (!fp)	exit(1);
+	fprintf(fp, "-%lu\n", ULONG_MAX);
+	fclose(fp);
+	return (0);
+}
+]
+	, [ MAXLONGSIZE=`wc -c conftestval | awk ' { print $1 } '  ` ],
+	[
+		AC_MSG_ERROR(Unable to run test program.)
+	] ,
+	[
+		MAXLONGSIZE=60
+		AC_MSG_WARN([Cross compiling, setting MAXLONGSIZE to $MAXLONGSIZE])
+	]
+		)
+
+dnl Checks for library functions.
+AC_FUNC_STRFTIME
+AC_CHECK_FUNCS(crypt utime utimes setreuid setlocale)
+AC_REPLACE_FUNCS(strdup strcasecmp strncasecmp)
+
+AC_CACHE_CHECK([for crypt() prototype],sqwebmail_cv_NEED_CRYPT_PROTOTYPE,
+
+AC_TRY_COMPILE( [
+       #if HAVE_CRYPT_H
+       #include <crypt.h>
+       #endif
+       #if HAVE_UNISTD_H
+       #include <unistd.h>
+       #endif
+       int crypt(int, int);
+
+        ], [], sqwebmail_cv_NEED_CRYPT_PROTOTYPE=1,
+                sqwebmail_cv_NEED_CRYPT_PROTOTYPE=0 )
+
+)
+
+AC_DEFINE_UNQUOTED(NEED_CRYPT_PROTOTYPE,$sqwebmail_cv_NEED_CRYPT_PROTOTYPE,
+	[ Whether crypt() must be prototyped ])
+
+dnl Other
+
+AC_ARG_ENABLE(https, [  --enable-https          Generate https:// URLs for all accesses
+  --enable-https=login    Use https:// URLs for password transmission only
+  --enable-https=auto     Use relative URLs (up to user which to use)
+  --disable-https         Do not use https:// URLs no matter what.
+                          (auto is the default)],
+	https="$enableval", https="auto")
+
+case "$https" in
+1*|y*|Y*)
+	AC_DEFINE_UNQUOTED(USE_HTTPS, 1, [ Always use https:// URLs ])
+	AC_DEFINE_UNQUOTED(USE_HTTPS_LOGIN, 1,
+		[ Use https:// for logins ])
+	;;
+login)
+	AC_DEFINE_UNQUOTED(USE_HTTPS_LOGIN, 1,
+		[ Use https:// for logins ])
+	;;
+auto)
+	AC_DEFINE_UNQUOTED(USE_RELATIVE_URL, 1,
+		[ Autodetect whether to use http or https URLs ])
+	;;
+esac
+
+
+AC_ARG_ENABLE(hardtimeout, [  --enable-hardtimeout=7200  Hard session timeout (2hrs default)],
+	TIMEOUTHARD=$enableval, TIMEOUTHARD=7200)
+AC_DEFINE_UNQUOTED(TIMEOUTHARD,$TIMEOUTHARD,
+	[ Hard login timeout ])
+AC_SUBST(TIMEOUTHARD)
+
+AC_ARG_ENABLE(softtimeout, [  --enable-softtimeout=1200  Inactivity timeout (20 min default)],
+	TIMEOUTSOFT=$enableval, TIMEOUTSOFT=1200)
+AC_DEFINE_UNQUOTED(TIMEOUTSOFT,$TIMEOUTSOFT,
+	[ Soft login timeout ])
+
+AC_ARG_ENABLE(autopurge, [  --enable-autopurge=7       Automatically purge deleted messages (days).],
+	AUTOPURGE=$enableval, AUTOPURGE=7)
+AC_DEFINE_UNQUOTED(AUTOPURGE,$AUTOPURGE,
+	[ Automatically purge Trash after this many days ])
+
+AC_ARG_ENABLE(maxpurge,  [  --enable-maxpurge=90       Maximum value for autopurge (days).],
+	MAXPURGE=$enableval, MAXPURGE=90)
+AC_DEFINE_UNQUOTED(MAXPURGE,$MAXPURGE,
+	[ Maximum number of days mail is kept in Trash, before deleting ])
+
+AC_ARG_WITH(maxmsgsize,
+[  --with-maxmsgsize=nbytes       Limit max size of a created message, in bytes
+                                 (default: 2 megabytes)],
+	MAXMSGSIZE=$withval,
+	MAXMSGSIZE=2097152)
+
+AC_SUBST(MAXMSGSIZE)
+
+AC_ARG_ENABLE(lang, [  --with-defaultlang={lang}       Default language to use (only en, so far)],
+	lang="$enableval",lang=zh-cn; ac_configure_args="$ac_configure_args --with-defaultlang=$lang")
+
+AC_ARG_ENABLE(mimecharset,
+	[  --enable-mimecharset=charset   Default MIME charset to set on new messages])
+
+mimetypes=""
+
+for f in /usr/lib /usr/local/lib /usr/lib/pine /usr/local/lib/pine /etc \
+         /var/lib/httpd/conf /home/httpd/conf /usr/local/etc/apache \
+         /usr/local/apache/conf /var/lib/apache/etc /etc/httpd \
+         /usr/local/apache2/conf
+do
+	if test -f $f/mime.types
+	then
+		if test "$mimetypes" != ""
+		then
+			mimetypes="$mimetypes:"
+		fi
+		mimetypes="$mimetypes$f/mime.types"
+	fi
+done
+
+AC_ARG_ENABLE(mimetypes, [  --enable-mimetypes={dir}   Your mime.types file.],
+	mimetypes="$enableval",
+	[
+		if test "$mimetypes" = ""
+		then
+			AC_MSG_ERROR([Unable to find your mime.types file, specify --enable-mimetypes.])
+		fi
+	] )
+AC_DEFINE_UNQUOTED(MIMETYPES, "$mimetypes",
+			      [ Your mime.types files ])
+
+AC_DEFINE_UNQUOTED(MAXLONGSIZE, $MAXLONGSIZE,
+				[ Maximum size of a long ])
+
+AC_ARG_ENABLE(bannerprog,
+	[  --enable-bannerprog=prog   Program which will generate a banner.],
+	[ 
+		AC_DEFINE_UNQUOTED(BANNERPROG, "$enableval",
+		[ External banner generating program ])
+		 ])
+
+
+CFLAGS="$CFLAGS -I.. -I$srcdir/.."
+
+AC_ARG_WITH(maxargsize,
+	[  --with-maxargsize=nbytes       Limit maximum size of CGI args])
+AC_ARG_WITH(maxformargsize,
+	[  --with-maxformargsize=nbytes   Maximum size of multipart/formdata uploads])
+
+cachedir=/var/run/sqwebmail
+if test -d /var/cache
+then
+	cachedir=/var/cache/sqwebmail
+fi
+
+if test -d ${srcdir}/../courier
+then
+	cachedir=$localstatedir/webmail-logincache
+fi
+
+AC_ARG_WITH(cachedir,
+	[  --with-cachedir=dir        Specify location of the cache directory],
+	cachedir="$withval")
+AC_SUBST(cachedir)
+AC_DEFINE_UNQUOTED(CACHEDIR, "$cachedir",
+			     [ Login cache directory location ])
+
+AC_ARG_WITH(cacheowner,
+	[  --with-cacheowner=user     Owner of the cache directory (default: bin)],
+	cacheowner="$withval", cacheowner="bin")
+
+AC_DEFINE_UNQUOTED(CACHEOWNER, "$cacheowner",
+			       [ Login cache directory owner ])
+AC_SUBST(cacheowner)
+
+dogzip="no"
+if test "$GZIP" != "gzip"
+then
+	dogzip="yes"
+fi
+
+AC_ARG_WITH(gzip,
+	[  --without-gzip                 Do not use gzip to compress messages],
+	dogzip="$withval")
+
+if test "$dogzip" = "no"
+then
+	GZIP=""
+fi
+
+if test "$GZIP" != ""
+then
+	AC_DEFINE_UNQUOTED(GZIP,"$GZIP",
+	[ Path to gzip ])
+fi
+
+AC_ARG_WITH(efence,
+	[  --with-efence                  Link with efence.a debugger ],
+	efence=$withval, efence="N")
+
+case $efence in
+1*|y*|Y*)
+	LIBS="$LIBS -lefence"
+	;;
+*)
+	;;
+esac
+
+have_vpopmail=0
+for f in `cat ../authlib/modulelist ; . ../authlib/authdaemonrc ; echo $authmodulelist `
+do
+	test "$f" = "authvchkpw" || continue
+	have_vpopmail=1
+done
+
+LIBVCHKPW=""
+
+if test "$have_vpopmail" = 1
+then
+        vpopmail_home="`echo ~vpopmail`"
+
+        LIBVCHKPW="-L${vpopmail_home}/lib -lvpopmail"
+	AC_CHECK_LIB(crypt, crypt, LIBVCHKPW="-lcrypt $LIBVCHKPW")
+
+	AC_MSG_CHECKING(whether -lm is needed for floor)
+	AC_TRY_LINK_FUNC(floor,
+		AC_MSG_RESULT(no),
+		LIBVCHKPW="$LIBVCHKPW -lm"
+		AC_MSG_RESULT(yes))
+
+        CFLAGS="-I${vpopmail_home}/include $CFLAGS"
+	AC_DEFINE_UNQUOTED(WEBPASS_CHANGE_VCHKPW, $WEBPASS_CHANGE_VCHKPW,
+	[ Use vpopmails change-password function ])
+fi
+AC_SUBST(LIBVCHKPW)
+
+imageurl="/webmail"
+
+AC_ARG_ENABLE(imageurl, [  --enable-imageurl={url}   URL to <DocumentRoot> directory for images.],
+	imageurl="$enableval")
+
+AC_SUBST(imageurl)
+AC_MSG_CHECKING(URL to access images)
+AC_MSG_RESULT($imageurl)
+
+AC_CONFIG_SUBDIRS(images html)
+
+INSTALL_SCRIPT='${INSTALL} -m 0755'
+
+AC_ARG_ENABLE(utf7-folder-encoding, [],
+	utf7folder="$enableval",
+	AC_MSG_ERROR(Parent configure.in did not set utf7-folder-encoding)
+)
+
+if test "$utf7folder" = "yes"
+then
+	AC_DEFINE_UNQUOTED(UTF7_FOLDER_ENCODING,1,
+	[ Use IMAP-compatible UTF-7 folder name encoding ])
+fi
+
+AC_ARG_ENABLE(unicode, [],
+	unicode="$enableval",
+	unicode="no")
+
+if test "$utf7folder" = "yes"
+then
+	unicode=yes
+fi
+
+if test "$unicode" = "yes"
+then
+	AC_DEFINE_UNQUOTED(HAVE_SQWEBMAIL_UNICODE,1,
+	[ Compile a unicode-aware sqwebmail ])
+fi
+
+cp -f $srcdir/sqwebmail.pamconf webmail.authpam
+
+if test -f /etc/pam.d/system-auth
+then
+	cp -f $srcdir/sqwebmail-system-auth.pamconf webmail.authpam
+fi
+
+AC_OUTPUT(Makefile sendit.sh cleancache.pl)
+
+if test ! -d html/$lang
+then
+	AC_MSG_ERROR(Unknown language: $lang)
+fi

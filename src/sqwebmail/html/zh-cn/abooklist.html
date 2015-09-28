@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>地址本</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<!--
+[#$PROMPT=<table border=0><tr><td align=right>选择: </td><td>#]
+[#$SUBMIT=</td><td><input class=mybtn type="submit" value="修改" name="nick.edit"><input class=mybtn type="submit" value="删除" name="nick.delete"></td></tr><tr><td align=right>昵称:</td><td><input class=myinput name="nick2"></td><td><input class=mybtn type=submit name=nick.edit2 value=创建></td></tr></table>#]
+[#$TITLE1=</td></tr><tr bgcolor="#FFFFFC"><td valign=top><font class=ctype>#]
+[#$TITLE2=</font></td><td>#]
+[#$DELETE=删除#]
+[#$NAME=姓名: #]
+[#$ADDRESS=地址: #]
+[#$ADD=添加#]
+[#$EDIT=修改#]
+-->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" name="addressbook" action="[#R#]">
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align=center>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr> 
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=ctype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tbody> 
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8" width="100">联系人</td>
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+              [#P#]
+              <input type="hidden" name="form" value="abooklist">
+	      [#a#] 
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

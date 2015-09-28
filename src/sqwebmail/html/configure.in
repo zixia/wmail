@@ -1,0 +1,27 @@
+dnl $Id: configure.in,v 1.1.1.1 2003/05/07 02:15:38 lfan Exp $
+dnl
+dnl Copyright 1998 - 1999 Double Precision, Inc.  See COPYING for
+dnl distribution information.
+
+AC_INIT(mksoftlinks)
+AM_INIT_AUTOMAKE(sqwebmail,0.23)
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+LANGUAGES="`cat ${srcdir}/*/LANGUAGE_PREF | sort | awk ' { print $2 } ' | uniq`"
+LANGUAGES=`echo $LANGUAGES`
+
+AC_ARG_WITH(htmldir, [], htmldir="$withval",
+	AC_MSG_ERROR(missing --with-htmldir option))
+
+AC_SUBST(htmldir)
+AC_CONFIG_SUBDIRS($LANGUAGES)
+AC_SUBST(LANGUAGES)
+AC_OUTPUT(Makefile README_LANG.html)
+
+# Set up soft links
+
+for f in $LANGUAGES
+do
+	${srcdir}/mksoftlinks . $f
+done

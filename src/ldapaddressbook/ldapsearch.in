@@ -1,0 +1,18 @@
+#! @SHELL@
+# $Id: ldapsearch.in,v 1.1.1.1 2003/05/07 02:14:53 lfan Exp $
+#
+# Copyright 2000 Double Precision, Inc.  See COPYING for
+# distribution information.
+#
+# This is a wrapper for your real ldapsearch.  You would use this ldapsearch
+# in order to provide site-specific values, such as timeouts and maximum number
+# of hits received.
+#
+# NOTE: you *must* quote the arguments as shown below -- otherwise you'd
+# have a typical security hole on your hands.  Do not alter the quoting
+# mechanism.
+#
+# This example sets the search timeout to 60 seconds, and a maximum of 20
+# hits returned.
+
+exec @ldapsearch@ -l 60 -z 20 "$@"

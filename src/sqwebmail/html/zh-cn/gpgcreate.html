@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>创建密钥</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body>
+<!--
+
+[#$BADARGS=<font color="#E00000" class="error">不合法的参数 - 请输入一个唯一的名称和合法的Email地址。 大多数标点符号是被禁用的。</FONT>#]
+[#$PASSPHRASEFAIL=<p class="error">错误 - 传递语法中有非法字符或输入的两次传递语法不一致。</p>#]
+
+-->
+ 
+
+<center>
+
+<table cellpadding="0" cellspacing="0" border="0" width="95%">
+    <tr>
+      <td align="left" valign="top">[#@graytopleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#cccccc"></td>
+      <td align="right" valign="top">[#@graytopright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+    </tr>
+    <tr bgcolor="#efefef">
+      <td></td>
+      <td width="100%">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="left" width="100%" valign="middle" class="pageheader">
+			  [#@logo.gif, width="263" height="39" alt="mail logo" align="absmiddle" border="0"@@#]
+			  创建密钥
+			  </td>
+              <td align="right" valign="middle"><b>[#G#]</b></td>
+            </tr>
+        </table>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align="left" valign="bottom">
+	   [#@graybottomleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#cccccc"></td>
+      <td align="right" valign="bottom">
+	  [#@graybottomright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+    </tr>
+</table>
+</center>
+
+<p>请稍等，这可能要花去 5-10 分钟时间，请在密钥创建完成之前忽略任何信息。</p>
+<hr noshade size="1" color="#000000">
+[#GPGCREATE#]
+<hr>
+
+<p><a href="[#s#]&amp;form=gpg">密钥建立完成，继续</a></p>
+
+<p>[#B#]</p>
+</body>
+</html>

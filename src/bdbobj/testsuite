@@ -1,0 +1,13 @@
+#!/bin/sh
+#$Id: testsuite,v 1.1.1.1 2003/05/07 02:13:15 lfan Exp $
+
+rm -f testbdb.dat
+
+./testbdb testbdb.dat foo bar
+./testbdb testbdb.dat foo baz
+./testbdb testbdb.dat bar foo
+./testbdb testbdb.dat foo
+./testbdb testbdb.dat bar
+./testbdb testbdb.dat
+./testbdb testbdb.dat -foo
+./testbdb testbdb.dat

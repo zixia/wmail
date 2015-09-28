@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>密码修改</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body>
+<!--
+[#$PWDERR=<p class="error">错误：不能更改密码。 可能的原因是:</p><ul class="error"><li>您没有正确输入原来的密码<br><br><li>您两次输入的新密码不同<br><br></ul>#]
+[#$PWDCHGOK=<p class="error">密码修改成功！</p>#]
+-->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" name="preferences" action="[#R#]">
+[#P#]
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr> 
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=csmtype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left rowspan="2" bgcolor="#FFFFF8" nowrap width="80">密码修改</td>
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+            <input type="hidden" name="form" value="passwd">[#x#]
+		输入旧密码 
+            <input class=myinput type="password" name="oldpass" size="20"><br>
+            输入新密码 
+            <input class=myinput type="password" name="newpass" size="20"><br>
+            校验新密码 
+            <input class=myinput type="password" name="newpass2" size="20"><br>
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8">
+            <input class=mybtn type="submit" name="do.changepwd" value="修改密码">
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

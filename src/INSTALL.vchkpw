@@ -1,0 +1,31 @@
+
+From kbo@inter7.com Wed Feb  2 17:52:45 2000
+Date: Wed, 02 Feb 2000 11:18:50 -0600
+From: iv0 <kbo@inter7.com>
+To: vchkpw@inter7.com, sqwebmail@inter7.com
+Subject: sqwebmail and vpopmail's default domain
+
+Hi,
+
+If you want to set a default domain in vpopmail and have sqwebmail
+users only type in thier user name into sqwebmail instead of
+user@domain, you can do that. 
+
+I tested sqwebmail 0.31 and vpopmail 3.4.11released
+
+Be sure to disable the other authentication mechanisms. Here
+is my configure line for sqwebmail:
+
+./configure --without-authpam --without-authuserdb --enable-webpass=no
+--without-authpwd --without-authshadow
+
+That worked.
+
+My configure line for vpopmail was:
+./configure --enable-mysql=y --enable-default-domain=test.com
+
+Then users@test.com only need to type in thier user name. All
+other virtual domains will need user@domain to login to sqwebmail.
+
+Ken Jones
+

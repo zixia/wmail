@@ -1,0 +1,66 @@
+.maillink {
+	FONT-SIZE: 8pt; FONT-FAMILY: "Tahoma"
+}
+.maillink A:active {
+	COLOR: #33ff66; TEXT-DECORATION: underline
+}
+.maillink A:hover {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+.maillink A:link {
+	COLOR: #ccff00; TEXT-DECORATION: underline
+}
+.maillink A {
+	COLOR: #ccff00; LINE-HEIGHT: 15px; TEXT-DECORATION: underline
+}
+.alltypemed {
+	FONT-SIZE: 14px; FONT-FAMILY: "simsun"
+}
+.alltypesm {
+	FONT-SIZE: 8pt; FONT-FAMILY: "Tahoma"
+}
+SCRIPT {
+	FONT-SIZE: 14px; FONT-FAMILY: "simsun"
+}
+.csmtype {
+	FONT-SIZE: 12px; FONT-FAMILY: "simsun"
+}
+.ctype {
+	FONT-SIZE: 12px; FONT-FAMILY: "simsun"
+}
+.wtype {
+	FONT-SIZE: 12px; COLOR: #ffffff; FONT-FAMILY: "simsun"
+}
+.wmtype {
+	FONT-SIZE: 12px; COLOR: #ffffff; FONT-FAMILY: "simsun"
+}
+.mybtn {
+	BORDER-RIGHT: #104a7b 1px solid; BORDER-TOP: #afc4d5 1px solid; BACKGROUND: #d6e7ef; BORDER-LEFT: #afc4d5 1px solid; CURSOR: hand; COLOR: #000066; BORDER-BOTTOM: #104a7b 1px solid; HEIGHT: 16px
+}
+.myinput {
+	BORDER-RIGHT: #afc4d5 1px solid; BORDER-TOP: #afc4d5 1px solid; BACKGROUND: #d6e7ef; BORDER-LEFT: #afc4d5 1px solid; COLOR: #000066; BORDER-BOTTOM: #afc4d5 1px solid; HEIGHT: 14px
+}
+INPUT {
+	FONT-SIZE: 12px; FONT-FAMILY: "simsun"
+}
+FRAMESET {
+	BORDER-RIGHT: #d4d0c8 1px; BORDER-TOP: #d4d0c8 0px; BORDER-LEFT: #d4d0c8 0px; BORDER-BOTTOM: #d4d0c8 0px
+}
+.message-menu-button {
+	BORDER-RIGHT: #7f9faa 1px solid; BORDER-TOP: #7f9faa 1px solid; BORDER-LEFT: #7f9faa 1px solid; BORDER-BOTTOM: #7f9faa 1px solid; BACKGROUND-COLOR: #d6e7ef
+}
+.message-rfc822-header-name {
+	BORDER-RIGHT: #7f9faa 1px solid; BORDER-TOP: #7f9faa 1px solid; BORDER-LEFT: #7f9faa 1px solid; COLOR: #104a7b; BORDER-BOTTOM: #7f9faa 1px solid; BACKGROUND-COLOR: #d6e7ef
+}
+.new-message-header {
+	BORDER-RIGHT: #7f9faa 1px solid; BORDER-TOP: #7f9faa 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #7f9faa 1px solid; COLOR: #104a7b; BORDER-BOTTOM: #7f9faa 1px solid; BACKGROUND-COLOR: #d6e7ef
+}
+SELECT {
+	BORDER-RIGHT: #7f9faa 1px solid; BORDER-TOP: #7f9faa 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #7f9faa 1px solid; BORDER-BOTTOM: #7f9faa 1px solid; FONT-FAMILY: "simsun"; BACKGROUND-COLOR: #d6e7ef
+}
+TEXTAREA {
+	BORDER-RIGHT: #afc4d5 1px solid; BORDER-TOP: #afc4d5 1px solid; FONT-SIZE: 12px; BACKGROUND: #d6e7ef; BORDER-LEFT: #afc4d5 1px solid; COLOR: #000066; BORDER-BOTTOM: #afc4d5 1px solid
+}
+.menu {
+	FONT-SIZE: 14px; COLOR: #000066; TEXT-DECORATION: none
+}

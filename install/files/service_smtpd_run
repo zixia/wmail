@@ -1,0 +1,18 @@
+#!/bin/sh
+exec 2>&1 \
+envdir ./env \
+sh -c '
+    case "$REMOTENAME" in h) H=;; p) H=p;; *) H=H;; esac
+    case "$REMOTEINFO" in r) R=;; [0-9]*) R="t$REMOTEINFO";; *) R=R;; esac
+    exec \
+    envuidgid qmaild \
+    softlimit ${DATALIMIT+"-d$DATALIMIT"} \
+    /usr/bin/tcpserver \
+        -vDU"$H$R" \
+        ${LOCALNAME+"-l$LOCALNAME"} \
+        ${BACKLOG+"-b$BACKLOG"} \
+        ${CONCURRENCY+"-c$CONCURRENCY"} \
+        -x/service/smtpd/tcp.cdb \
+        -- "${IP-0}" "${PORT-25}" \
+    /var/qmail/bin/qmail-smtpd wAntiSpam ~vpopmail/bin/vchkpw /bin/true
+'

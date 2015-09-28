@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>反垃圾邮件设置</title>
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" name="preferences" action="[#R#]">
+[#P#]
+<table width="90%" border="0" cellpadding="3" cellspacing="0" align=center>
+  <tr><td>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr> 
+        <td bgcolor="#336699">&nbsp; </td>
+      </tr>
+    </table>
+    <table class=csmtype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+      <tr bgcolor="#FFFFFC"> 
+        <td valign=top align=left rowspan="2" bgcolor="#FFFFF8" nowrap width="80">反垃圾邮件设置</td>
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+	    <table cellspacing=2 cellpadding=2 border=0 class="csmtype">
+              <tr> 
+                <td colspan=2> 
+                  <input type="hidden" name="form" value="spam">[#x#]
+		  [#SPAM#]
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8">
+            <input class=mybtn type=submit value=保存修改 name="do.changespam"> 
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p>[#B#]</p>
+</body>
+</html>

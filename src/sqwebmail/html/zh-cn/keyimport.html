@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>导入密钥</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body>
+<!--
+
+[#$KEYIMPORT=继续#]
+
+[#$IMPORTHDR=<p align=center class="message-gpg-importing">导入密钥</p><hr width="90%">#]
+
+-->
+
+<center>
+ 
+<table cellpadding="0" cellspacing="0" border="0" width="95%">
+      <tr>
+        <td align="left" valign="top">
+		[#@bluetopleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+        <td bgcolor="#99ccff" valign="middle" width="100%"></td>
+        <td align="right" valign="top">
+		[#@bluetopright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      </tr>
+    <tr bgcolor="#efefef">
+      <td></td>
+      <td width="100%">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="left" width="100%" valign="middle" class="pageheader">
+			  [#@logo.gif, width="263" height="39" alt="mail logo" align="absmiddle" border="0"@@#]
+			  导入密钥
+			  </td>
+              <td align="right" valign="middle"><b>[#G#]</b></td>
+            </tr>
+        </table>
+      </td>
+      <td></td>
+    </tr>
+      <tr>
+        <td align="left" valign="bottom">
+		[#@bluebottomleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+        <td bgcolor="#99ccff" valign="middle"></td>
+        <td align="right" valign="bottom">
+		[#@bluebottomright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      </tr>
+</table>
+<!-- End of Top Header -->
+<!-- Sections. Folders, Create Messages, Preferences, Etc. -->
+
+[#include:navbar#]
+
+</center>
+
+<!-- The next HR really makes things look nice for the lynx folks -->
+<hr size="1" noshade="noshade" width="100%">
+[#KEYIMPORT#]
+
+<p>[#B#]</p>
+</body>
+</html>

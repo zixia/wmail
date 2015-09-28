@@ -1,0 +1,276 @@
+#!/bin/sh
+
+echo "Please check hostname -f | grep '\.' first;"
+echo "       check postfix use 89 uid & gid second;"
+echo "       check ~vpopmail/etc/lib_deps third;"
+exit 0;
+
+if [ "$1" = "" ]; then
+        PREFIX=/usr/
+else
+        PREFIX=$1
+fi
+
+DEFAULTDOMAIN="aspam.aka.cn"
+ADMINEMAIL="service@aka.cn"
+USERQUOTA=52428800 
+
+RETVAL=0
+
+echo
+echo "Unpacking var-qmail install files..."
+tar zxf var-qmail-1.03-2-gnu-linux-i686.tar.gz
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Unpack qmail install files error!" && exit 1
+
+
+cd var-qmail-1.03-2-gnu-linux-i686
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Change dir to var-qmail error!" && exit 1
+
+echo
+echo "Installing var-qmail..."
+make
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Install var-qmail error!" && exit 1
+
+echo
+echo "Cleaning var-qmail files..."
+cd ..
+rm -fr var-qmail-1.03-2-gnu-linux-i686
+
+echo
+echo "Unpacking qmail-1.03 source files..."
+tar zxf qmail-1.03.tar.gz
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Unpack qmail source files error!" && exit 1
+echo
+
+echo
+echo "Unpacking qmail-ej-cocktail-14 patch files..."
+tar zxf qmail-ej-cocktail-14.tar.gz
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Unpack qmail patch files error!" && exit 1
+echo
+
+cd qmail-1.03
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Change dir to var-qmail error!" && exit 1
+
+echo
+echo "Patching qmail-1.03 with qmail-ej-cocktail-14 patch files..."
+patch -p1 < ../qmail-ej-cocktail-14/cocktail.patch
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Patch qmail ej-cocktail-14 files error!" && exit 1
+echo
+
+
+echo
+echo "Setting qmail conf-spawn to 509..."
+echo 509 > conf-spawn
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Setting qmail conf-spawn to 509 error!" && exit 1
+echo
+
+echo
+echo "Compiling qmail system..."
+make
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Compiling qmail error!" && echo "if krb5.h error, -I/usr/kerberos/include/" && exit 1
+echo
+
+echo
+echo "Installing qmail system..."
+make setup && make check
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Install qmail error!" && exit 1
+echo
+
+echo
+echo "Cleaning qmail-1.03 & patch files..."
+cd ..
+rm -fr qmail-1.03
+rm -fr qil-ej-cocktail-14
+
+echo "Replacing system sendmail..."
+rm -f /usr/lib/sendmail && rm -f /usr/sbin/sendmail && \
+	ln -sf /var/qmail/bin/sendmail /usr/lib/sendmail && \
+	ln -sf /var/qmail/bin/sendmail /usr/sbin/sendmail
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Replacing system sendmail error!" && exit 1
+
+echo
+echo "Change Mailbox to Maildir..."
+cat files/var_qmail_rc > /var/qmail/rc
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Overwrite /var/qmail/rc file error!" && exit 1
+
+echo
+echo "Compiling ucspi-tcp SRPMS..."
+rpmbuild --rebuild ucspi-tcp-0.88-1.src.rpm
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Build ucspi-tcp SRPM error!" && exit 1
+
+echo
+echo "Installing ucspi-tcp RPM..."
+rpm -ivh /usr/src/redhat/RPMS/i386/ucspi-tcp-0.88-1.i386.rpm
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Install ucspi-tcp RPM error!" && exit 1
+rm -f /usr/src/redhat/RPMS/i386/ucspi-tcp-0.88-1.i386.rpm
+
+echo
+echo "Compiling daemontools SRPMS..."
+rpmbuild --rebuild daemontools-0.70-6mdk.src.rpm
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Build daemontools SRPM error!" && exit 1
+
+echo
+echo "Installing daemontools RPM..."
+rpm -ivh /usr/src/redhat/RPMS/i386/daemontools-0.70-6mdk.i386.rpm
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Install daemontools RPM error!" && exit 1
+rm -f /usr/src/redhat/RPMS/i386/daemontools-0.70-6mdk.i386.rpm
+echo "Reloading inittab for daemontools..."
+init q
+
+echo
+echo "Installing upervise-scripts..."
+rpm -ivh supervise-scripts-3.3-1.noarch.rpm
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Install supervise-scripts error!" && exit 1
+
+echo
+echo "Unpacking qmail-conf..."
+tar zxf qmail-conf-0.60.tar.gz 
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Unpacking qmail-conf error!" && exit 1
+
+echo
+echo "Unpacking djbdns..."
+tar zxf djbdns-1.05.tar.gz
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Unpacking djbdns error!" && exit 1
+
+echo
+echo "Compiling qmail-conf"
+cd qmail-conf-0.60
+make -f Makefile.ini djbdns=../djbdns-1.05 && make
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Compiling qmail-conf error!" && exit 1
+
+echo
+echo "Installing qmail-conf"
+make setup check
+RETVAL=$?
+[ $RETVAL != 0 ] && echo " error!" && exit 1
+ln -sf /var/qmail/bin/qmail-*-conf /usr/sbin
+
+cd ..
+echo "Cleaning files..."
+rm -fr qmail-conf-0.60
+rm -fr djbdns-1.05
+
+echo
+echo "Creating qmail/pop3d/smtpd services..."
+rm -fr /var/qmail/service/*
+qmail-delivery-conf qmaill /var/qmail/service/qmail && 
+	qmail-pop3d-conf /bin/checkpassword qmaill /var/qmail/service/pop3d && 
+        qmail-smtpd-conf qmaild qmaill /var/qmail/service/smtpd
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Create qmail-conf error!" && exit 1
+
+echo
+echo "Configing service run file params..."
+cat files/service_pop3d_run > /var/qmail/service/pop3d/run && \
+	cat files/service_smtpd_run > /var/qmail/service/smtpd/run && \
+	cat files/service_qmail_run > /var/qmail/service/qmail/run && \
+	\
+	cat files/service_pop3d_tcp > /var/qmail/service/pop3d/tcp && \
+	(cd /var/qmail/service/pop3d; make) && \
+	ln -sf /var/qmail/control/me /var/qmail/service/pop3d/env/VPOPMAIL_DOMAIN && \
+	\
+	cat files/service_smtpd_tcp > /var/qmail/service/smtpd/tcp && \
+	(cd /var/qmail/service/smtpd; make) 
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Config service run files error!" && exit 1
+
+ln -sf /var/qmail/service/qmail /service && \
+ln -sf /var/qmail/service/pop3d /service && \
+ln -sf /var/qmail/service/smtpd /service
+svc -t /service/*
+
+echo
+echo "Unpacking vpopmail..."
+tar zxf vpopmail-5.4.0.tar.gz
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Unpacking vpopmail error!" && exit 1
+
+echo
+echo "Adding vpopmail users..."
+groupadd -g 89 vchkpw && useradd -g vchkpw -u 89 vpopmail
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Adding vpopmail users error!" && exit 1
+
+cd vpopmail-5.4.0
+
+echo
+echo "Configing vpopmail..."
+./configure --enable-admin-email=$ADMINEMAIL \
+	--enable-relay-clear-minutes=20 \
+	--enable-large-site=y \
+	--enable-tcprules-prog=/usr/bin/tcprules \
+	--enable-tcpserver-file=/service/smtpd/tcp.cdb \
+	--enable-clear-passwd=n 
+
+#	--enable-defaultquota=52428800 \
+#	--enable-roaming-users=y \
+
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Config vpopmail error!" && exit 1
+
+echo
+echo "Compiling vpopmail..."
+make
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Compiling vpopmail error!" && exit 1
+
+echo
+echo "Installing vpopmail..."
+make install-strip
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Installing vpopmail error!" && exit 1
+
+
+echo $USERQUOTA > ~vpopmail/etc/vlimits.default
+echo $DEFAULTDOMAIN > ~vpopmail/etc/defaultdomain
+        
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Config vpopmail etc dir error!" && exit 1
+
+cd ..
+
+echo
+echo "Cleaning vpopmail files & setting vchkpw 4755 & add localhost domain & setting crontab ..."
+rm -fr vpopmail-5.4.0
+chmod ug+s ~vpopmail/bin/vchkpw
+~vpopmail/bin/vadddomain localhost "a3fJ8,f(34$3"
+~vpopmail/bin/vadduser root@localhost "a3fJ'8f(34$3"
+
+# disable roaming user now
+#oldcrontab=`crontab -u root -l | grep -v ^#`
+#crontab -u root - << _POD_
+#$oldcrontab
+#40 * * * * ~vpopmail/bin/clearopensmtp 2>&1 > /dev/null
+#_POD_
+
+echo
+echo
+RETVAL=$?
+[ $RETVAL != 0 ] && echo " error!" && exit 1
+
+
+printf "\n\n\x1b[1;33m"
+echo "   Anti-Spam Mail System installed completed!     "
+echo "Welcome to visit http://www.aka.cn"
+echo "     Ed Li <zixia@zixia.net>      "
+printf "\x1b[m"

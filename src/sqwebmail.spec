@@ -1,0 +1,424 @@
+# $Id: sqwebmail.spec,v 1.4 2003/11/24 10:01:50 roy Exp $
+#
+# Copyright 1998 - 2002 Double Precision, Inc.  See COPYING for
+# distribution information.
+
+
+#
+#  Need to version-upgrade RH builds due to different directory locations.
+#
+
+%define is_not_mandrake %(test ! -e /etc/mandrake-release && echo 1 || echo 0)
+
+%if %is_not_mandrake
+%define courier_release %(release="`rpm -q --queryformat='.%{VERSION}' redhat-release 2>/dev/null`" ; if test $? != 0 ; then release="" ; fi ; echo "$release")
+%else
+%define courier_release mdk
+%endif
+
+%define __libtoolize /bin/true
+%define configure CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ;  ./configure --host=%{_host} --build=%{_build} --target=%{_target_platform} --program-prefix=%{?_program_prefix} --prefix=%{_prefix} --exec-prefix=%{_exec_prefix} --bindir=%{_bindir} --sbindir=%{_sbindir} --sysconfdir=%{_sysconfdir} --datadir=%{_datadir} --includedir=%{_includedir} --libdir=%{_libdir} --libexecdir=%{_libexecdir} --localstatedir=%{_localstatedir} --sharedstatedir=%{_sharedstatedir} --mandir=%{_mandir} --infodir=%{_infodir}
+%define _missing_doc_files_terminate_build 1
+%define _unpackaged_files_terminate_build 1
+
+%{expand:%%define apachedir %(if test -d /home/httpd ; then echo /home/httpd ; else echo /var/www ; fi)}
+
+%define	cgibindir		%{apachedir}/cgi-bin
+%define imagedir		%{apachedir}/html/webmail
+%define	imageurl		/webmail
+
+%define	cacheowner		bin
+%define sqwebmailowner		root
+%define sqwebmailgroup		mail
+%define	sqwebmailperm		06555
+
+%{expand:%%define initdir %(if test -d /etc/init.d/. ; then echo /etc/init.d ; else echo /etc/rc.d/init.d ; fi)}
+
+Summary: SqWebMail - Maildir Webmail CGI client.
+Name: wmail
+Version: 0.99c.20030516
+Release: 1%{courier_release}
+Copyright: GPL
+Packager: %{PACKAGER}
+Group: Applications/Mail
+Source: http://download.sourceforge.net/courier/wmail-0.99c.20030516.tar.bz2
+Url: http://www.inter7.com/sqwebmail/
+BuildRoot: %{_tmppath}/sqwebmail-install
+Requires: /sbin/chkconfig gnupg >= 1.0.5 vixie-cron expect
+%if %is_not_mandrake
+Requires: %{cgibindir}
+%endif
+
+BuildPreReq: rpm >= 4.0.2 fileutils grep perl gdbm-devel gnupg >= 1.0.5 pam-devel openldap-devel mysql-devel
+%description
+SqWebMail is a Webmail CGI for Maildir mailboxes.
+
+%package ldap
+Summary: SqWebMail LDAP authentication driver.
+Group: Applications/Mail
+Requires: sqwebmail = 0.99c.20030516
+
+%description ldap
+This package contains the necessary files to allow SqWebMail to
+authenticate from an LDAP directory.  Install this package if you need
+the ability to use an LDAP directory for authentication.
+
+%package mysql
+Summary: SqWebMail MySQL authentication driver.
+Group: Applications/Mail
+Requires: sqwebmail = 0.99c.20030516
+
+%description mysql
+This package contains the necessary files to allow SqWebMail to
+authenticate using a MySQL database table.  Install this package if you need
+the ability to use a MySQL database table for authentication.
+
+%package pgsql
+Summary: SqWebMail PostgreSQL authentication driver.
+Group: Applications/Mail
+Requires: sqwebmail = 0.99c.20030516
+
+%description pgsql
+This package contains the necessary files to allow SqWebMail to
+authenticate using a PostgreSQL database table.  Install this package if you
+need the ability to use a PostgreSQL database table for authentication.
+
+
+%define	htmllibdir /usr/local/share/sqwebmail
+%define	cachedir /var/cache/sqwebmail
+%define	libexecdir %{htmllibdir}/libexec
+
+%define _prefix %{htmllibdir}
+%define _sysconfdir %{htmllibdir}
+%define _mandir %{htmllibdir}/man
+%define _localstatedir %{htmllibdir}/var
+
+%prep
+LANG=C
+export LANG
+%setup -q
+%configure --with-cachedir=%{cachedir} \
+	--enable-cgibindir=%{cgibindir} \
+	--enable-imagedir=%{imagedir} \
+	--enable-imageurl=%{imageurl} \
+	--with-cacheowner=%{cacheowner} \
+	%{?xflags: %{xflags}}
+
+
+#
+#  --sysconfdir needed for RH 7.x
+#
+
+%build
+LANG=C
+export LANG
+%{__make}
+%{__make} check
+%install
+LANG=C
+export LANG
+%{__rm} -rf $RPM_BUILD_ROOT
+%{__make} install-strip DESTDIR=$RPM_BUILD_ROOT
+%{__mkdir} -p $RPM_BUILD_ROOT/etc/pam.d
+%{__install} -m 0444 sqwebmail/webmail.authpam $RPM_BUILD_ROOT/etc/pam.d/webmail
+%{__install} -m 0444 sqwebmail/webmail.authpam $RPM_BUILD_ROOT/etc/pam.d/calendar
+
+%{__mkdir} -p $RPM_BUILD_ROOT/etc/cron.hourly
+%{__cat} >$RPM_BUILD_ROOT/etc/cron.hourly/sqwebmail-cron-cleancache <<EOF
+#!/bin/sh
+
+su - bin -s /bin/sh -c %{htmllibdir}/cleancache.pl
+EOF
+
+#
+# Red Hat /etc/profile.d scripts
+#
+
+%{__mkdir} -p $RPM_BUILD_ROOT/etc/profile.d
+%{__cat} >$RPM_BUILD_ROOT/etc/profile.d/sqwebmail.sh <<EOF
+if echo "\$MANPATH" | tr ':' '\012' | fgrep -qx %{htmllibdir}/sbin
+then
+	:
+else
+	MANPATH="%{htmllibdir}/man:\$MANPATH"
+	export MANPATH
+
+	if test -w /etc
+	then
+		PATH="%{htmllibdir}/sbin:\$PATH"
+	fi
+	export PATH
+fi
+EOF
+
+%{__cat} >$RPM_BUILD_ROOT/etc/profile.d/sqwebmail.csh <<EOF
+
+if ( \$?MANPATH ) then
+	true
+else
+	setenv MANPATH ""
+endif
+
+echo "\$MANPATH" | tr ':' '\012' | fgrep -qx %{htmllibdir}/sbin
+
+if ( \$? ) then
+	true
+else
+	setenv MANPATH "%{htmllibdir}/man:\$MANPATH"
+	test -w /etc
+	if ( \$? ) then
+		true
+        else
+		setenv PATH "%{htmllibdir}/sbin:\$PATH"
+	endif
+endif
+EOF
+
+#
+# Compress everything in man
+#
+
+find $RPM_BUILD_ROOT%{htmllibdir}/man ! -type d -print | %{__perl} -e '
+
+	while (<>)
+	{
+		chop if /\n$/;
+		next unless /\.[0-9]$/;
+		$file=$_;
+		if ( -l $file)
+		{
+			unlink("$file.gz");
+			$link=readlink($file) || exit 1;
+                        (symlink "$link.gz", "$file.gz") || exit 1;
+			unlink($file);
+                }
+                else
+                {
+                        system("gzip <$file >$file.gz") && exit 1;
+			unlink($file);
+		}
+	}
+'
+
+>filelist
+
+echo "%{htmllibdir}/ldapaddressbook.dist" >$RPM_BUILD_ROOT%{htmllibdir}/configlist
+
+if test -f $RPM_BUILD_ROOT%{htmllibdir}/authldaprc.dist
+then
+	echo '%attr(600, root, root) %config %{htmllibdir}/authldaprc.dist' >>filelist
+	echo %{htmllibdir}/authldaprc.dist >>$RPM_BUILD_ROOT%{htmllibdir}/configlist
+fi
+if test -f $RPM_BUILD_ROOT%{htmllibdir}/authmysqlrc.dist
+then
+	echo '%attr(600, root, root) %config %{htmllibdir}/authmysqlrc.dist' >>filelist
+	echo %{htmllibdir}/authmysqlrc.dist >>$RPM_BUILD_ROOT%{htmllibdir}/configlist
+fi
+
+if test -f $RPM_BUILD_ROOT%{htmllibdir}/authpgsqlrc.dist
+then
+	echo '%attr(600, root, root) %config %{htmllibdir}/authpgsqlrc.dist' >>filelist
+	echo %{htmllibdir}/authpgsqlrc.dist >>$RPM_BUILD_ROOT%{htmllibdir}/configlist
+fi
+
+. authlib/authdaemonrc
+
+if test "$authdaemonvar" != ""
+then
+	echo '%{htmllibdir}/authdaemonrc.dist' >>$RPM_BUILD_ROOT%{htmllibdir}/configlist
+	echo '%attr(755, bin, bin) %{initdir}/sqwebmail' >>filelist
+	echo '%dir %attr(700, root, root) ' $authdaemonvar >>filelist
+	echo '%config %attr(600, root, root) %{htmllibdir}/authdaemonrc.dist' >>filelist
+	touch $RPM_BUILD_ROOT/$authdaemonvar/lock || exit 1
+	touch $RPM_BUILD_ROOT/$authdaemonvar/pid || exit 1
+	
+	authlib/authmksock $RPM_BUILD_ROOT/$authdaemonvar/socket || exit 1
+	chmod 777 $RPM_BUILD_ROOT/$authdaemonvar/socket || exit 1
+	echo '%ghost %attr(600, root, root) ' $authdaemonvar/lock >>filelist
+	echo '%ghost %attr(644, root, root) ' $authdaemonvar/pid >>filelist
+	echo '%ghost %attr(-, root, root) ' $authdaemonvar/socket >>filelist
+
+#
+# Red Hat init.d file
+#
+
+	%{__mkdir} -p $RPM_BUILD_ROOT%{initdir}
+
+	%{__cat} >$RPM_BUILD_ROOT%{initdir}/sqwebmail <<EOF
+#!/bin/sh
+#
+# chkconfig: 2345 50 50
+# description: Start authdaemon daemon for SqWebMail
+#
+#
+#
+
+case "\$1" in
+start)
+        cd /
+	touch /var/lock/subsys/sqwebmail
+
+	echo -n "Starting SqWebMail:"
+	%{libexecdir}/authlib/authdaemond start
+	echo -n " authdaemon"
+
+	case "\`cat %{_sysconfdir}/calendarmode 2>/dev/null\`" in
+	net)
+		%{_libexecdir}/sqwebmail/pcpd start
+		echo -n " pcpd"
+		;;
+	*)
+		;;
+	esac
+	echo ""
+	;;
+stop)
+	echo -n "Stopping SqWebMail:"
+	%{_libexecdir}/sqwebmail/pcpd stop
+	echo -n " pcpd"
+	%{libexecdir}/authlib/authdaemond stop
+	echo " authdaemon"
+	;;
+restart)
+	echo -n "Restarting SqWebMail:"
+	%{libexecdir}/authlib/authdaemond restart
+	echo -n " authdaemon"
+	%{_libexecdir}/sqwebmail/pcpd stop
+	case "\`cat %{_sysconfdir}/calendarmode 2>/dev/null\`" in
+	net)
+		%{_libexecdir}/sqwebmail/pcpd start
+		echo -n " pcpd"
+		;;
+	*)
+		;;
+	esac
+	echo ""
+        ;;
+esac
+exit 0
+EOF
+fi
+
+(cd $RPM_BUILD_ROOT ; find .%{libexecdir} -type f ! -name authdaemond.ldap ! -name authdaemond.mysql ! -name authdaemond.pgsql -print ) | cut -c2- >>filelist
+
+%{__cp} /dev/null authdaemon.files.ldap
+%{__cp} /dev/null authdaemon.files.mysql
+%{__cp} /dev/null authdaemon.files.pgsql
+
+test -f $RPM_BUILD_ROOT%{libexecdir}/authlib/authdaemond.mysql && \
+	echo %{libexecdir}/authlib/authdaemond.mysql >authdaemon.files.mysql
+
+test -f $RPM_BUILD_ROOT%{libexecdir}/authlib/authdaemond.pgsql && \
+	echo %{libexecdir}/authlib/authdaemond.pgsql >authdaemon.files.pgsql
+
+test -f $RPM_BUILD_ROOT%{libexecdir}/authlib/authdaemond.ldap && \
+	echo %{libexecdir}/authlib/authdaemond.ldap >authdaemon.files.ldap
+
+
+%{__cp} sysconftool $RPM_BUILD_ROOT%{htmllibdir}/sysconftool
+%{__cat} >$RPM_BUILD_ROOT%{htmllibdir}/sysconftool-rpmupgrade <<EOF
+#!/bin/sh
+
+for f in \$* "."
+do
+	if test \$f = "."
+	then
+		continue
+	fi
+
+	base=\`echo \$f | sed 's/\\.dist\$//'\`
+	if test -f \$base.dist -a ! -f \$base
+	then
+		%{__cp} -pr \$base.dist \$base
+	fi
+done
+EOF
+
+chmod 555 $RPM_BUILD_ROOT%{htmllibdir}/sysconftool-rpmupgrade
+
+%{__cp} pcp/README.html pcp_README.html
+
+. pcp/uids
+echo '%attr(-, ' "$localcacheowner, $mailgroup) $calendardir" >>filelist
+
+%post
+
+test -d %{htmllibdir}/html/en || ln -fs en-us %{htmllibdir}/html/en
+
+if test -f %{initdir}/sqwebmail
+then
+	/sbin/chkconfig --del sqwebmail
+	/sbin/chkconfig --add sqwebmail
+fi
+
+%{htmllibdir}/sysconftool `%{__cat} %{htmllibdir}/configlist` >/dev/null
+
+%preun
+
+if test "$1" = "0"
+then
+	if test -f %{initdir}/sqwebmail
+	then
+		/sbin/chkconfig --del sqwebmail
+	fi
+fi
+
+%{libexecdir}/authlib/authdaemond stop 2>/dev/null || true
+%{libexecdir}/sqwebmail/pcpd stop 2>/dev/null || true
+
+%triggerpostun -- sqwebmail
+
+test ! -f %{htmllibdir}/configlist || %{htmllibdir}/sysconftool-rpmupgrade `%{__cat} %{htmllibdir}/configlist`
+
+test -f /etc/pam.d/webmail || test ! -f /etc/pam.d/webmail.rpmnew || mv -f /etc/pam.d/webmail.rpmnew /etc/pam.d/webmail
+test -f /etc/pam.d/calendar || test ! -f /etc/pam.d/calendar.rpmnew || mv -f /etc/pam.d/calendar.rpmnew /etc/pam.d/calendar
+
+%postun
+test -d %{htmllibdir}/html/en || %{__rm} -f %{htmllibdir}/html/en
+
+%files -f filelist
+%defattr(-, root, bin)
+%attr(%{sqwebmailperm}, %{sqwebmailowner}, %{sqwebmailgroup}) %{cgibindir}/sqwebmail
+%attr(755, bin, bin) %dir %{imagedir}
+%attr(444, bin, bin) %{imagedir}/*
+%attr(555, bin, bin) %dir %{htmllibdir}
+%attr(755, root, bin) %config %{htmllibdir}/sendit.sh
+%attr(755, root, bin) %config %{htmllibdir}/ldapsearch
+%attr(644, root, bin) %config %{htmllibdir}/ldapaddressbook.dist
+%attr(755, root, bin) %config %{htmllibdir}/authmodulelist
+%config(missingok) %{_sysconfdir}/nodsn
+
+%attr(444, bin, bin) %{htmllibdir}/configlist
+%attr(555, bin, bin) %{htmllibdir}/sysconftool
+%attr(555, bin, bin) %{htmllibdir}/sysconftool-rpmupgrade
+
+%attr(755, bin, bin) %{htmllibdir}/cleancache.pl
+%attr(755, bin, bin) %{htmllibdir}/webgpg
+
+%attr(755, bin, bin) /etc/cron.hourly/sqwebmail-cron-cleancache
+%attr(700, %{cacheowner}, bin) %dir %{cachedir}
+%attr(644, root, root) %config(noreplace) /etc/pam.d/*
+%attr(755, root, bin) %dir %{htmllibdir}/html
+%attr(-, root, bin) %{htmllibdir}/html/en-us
+%attr(-, root, bin) %{htmllibdir}/sbin
+%attr(-, root, bin) %{htmllibdir}/man
+%dir %attr(-, root, bin) %{libexecdir}
+%dir %attr(-, root, bin) %{libexecdir}/authlib
+%attr(755, bin, bin) /etc/profile.d/sqwebmail.sh
+%attr(755, bin, bin) /etc/profile.d/sqwebmail.csh
+%attr(-, bin, bin) %doc AUTHORS sqwebmail/BUGS COPYING INSTALL INSTALL.vchkpw NEWS README sqwebmail/SECURITY sqwebmail/TODO gpglib/README.html
+%attr(-, bin, bin) %doc sqwebmail/BUGS.html INSTALL.html NEWS.html README.html sqwebmail/SECURITY.html sqwebmail/TODO.html sqwebmail/ChangeLog pcp_README.html
+%attr(-, bin, bin) %doc maildir/README*.html
+
+
+%files ldap -f authdaemon.files.ldap
+%defattr(-, root, bin)
+
+%files mysql -f authdaemon.files.mysql
+%defattr(-, root, bin)
+
+%files pgsql -f authdaemon.files.pgsql
+%defattr(-, root, bin)
+
+%clean
+%{__rm} -rf $RPM_BUILD_ROOT

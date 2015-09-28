@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+  <title>自动回复</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+</head>
+
+<body>
+<!--
+
+[#$BADNAME=<font color="#EE0000">ERROR: Invalid character in autoreply name</font><br>#]
+[#$EEXIST=<font color="#EE0000">ERROR: Autoreply name already exists</font><br>#]
+[#$SAVEFAILED=<font color="#EE0000">ERROR: Unable to save autoreply text: %s</font><br>#]
+[#$QUOTA=<font color="#EE0000">ERROR: autoreply exceeds allowed quota</font>
+[#$ERROR=<font color="#EE0000">ERROR: %s</font><br>#]
+[#$INUSE=<font color="#EE0000">ERROR: Autoreply <tt>%s</tt> currently used by a mail filter</font><br>#]
+[#$SAVE=保存#]
+[#$ATT=<table align=center border="0" bgcolor="#000000" cellpadding="1" cellspacing="0" class="box-small-outer"><tr><td><table border="0" bgcolor="#EEEEEE" cellpadding="4" cellspacing="0" width="100%" class="mailfilter"><tr><td>Attachment: %s</td></tr></table></td></tr></table><br><br><br>#]
+[#$CHSET=<table align=center border="0" bgcolor="#000000" cellpadding="1" cellspacing="0" class="box-small-outer"><tr><td><table border="0" bgcolor="#EEEEEE" cellpadding="4" cellspacing="0" width="100%" class="mailfilter"><tr><td>Unable to show text in the <tt>%s</tt> character set,<br>(your display is set for the <tt>%s</tt> character set)</td></tr></table></td></tr></table><br><br><br>#]
+
+-->
+<!-- Top Header. Shows folder list and email address. -->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" enctype="multipart/form-data" action="[#R#]">
+[#P#]<input type="hidden" name="form" value="autoresponder">
+
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=csmtype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8" nowrap width="80">自动回复</td>
+          <td valign=top align=left bgcolor="#FFFFF8">
+	    <table>
+              <tr>
+                <td colspan="2" align="center">[#AUTORESPONSE_DELETE#]</td>
+              </tr>
+              <tr>
+                <td align="right">现有的自动回复:</td>
+                <td>[#select:autoresponse_choose#][#option:#][#AUTORESPONSE_LIST#][#endselect#] 
+                  <input class=mybtn type="submit" value="修改" name="do.autorespedit">
+                  <input class=mybtn type="submit" value="删除" name="do.autorespdelete">
+		</td>
+              </tr>
+              <tr>
+                <td align="right">建立新的自动回复:</td>
+                <td>
+		  <input class=myinput type="text" size="20" name="newname"> 
+                  <input class=mybtn type="submit" value="创建" name="do.newautoresp">
+		</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+	[#AUTORESPONSE#]
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

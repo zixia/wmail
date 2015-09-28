@@ -1,0 +1,29 @@
+dnl Process this file with autoconf to produce a configure script.
+dnl $Id: configure.in,v 1.1.1.1 2003/05/07 02:14:53 lfan Exp $
+dnl
+dnl Copyright 2000 - 2001 Double Precision, Inc.  See COPYING for
+dnl distribution information.
+
+AC_INIT(Makefile.am)
+LPATH="$PATH:/usr/local/bin"
+AM_INIT_AUTOMAKE(ldapaddressbook, 0.10, 0)
+AM_CONFIG_HEADER(config.h)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_RANLIB
+
+AC_PATH_PROG(ldapsearch, ldapsearch, /usr/local/bin/ldapsearch, $LPATH)
+
+dnl Checks for libraries.
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(sys/wait.h)
+AC_HEADER_SYS_WAIT
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Checks for library functions.
+
+AC_OUTPUT(Makefile ldapsearch)

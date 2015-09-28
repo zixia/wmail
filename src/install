@@ -1,0 +1,57 @@
+#!/bin/sh
+
+if [ "$1" = "" ]; then
+        PREFIX=/home
+else
+        PREFIX=$1
+fi
+
+RETVAL=0
+
+./configure --prefix=$PREFIX/wmail \
+        --enable-cgibindir=$PREFIX/wmail/www/cgi-bin \
+        --enable-imagedir=$PREFIX/wmail/www/image \
+        --enable-imageurl=/image \
+        --with-cachedir=$PREFIX/wmail/var/cache \
+        --enable-webpass=no \
+        --without-ispell \
+        --with-maxmsgsize=5242880 --with-maxformargsize=5000000\
+        --enable-maxpurge=7 \
+        --without-authpam --without-authuserdb --without-authpwd --without-authshadow \
+        --without-authldap --without-authdaemon --with-authvchkpw \
+        --with-defaultlang=zh-cn --enable-unicode  \
+        --with-fcgi \
+        --enable-https=auto \
+        --with-cacheowner=vpopmail
+
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Configure Error!" && exit 1
+
+make configure-check
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Configure Check Error!" && exit 1
+
+make 
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Compile Error!" && exit 1
+
+make check
+
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Function Check Error!" && exit 1
+
+make install-strip
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Binary File Copying Error!" && exit 1
+
+
+make install-configure
+
+RETVAL=$?
+[ $RETVAL != 0 ] && echo "Config File Copying Error!" && exit 1
+
+printf "\n\n\x1b[1;33m"
+echo "   WMail installed completed!     "
+echo "Welcome to visit http://www.aka.cn"
+echo "     Fan Lin <lfan@lfan.net>      "
+printf "\x1b[m"

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>邮件夹内容</title>
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+<script language="javascript">
+<!--
+function select_all(s)
+{
+	form = document.forms("delete");
+	for (var i=0;i<form.elements.length;i++)
+    {
+	  var e = form.elements[i];
+	  if (e.name.substring(0, 5) == 'MOVE-')
+		e.checked = s.checked;
+    }
+}
+function delete_msg()
+{
+	if(confirm("确定要删除？"))
+		return true;
+	else
+		return false;
+}
+function GotoPage(form){
+	if(form.page.value=="-"){
+		return false;
+	}
+	parent.main.document.location = "[#p#]" + form.page.value;
+}
+//-->
+</script>
+<!--
+
+[#$DSPFMT_YDATE=%Y年%m月%d日#]
+[#$DSPFMT_WDATE=%A %p %I:%M#]
+[#$STATUS=<input type=checkbox name="selectall" onclick="select_all(this)">#]
+[#$DATE=接收日期#]
+[#$FROM=发件人#]
+[#$SUBJECT=主题#]
+[#$SIZE=大小#]
+[#$FOLDERTITLE=%s#]
+[#$NOMESSAGES=没有信件...#]
+[#$DELETE=删除#]
+[#$PURGE=清除#]
+[#$ORMOVETO=选中邮件，或者将其移动到: #]
+[#$GO=移动#]
+[#$PAGETOTAL=<B>总计页数：</B>#]
+[#$FIRSTPAGE=首页#]
+[#$LASTPAGE=末页#]
+[#$PREVPAGE=上一页#]
+[#$NEXTPAGE=下一页#]
+[#$CURPOS=<B>当前邮箱：</B>#]
+[#$CURPAGE=<B>当前页：</B>#]
+[#$MAILMSG=<B>邮件总数：</B>%d <B>新邮件：</B>%d#]
+[#$NOSUB=无标题#]
+
+[#$UNREADICON=@@unread.gif,width=20 height=18 alt="未读"@@#]
+[#$REPLIEDICON=@@replied.gif,width=20 height=18 alt="已回复"@@#]
+[#$ATTICON=@@attachsign.gif,width=8 height=18 alt="附件"@@#]
+
+[#$INBOX=收件箱#]
+[#$DRAFTS=草稿#]
+[#$TRASH=垃圾箱#]
+[#$SENT=发件箱#]
+[#$SPAM=垃圾邮件箱#]
+[#$PERMERR=<font color="#FF0000" size="+1">错误：您没有在这个文件夹里增加信件的权限或您超出了您的邮件空间配额。</font>#]
+
+-->
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+<STYLE type=text/css>
+A {
+	COLOR: #000099; TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+</STYLE>
+
+<form method="post" name="delete" action="[#p#]">
+[#P#]<input type="hidden" name="form" value="folderdel">
+<table width="90%" align="center" border="0" cellspacing="0" cellpadding="3">
+  <tr> 
+    <td> 
+      [#F#]
+      <table width="100%" align="center" border="0" cellspacing="0" class="csmtype" cellpadding="0">
+	<tr>
+	  <td colspan=3 height=10></td>
+        </tr>
+	<tr>
+	  <td align=center>[#T#]</td>
+	</tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

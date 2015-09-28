@@ -1,0 +1,19 @@
+#!/bin/sh
+exec 2>&1 \
+envdir ./env \
+sh -c '
+    case "$REMOTENAME" in h) H=;; p) H=p;; *) H=H;; esac
+    case "$REMOTEINFO" in r) R=;; [0-9]*) R="t$REMOTEINFO";; *) R=R;; esac
+    exec \
+    softlimit ${DATALIMIT+"-d$DATALIMIT"} \
+    /usr/bin/tcpserver -H \
+        -vD"$H$R" \
+        ${LOCALNAME+"-l$LOCALNAME"} \
+        ${BACKLOG+"-b$BACKLOG"} \
+        ${CONCURRENCY+"-c$CONCURRENCY"} \
+        -x/var/qmail/service/pop3d/tcp.cdb \
+        -- "${IP-0}" "${PORT-110}" \
+    /var/qmail/bin/qmail-popup "${POPUPHOST-`sed 1q /var/qmail/control/me`}" \
+    ~vpopmail/bin/vchkpw \
+    /var/qmail/bin/qmail-pop3d "${MAILDIRNAME-Maildir}"
+'

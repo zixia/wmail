@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+  <title>邮件过滤</title>
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+</head>
+
+<body>
+<!--
+
+[#$BADIMPORT=<font color="#EE0000">错误: 您有一个不相一致的邮件过滤规则，请联系您的系统管理员</font><br>#]
+[#$BADRULENAME=<font color="#EE0000">错误：规则名称不合法或没有填写，请重新输入</font><br>#]
+[#$BADHEADER=<font color="#EE0000">错误：头信息没有填写或不合法</font><br>#]
+[#$AUTOREPLY=<font color="#EE0000">错误：自动回复名称不合法或没有填写，请重新输入</font><br>#]
+[#$BADVALUE=<font color="#EE0000">错误：不合法信息模式或收信地址不合法，请重新输入。</font><br>#]
+[#$TOFOLDER=<font color="#EE0000">错误：收件夹或转发地址不合法，或信息错误，请重新输入。<br>#]
+[#$FROMHDR=<font color="#EE0000">错误：缺省 <tt>发件人:</tt> 里含有不合法字符, 请重新输入。</font><br>#]
+[#$INTERNAL=<font color="#EE0000">错误：无法保存规则 - 请联系系统管理员。</font></br>#]
+[#$UPDATED=<font color="#008000">下列过滤规则已经保存:</font><br>#]
+[#$INBOX=收信箱#]
+[#$SPAM=垃圾邮件#]
+[#$DRAFTS=草稿箱#]
+[#$TRASH=垃圾箱#]
+[#$SENT=发件箱#]
+
+-->
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" action="[#R#]">
+[#P#]<input type="hidden" name="form" value="filter">
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=csmtype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8" nowrap width="80">邮件过滤</td>
+          <td valign=top align=left bgcolor="#FFFFF8">
+            <table border="0">
+              <tr>
+                <td align="center">[#LOADMAILFILTER#]
+		  最后一定要记得点击“保存修改”按钮<br>
+                  <select name="currentfilter" size="8">
+                    [#MAILFILTERLIST#]
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <input class=mybtn type="submit" value="上移" name="do.moveup">
+                  <input class=mybtn type="submit" value="下移" name="do.movedown">
+                  <input class=mybtn type="submit" value="编辑" name="do.edit">
+                  <input class=mybtn type="submit" value="删除" name="do.delete">
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <input class=mybtn type="submit" value="保存修改" name="do.save">
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8">过滤规则 
+          </td>
+          <td valign=top align=left bgcolor="#FFFFF8">
+                  <table border="0">
+                    <tbody>
+                      <tr>
+                        <td>规则名称:</td>
+                        <td><input class=myinput type="text" size="20" name="rulename" value="[#input:rulename#]"></td>
+                      </tr>
+                      <tr>
+                        <td height=20></td>
+                      </tr>
+                      <tr>
+                        <td valign=top>过滤条件:</td>
+                        <td>
+                          <table border="0">
+                            <tbody>
+                              <tr>
+                                <td>[#radio:filtertype:header#]</td>
+                                <td>
+				  <input type="hidden" value="FROM" name="headername">
+                                  发件人 
+                                  [#select:headermatchtype#]
+                                  [#option:startswith:headermatch:startswith#]
+                                  起始于
+                                  [#option:contains:headermatch:contains#]
+                                  包含
+                                  [#option:endswith:headermatch:endswith#]
+                                  结束于
+                                  [#option:notstartswith:headermatch:notstartswith#]
+                                  不起始于
+                                  [#option:notcontains:headermatch:notcontains#]
+                                  不包含
+                                  [#option:notendswith:headermatch:notendswith#]
+                                  不结束于 [#endselect#]
+				</td>
+				<td>
+                                  <input class=myinput type="text" size="20" name="headervalue" value="[#input:headervalue#]"> 
+		 	        </td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:filtertype:hasrecipient#]</td>
+                                <td>
+				  收件人
+				  [#select:hasrecipienttype#]
+                                  [#option:hasrecipient:hasrecipienttype:hasrecipient#]
+                                  寄送到
+                                  [#option:nothasrecipient:hasrecipienttype:nothasrecipient#]
+                                  非寄送到 [#endselect#]  
+				</td>
+				<td>
+				  <input class=myinput type="text" size="20" name="hasrecipientaddr" value="[#input:hasrecipientaddr#]">
+				</td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:filtertype:hassize#]</td>
+                                <td>邮件大小 [#select:sizecompare#]
+                                  [#option:islargerthan:sizecompare:islargerthan#]
+                                  超过
+                                  [#option:issmallerthan:sizecompare:issmallerthan#]
+                                  小于 [#endselect#] 
+				</td>
+				<td>
+				  <input class=myinput 
+                                  type="text" size="8" name="bytecount"
+                                  value="[#input:bytecount#]"> 字节</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td height=20></td>
+                      </tr>
+                      <tr>
+                        <td valign=top>过滤方式:</td>
+                        <td>
+                          <table border="0">
+                            <tbody>
+                              <tr>
+                                <td>[#radio:action:savefolder#]</td>
+                                <td>保存在:</td>
+                                <td>[#MAILFILTERLISTFOLDERS#]</td>
+                                <td rowspan="2">
+				  [#checkbox:continuefiltering:continuefiltering#] 然后继续过滤动作.</td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:action:forwardto#]</td>
+                                <td>转发至:</td>
+                                <td><input class=myinput type="text" size="20"
+                                  name="forwardaddy"
+                                  value="[#input:forwardaddy#]"></td>
+                              </tr>
+                              <tr>
+                                <td colspan="4"> </td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:action:bounce#]</td>
+                                <td>拒收邮件，错误信息为:</td>
+                                <td colspan="2"><input class=myinput type="text" size="20"
+                                  name="bouncemsg"
+                                  value="[#input:bouncemsg#]"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align=center colspan="2" height=30 valign=bottom>
+                          <input class=mybtn type="submit" value="确定" name="do.submitfilter">
+			</td>
+                      </tr>
+                    </tbody>
+                  </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

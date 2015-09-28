@@ -1,0 +1,332 @@
+dnl $Id: configure.in,v 1.3 2003/05/16 09:25:49 lfan Exp $
+dnl
+dnl Copyright 1998 - 2002 Double Precision, Inc.  See COPYING for
+dnl distribution information.
+
+AC_INIT(dbobj.config.in)
+LPATH="$PATH:/usr/local/bin"
+AM_INIT_AUTOMAKE(wmail, 0.99c.20030516, 0)
+
+AC_PROG_MAKE_SET
+AC_PROG_LN_S
+AC_PROG_SYSCONFTOOL
+AC_PROG_CC
+
+dnl Checks for programs.
+
+dnl Check whether we should use gdbm, or db.
+
+needs_withdb=0
+
+AC_ARG_WITH(db, [  --with-db=gdbm          Use the GDBM library.
+  --with-db=db            Use the libdb.a library.],
+	db="$withval", db=""; needs_withdb=1)
+
+case "$db" in
+gdbm)
+	;;
+db)
+	;;
+"")
+	;;
+*)
+	AC_MSG_ERROR(Invalid --with-db option.)
+	;;
+esac
+
+saveLIBS="$LIBS"
+
+if test "$db" != "db"
+then
+	AC_CHECK_LIB(gdbm, gdbm_open, [ LIBGDBM=-lgdbm ; LIBS="-lgdbm $LIBS" ])
+	AC_CHECK_FUNC(gdbm_open, [ HAVE_GDBM=y ])
+fi
+
+LIBS="$saveLIBS"
+
+if test "$db" != "gdbm"
+then
+
+	AC_CHECK_LIB(db, dbopen, [ LIBDB=-ldb ; LIBS="-ldb $LIBS" ],
+		AC_CHECK_LIB(db, db_open, [ LIBDB=-ldb ; LIBS="-ldb $LIBS"],
+		AC_CHECK_LIB(db, db_env_create,
+					[ LIBDB=-ldb; LIBS="-ldb $LIBS"])
+	))
+
+	AC_CHECK_FUNC(dbopen, HAVE_BDB=1)
+	AC_CHECK_FUNC(db_open, HAVE_BDB=1)
+	AC_CHECK_FUNC(db_env_create, HAVE_BDB=1)
+fi
+
+LIBS="$saveLIBS"
+
+if test "$HAVE_GDBM$HAVE_BDB" = ""
+then
+	AC_MSG_ERROR(Cannot find either the gdbm or the db library.)
+fi
+
+USE_GDBM=0
+USE_DB=0
+
+if test "$HAVE_GDBM" = "y"
+then
+	USE_GDBM=1
+	if test "$needs_withdb" = 1
+	then
+		ac_configure_args="$ac_configure_args --with-db=gdbm"
+	fi
+	DBSUBDIR=gdbmobj
+	dblibrary=gdbmobj/libgdbmobj.a
+	LIBDB=""
+else
+	USE_DB=1
+	if test "$needs_withdb" = 1
+	then
+		ac_configure_args="$ac_configure_args --with-db=db"
+	fi
+	DBSUBDIR=bdbobj
+	dblibrary=bdbobj/libbdbobj.a
+	LIBGDBM=""
+fi
+
+AC_SUBST(USE_GDBM)
+AC_SUBST(USE_DB)
+AC_SUBST(LIBDB)
+AC_SUBST(LIBGDBM)
+AC_SUBST(DBSUBDIR)
+AC_SUBST(dblibrary)
+	
+dnl Checks for header files.
+
+dnl Checks for library functions.
+
+dnl Other
+
+
+dnl ***********************************************************************
+
+dnl Find my cgi-bin directory
+
+dnl ***********************************************************************
+
+cgibindir=""
+imagedir=""
+
+for f in /var/lib/httpd /var/www /home/httpd /usr/local/apache /usr/local/www /var/lib/apache/share
+do
+	if test -d $f/cgi-bin
+	then
+		cgibindir=$f/cgi-bin
+	fi
+
+	if test -d $f/htdocs
+	then
+		imagedir="$f/htdocs/webmail"
+	fi
+	if test -d $f/html
+	then
+		imagedir="$f/html/webmail"
+	fi
+done
+
+AC_ARG_ENABLE(cgibindir, [  --enable-cgibindir={dir}   HTTP server's cgi-bin directory.],
+	cgibindir="$enableval",
+	[
+		if test "$cgibindir" = ""
+		then
+			AC_MSG_ERROR([Unable to find your cgi-bin directory, specify --enable-cgibindir.])
+		fi
+		if test "$imagedir" != ""
+		then
+			if test "$imageurl" = ""
+			then
+				imageurl="/webmail"
+			fi
+		fi
+	] )
+
+AC_SUBST(cgibindir)
+
+AC_ARG_ENABLE(imagedir, [  --enable-imagedir={dir}    HTTP server's document directory for images.],
+	imagedir="$enableval",
+		[
+		if test "$imagedir" = ""
+		then
+			AC_MSG_ERROR([Unable to find your htdocs or html directory, specify --enable-imagedir.])
+		fi
+		]
+)
+AC_SUBST(imagedir)
+
+AC_MSG_CHECKING(where to install sqwebmail cgi binary)
+AC_MSG_RESULT($cgibindir)
+AC_MSG_CHECKING(where to install images)
+AC_MSG_RESULT($imagedir)
+
+dnl ***********************************************************************
+
+dnl Userdb setup
+
+dnl ***********************************************************************
+
+AC_ARG_WITH(userdb, [  --with-userdb=path         Use "path" instead of /etc/userdb, if authuserdb
+                             module is selected. ],
+				userdb="$withval", userdb=/etc/userdb
+	ac_configure_args="$ac_configure_args --with-userdb=$userdb")
+
+dnl for cgi subdir
+
+AC_ARG_WITH(formdata, [], , ac_configure_args="$ac_configure_args --with-formdata")
+
+dnl for authlib subdir
+
+AC_ARG_WITH(authuserdb, [
+--with-module             Specifically includes or excludes an authentication
+--without-module          module, "module".  The following authentication
+                          modules are available:
+
+authpwd        -- authenticates against /etc/passwd
+authshadow     -- authenticates against /etc/shadow
+authpam        -- authenticates using your PAM library (webmail service)
+authuserdb     -- authenticates against /etc/userdb
+authvchkpw     -- authenticates against vpopmail/vchkpw
+authldap       -- authenticates against an LDAP server
+authdaemon     -- use a background daemon for authentication
+], authuserdb="$withval", authuserdb="yes")
+
+case "$authuserdb" in
+y*)
+	authuserdb="yes"
+	;;
+Y*)
+	authuserdb="yes"
+	;;
+esac
+
+AM_CONDITIONAL(HAS_USERDB, test "$authuserdb" = "yes")
+
+#
+# Unicode messs
+#
+
+AC_ARG_ENABLE(utf7-folder-encoding,
+[  --disable-utf7-folder-encoding   Disable support for IMAP folder encoding.],
+	utf7folder="$enableval",
+	ac_configure_args="$ac_configure_args --enable-utf7-folder-encoding"
+)
+
+AC_PATH_PROG(GPG, gpg, /usr/bin/gpg, $LPATH)
+
+AC_ARG_ENABLE(unicode,
+[  --enable-unicode                 Include all unicode charset mappings.
+  --enable-unicode=chset,chset...   Include only the specified mappings.],
+	unicode="$enableval",
+[
+	if test "$utf7folder" = "yes"
+	then
+		charsets=`cat sqwebmail/html/*/CHARSET | sort | uniq`
+		charsets="`echo $charsets`"
+		unicode=`echo $charsets | tr ' ' ','`
+		ac_configure_args="$ac_configure_args --enable-unicode=$unicode"
+	else
+#
+# If gnupg supports utf-8, force its inclusion
+#
+		rm -rf conftestdir
+		mkdir conftestdir
+
+		GNUPGHOME=`pwd`/conftestdir
+		export GNUPGHOME	
+
+		if gpg --charset utf-8 --list-keys >/dev/null 2>&1
+		then
+			ac_configure_args="$ac_configure_args --enable-unicode=iso-8859-1,utf-8"
+		fi
+	fi
+]
+)
+
+AC_ARG_WITH(plenty-of-beer, [
+  --enable-imageurl={url}   URL to the document directory for images.
+  --without-fcgi        Do not compile fastcgi support
+  --with-fcgi           Compile with fastcgi support
+  --without-ispell      Do not compile ispell support
+  --with-ispell=prog    Pathname to ispell (if not in default path)
+  --enable-autorenamesent  Enable Autorename Sent folder periodically (default)
+  --disable-autorenamesent Disable Autorename Sent folder periodically
+  --enable-https          Generate https:// URLs for all accesses
+  --enable-https=login    Use https:// URLs for password transmission only 
+  --enable-hardtimeout=7200  Hard session timeout (2hrs default)
+  --enable-softtimeout=1200  Inactivity timeout (20 min default)
+  --enable-autopurge=7       Automatically purge deleted messages (days).
+  --enable-maxpurge=90       Maximum value for autopurge (days).
+  --prefix={dir}             Install sqwebmail HTML data in {dir}, instead of
+                             PREFIX/share/sqwebmail (which is usually
+                             /usr/local/share/sqwebmail)
+  --with-defaultlang={lang}  Default language to use (only en, so far)
+  --enable-mimetypes={dir}   Your mime.types file.
+  --enable-bannerprog=prog   Program which will generate a banner.
+  --with-maxargsize=nbytes       Limit maximum size of CGI args
+  --with-maxformargsize=nbytes   Maximum size of multipart/formdata uploads
+  --with-cachedir            Cache logins
+  --with-cachedir=dir        Use dir instead of /var/run/sqwebmail or /var/cache/sqwebmail
+  --with-cacheowner=user     Owner of the cache directory (default: bin)
+  --without-gzip             Do not use gzip to compress messages])
+
+AC_ARG_ENABLE(hostname, [],
+	AC_MSG_ERROR(--enable-hostname option is obsolete, see INSTALL))
+
+if test "x$prefix" = xNONE
+then
+	prefix=/home/wmail
+	ac_configure_args="$ac_configure_args --prefix=/home/wmail"
+fi
+
+test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+eval "prefix=$prefix"
+eval "libexecdir=$libexecdir"
+eval "localstatedir=$localstatedir"
+
+AC_ARG_WITH(makedatprog, [], ,
+	ac_configure_args="$ac_configure_args --with-makedatprog=$libexecdir/sqwebmail/makedatprog")
+
+AC_ARG_WITH(authchangepwdir, [], ,
+	ac_configure_args="$ac_configure_args --with-authchangepwdir=$libexecdir/authlib")
+
+AC_ARG_WITH(authdaemonvar, [], authdaemonvar="$withval",
+	authdaemonvar=$localstatedir/authdaemon
+	ac_configure_args="$ac_configure_args --with-authdaemonvar=$authdaemonvar")
+AC_SUBST(authdaemonvar)
+
+if test "$sysconfdir" = '${prefix}/etc'
+then
+	sysconfdir="$prefix"
+	ac_configure_args="$ac_configure_args --sysconfdir=$prefix"
+fi
+
+INSTALL_SCRIPT='${INSTALL} -m 755'
+
+# For rfc2045
+
+AC_ARG_WITH(package, [], ,
+	ac_configure_args="$ac_configure_args --with-package=sqwebmail --with-version=$VERSION")
+
+AC_ARG_WITH(socks, [], ,
+	ac_configure_args="$ac_configure_args --without-socks")
+
+cp -f $srcdir/pcp/config.rpath .
+
+#
+# autoconf bug
+#
+
+ac_given_INSTALL="$INSTALL"
+
+pkglibPROGRAMS_exec='$(pkglibPROGRAMS)'
+AC_SUBST(pkglibPROGRAMS_exec)
+
+AC_CONFIG_SUBDIRS(numlib bdbobj gdbmobj md5 sha1 random128 libhmac userdb unicode liblock \
+	makedat rfc822 rfc2045 maildir soxwrap \
+	authlib http11 cgi ldapaddressbook \
+	gpglib pcp sqwebmail)
+AC_OUTPUT(Makefile dbobj.h dbobj.config sqwebmail.spec)

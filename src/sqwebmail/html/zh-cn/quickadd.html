@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>邮件过滤</title>
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" name="addressbook" action="[#R#]">
+[#P#]
+<input type="hidden" name="form" value="readmsg">
+<input type="hidden" name="pos" value="[#input:pos#]">
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align=center>
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=ctype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tbody>
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8" nowrap width="80">快速添加到联系人</td>
+          <td valign=top align=left bgcolor="#FFFFF8">
+	    <table border="0">
+	      <tbody>
+	      <tr>
+	        <th align="right">姓名:</th>
+	        <td><input class=myinput type="text" size="20" name="newname"
+	          value="[#input:newname#]"></td>
+	      </tr>
+	      <tr>
+	        <th align="right">地址:</th>
+	        <td><input class=myinput type="text" size="20" name="newaddr"
+	          value="[#input:newaddr#]"></td>
+	      </tr>
+	      <tr>
+	        <th align="right">昵称:</th>
+	        <td><input class=myinput type="text" size="20" name="newnick1">,
+	        或</td>
+	      </tr>
+	      <tr>
+	        <th align="right">加入昵称:</th>
+	        <td>
+	          <select name="newnick2">
+	            <option selected="selected"> [#NICKLIST#]</option>
+	          </select>
+	      </tr>
+	      <tr>
+	        <td height=25 colspan=2 align=center valign=bottom>
+	          <input class=mybtn type="submit" value="确定" name="addnick">
+		  <input class=mybtn type="button" value="取消" onclick="javascript:history.go(-1)">
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

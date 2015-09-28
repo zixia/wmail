@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+  <!-- $Id: mimegpg.html,v 1.1.1.1 2003/05/07 02:14:59 lfan Exp $ -->
+  <!-- Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for -->
+  <!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>mimegpg</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><H1
+><A
+name="mimegpg"
+></A
+>mimegpg</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+name="aen10"
+></A
+><H2
+>Name</H2
+>make&nbsp;--&nbsp;MIME-GPG utility</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+name="aen13"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>mimegpg</B
+> [-s] [-E] [-e] [-c] [-d] [-p <TT
+CLASS="REPLACEABLE"
+><I
+>n</I
+></TT
+>] {--} {gpg options...}</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen25"
+></A
+><H2
+>DESCRIPTION</H2
+><P
+>The <B
+CLASS="COMMAND"
+>mimegpg</B
+> tool signs, encrypts, or decrypts MIME-formatted E-mail
+messages using GnuPG. <B
+CLASS="COMMAND"
+>mimegpg</B
+> does not contain any encryption code. It
+uses the GnuPG utility for all encryption and decryption functions.</P
+><P
+>The <TT
+CLASS="OPTION"
+>-s</TT
+> option signs an E-mail message. The <TT
+CLASS="OPTION"
+>-E</TT
+> or
+the <TT
+CLASS="OPTION"
+>-e</TT
+> option encrypts the E-mail message. Specifying both
+<TT
+CLASS="OPTION"
+>-E/-e</TT
+> and <TT
+CLASS="OPTION"
+>-s</TT
+> encrypts and signs the E-mail message
+in a single step. The <TT
+CLASS="OPTION"
+>-d</TT
+> option decrypts the message. The
+<TT
+CLASS="OPTION"
+>-c</TT
+> option checks signatures.</P
+><P
+><B
+CLASS="COMMAND"
+>mimegpg</B
+> works as a filter.  It reads an E-mail message from
+standard input, which must be a MIME-formatted message. <B
+CLASS="COMMAND"
+>mimegpg</B
+> signs,
+encrypts, and/or decrypts the message; then writes the encrypted, signed, or
+decrypted MIME message on standard output.</P
+><P
+>The standard input to <B
+CLASS="COMMAND"
+>mimegpg</B
+> must be a MIME E-mail message, with a
+"<TT
+CLASS="LITERAL"
+>Mime Version: 1.0</TT
+>" header - even if the message does not contain any
+attachments.  If the message contains any attachments, they are also signed
+and/or encrypted, individually.</P
+><P
+><B
+CLASS="COMMAND"
+>mimegpg</B
+> automatically runs GnuPG, with the required options.
+<B
+CLASS="COMMAND"
+>mimegpg</B
+>'s options may also be followed by a single <TT
+CLASS="LITERAL"
+>--</TT
+>
+option; any remaining command line options are passed as additional options
+to GnuPG. The <TT
+CLASS="OPTION"
+>-E/-e</TT
+> option usually requires at least one
+<TT
+CLASS="OPTION"
+>-r</TT
+> GnuPG option, which may be specified in this fashion.</P
+><P
+>The <TT
+CLASS="OPTION"
+>-p</TT
+> option specifies a file descriptor that contains any
+required passphrase. Any other valid GnuPG options may follow a double-dash,
+"--", as long as it makes sense for this operation (note that <B
+CLASS="COMMAND"
+>mimegpg</B
+>
+automatically adds any GnuPG options that are needed to perform the given
+operation). The "--no-tty" option can be useful when <B
+CLASS="COMMAND"
+>mimegpg</B
+> is
+used in a non-interactive mode.  As always, secret keys that are
+password-protected secret keys cannot be used in the <TT
+CLASS="OPTION"
+>--no-tty</TT
+>
+mode, unless the <TT
+CLASS="OPTION"
+>-p</TT
+> option is used.</P
+><DIV
+CLASS="REFSECT2"
+><A
+name="aen56"
+></A
+><H3
+>SIGNING AND ENCRYPTING MESSAGES</H3
+><P
+>Use the <TT
+CLASS="OPTION"
+>-s</TT
+> option to sign MIME message content. Use the
+<TT
+CLASS="OPTION"
+>-E</TT
+> option to encrypt it. Use both options to both sign and
+encrypt. Follow with <TT
+CLASS="LITERAL"
+>--</TT
+>, then any other GnuPG options. The
+<TT
+CLASS="OPTION"
+>-E</TT
+> option will require at least one <TT
+CLASS="OPTION"
+>-r</TT
+> GnuPG
+option.</P
+><P
+>The <TT
+CLASS="OPTION"
+>-E</TT
+> option encapsulates the message content and all the
+attachments into a single encrypted MIME object. Some mail software cannot
+handle encapsulated content. The <TT
+CLASS="OPTION"
+>-e</TT
+> option encrypts each
+attachment separately, without encapsulation.</P
+><P
+>If a secret key used for signing is password protected, the prompt to
+enter the password will be issued directly by GnuPG. Note that the
+<TT
+CLASS="OPTION"
+>-s</TT
+> and the <TT
+CLASS="OPTION"
+>-e</TT
+> (but not <TT
+CLASS="OPTION"
+>-E</TT
+>) options may
+issue multiple password prompts in interactive mode. <B
+CLASS="COMMAND"
+>mimegpg</B
+> runs
+GnuPG multiple times if the MIME message contains attachments.  GnuPG will be
+invoked separately for each attachment in the MIME message, and each
+invocation will prompt for any required key password.  Note that the initial
+message headers are not signed and/or encrypted, except for the MIME headers
+themselves.  However, any <TT
+CLASS="LITERAL"
+>message/rfc822</TT
+> MIME content - attached
+messages - are encrypted/signed in their entirety, headers and content.</P
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+name="aen73"
+></A
+><H3
+>DECRYPTING AND CHECKING SIGNATURES</H3
+><P
+>The <TT
+CLASS="OPTION"
+>-d</TT
+> option attempts to decrypt any encrypted content in a
+MIME message.  The <TT
+CLASS="OPTION"
+>-c</TT
+> option attempts to verify signatures of
+any signed content.  Both <TT
+CLASS="OPTION"
+>-c</TT
+> and <TT
+CLASS="OPTION"
+>-d</TT
+>
+can be specified at the
+same time. <TT
+CLASS="OPTION"
+>-d</TT
+> looks for any <TT
+CLASS="LITERAL"
+>multipart/encrypted</TT
+>
+MIME content, then attempts to decrypt it. <TT
+CLASS="OPTION"
+>-c</TT
+> looks for any
+<TT
+CLASS="LITERAL"
+>multipart/signed</TT
+> MIME content, then attempts to verify the
+signature.</P
+><P
+>The <TT
+CLASS="OPTION"
+>-c</TT
+> and <TT
+CLASS="OPTION"
+>-d</TT
+> options replace the
+<TT
+CLASS="LITERAL"
+>multipart/signed</TT
+> and <TT
+CLASS="LITERAL"
+>multipart/encrypted</TT
+> MIME
+content with a <TT
+CLASS="LITERAL"
+>multipart/x-mimepgp</TT
+> section, that contains an
+additional attribute called "xpgpstatus". The value of the attribute is set
+to the exit code of GnuPG. Succesfully decrypting the message and/or
+verifying the signature sets the exit code to 0. A non-zero exit code
+indicates that the signature could not be verified, or the message could not
+be decrypted.</P
+><P
+>The first section in this <TT
+CLASS="LITERAL"
+>multipart/x-mimepgp</TT
+> is a
+<TT
+CLASS="LITERAL"
+>text/plain</TT
+> section that contains any messages from GnuPG. The
+second section is any decrypted or signed content. <B
+CLASS="COMMAND"
+>mimegpg</B
+> will
+include the signed content even if the signature could not be verified (check
+<TT
+CLASS="LITERAL"
+>xpgpstatus</TT
+>). Encrypted content that could not be decrypted will
+not be included (obviously).</P
+><P
+>Note - any existing x-mimegpg MIME section will have its content-type
+quietly reset to multipart/mixed, in order to avoid confusion (except when
+this is what got decrypted).</P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen96"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="reformime.html"
+TARGET="_top"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>reformime</SPAN
+>(1)</SPAN
+></A
+>.</P
+></DIV
+></BODY
+></HTML
+>

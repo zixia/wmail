@@ -1,0 +1,11 @@
+# $Id: automake.fix,v 1.1.1.1 2003/05/07 02:13:03 lfan Exp $
+#
+# Get rid of all the 1.6-generated crap on stdout
+#
+
+set -x
+"$@"
+sed 's/^@AMDEP_TRUE@	source=/@AMDEP_TRUE@	@echo Compiling $< ; source=/' <${srcdir}/Makefile.in >${srcdir}/Makefile.in.fixed
+cmp -s ${srcdir}/Makefile.in.fixed ${srcdir}/Makefile.in ||
+	mv ${srcdir}/Makefile.in.fixed ${srcdir}/Makefile.in
+rm -f ${srcdir}/Makefile.in.fixed

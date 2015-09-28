@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="Author" content="Sam Varshavchik" />
+  <title>SqWebMail</title>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+  <!-- $Id: NEWS.html,v 1.1.1.1 2003/05/07 02:13:03 lfan Exp $-->
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B"
+alink="#FF0000" xml:lang="en" lang="en">
+<!-- Copyright 1998 - 2002 Double Precision, Inc.  See COPYING for -->
+<!-- distribution information. -->
+
+<h1>SqWebMail</h1>
+SqWebMail is a web CGI client for sending and receiving E-mail using Maildir
+mailboxes. SqWebMail <b>DOES NOT</b> support traditional Mailbox files, only
+Maildirs. 
+
+<p>This is the same webmail server that's included in the <a
+href="http://www.courier-mta.org">Courier mail server</a>, but packaged
+independently. If you already have Courier installed, you do not need to
+download this version.</p>
+
+<h2>Features</h2>
+<ul>
+  <li>Very lightweight. Reads mail directly from maildirs.<br />
+    <br />
+  </li>
+  <li>Dynamically-generated HTML is stored in external files. Many (but not
+    all) display elements can be customized without changing the program
+    code.<br />
+    <br />
+  </li>
+  <li>Hierarchical mail folders. Shared folders. (<a
+    href="images/folders.png" target="_new">43Kb screenshot</a>)<br />
+    <br />
+  </li>
+  <li>Virtual accounts - the account database is implemented via a fast GDBM
+    or DB database lookup. The account database is created from plain text
+    files, and some Perl scripts are provided to modify the account database
+    from the command line.<br />
+    <br />
+  </li>
+  <li>LDAP authentication.<br />
+    <br />
+  </li>
+  <li>Address book. (<a href="images/addressbook.png" target="_new">36Kb
+    screenshot</a>)<br />
+    <br />
+  </li>
+  <li>Import E-mail addresses from external LDAP address books. (<a
+    href="images/addressbook2.png" target="_new">40Kb screenshot</a>)<br />
+    <br />
+  </li>
+  <li><tt>vpopmail</tt> authentication.<br />
+    <br />
+  </li>
+  <li>Displays HTML messages (optional). (<a href="images/html.png"
+    target="_new">44Kb screenshot</a>)<br />
+    <br />
+  </li>
+  <li>Extensive MIME support. Even MIME <a
+    href="http://www.rfc-editor.org/rfc/rfc2646.txt">flowed text format</a>,
+    (<a href="images/flowed.png" target="_new">43Kb screenshot</a>) and <a
+    href="http://www.rfc-editor.org/rfc/rfc1894.txt">delivery status
+    notifications</a> (<a href="images/dsn.png" target="_new">41Kb
+    screenshot</a>), are recognized and nicely formatted.<br />
+    <br />
+  </li>
+  <li>Javascript and cookies are not required. Most of the functionality is
+    accessible from Lynx. (There is some Javascript and cookie usage for
+    value-added features, such as print preview).<br />
+    <br />
+  </li>
+  <li>Spell checking is available, if you have <code>ispell</code> installed.
+    (<a href="images/spellcheck.png" target="_new">35Kb screenshot</a>)<br />
+    <br />
+  </li>
+  <li>Mail filtering is available, if you have <code>maildrop</code>
+    installed as the local mail delivery agent. (<a href="images/filters.png"
+    target="_new">47Kb screenshot</a>)<br />
+    <br />
+  </li>
+  <li>Ability to reply to individual messages in a <a
+    href="http://andrew2.andrew.cmu.edu/rfc/rfc1521.html#sec-7.2.4.">MIME
+    message digest</a>.<br />
+    <br />
+  </li>
+  <li><a href="http://www.rfc-editor.org/rfc/rfc2047.txt">8-bit message
+    headers</a> decoded and displayed.<br />
+    <br />
+  </li>
+  <li>Message dates and times automatically converted to the local time
+    zone.<br />
+    <br />
+  </li>
+  <li>Experimental support for encryption and digital signatures. This is an
+    experimental feature that uses <a href="http://www.gnupg.org/">GnuPG</a>
+    to create and manage encryption keys (<a href="images/gpgkeys.png"
+    target="_new">45kb screenshot</a>), encrypt/sign messages (<a
+    href="images/gpgcreate.png" target="_new">22kb screenshot</a>), and
+    decrypt/verify messages (<a href="images/gpgsigned.png"
+    target="_new">48kb screenshot</a>).<br />
+    <br />
+  </li>
+  <li>Can optionally use gzip compression to return some large web pages, if
+    a modern browser is used that supports gzip compression.</li>
+</ul>
+
+<h3>Calendaring</h3>
+
+<p>Calendaring services can be optionally enabled by the system
+administrator. When enabled, basic calendar management is available. NOTE:
+this is an experimental beta feature.</p>
+<ul>
+  <li>Recurring events (<a href="images/recurring.png" target="_new">41kb
+    screenshot</a>).<br />
+    <br />
+  </li>
+  <li>Weekly (<a href="images/weekly.png" target="_new">34kb screenshot</a>)
+    and monthly (<a href="images/monthly.png" target="_new">30kb
+    screenshot</a>) calendar views.<br />
+    <br />
+  </li>
+</ul>
+
+<h2>Demo</h2>
+There's a demo of SqWebMail available at <a
+href="http://webmail.inter7.com/">http://webmail.inter7.com/</a>. Use the
+user id <tt>webmail@webmail.com</tt> and password <tt>webmail</tt>. <b>Please
+note:</b>only one person can access the account at the same time. If someone
+attempts to log in after you, you will be bumped off with an authentication
+failure (in cases of multiple logins, the oldest one is bumped). 
+
+<h2>Requirements</h2>
+
+<p>SqWebMail requires that either the GDBM or the DB library must be
+installed. Perl is also required.</p>
+
+<p>GNU make and gcc/egcs is also highly recommended. There have been
+intermittent reports of various problems with using other make utilities, or
+other compilers. Chances are that everything will compile and install
+properly, though. Currently, some of the component libraries include some
+self-test code written in C++. SqWebMail itself is written entirely in C, and
+the C++ components are not used; however you have to be able to compile C++,
+for now.</p>
+
+<h2>INSTALLATION overview</h2>
+
+<p>Read <tt>INSTALL</tt>, <tt>SECURITY</tt> and <tt>BUGS</tt> before
+compiling and installing SqWebMail. You will install the <tt>sqwebmail</tt>
+program as a setuid root binary in your cgi-bin directory by default. Loading
+<tt>http://yourwebsite/cgi-bin/sqwebmail</tt> will present the log-on page.
+You can manually move <tt>sqwebmail</tt> to any other directory, and use any
+URL that resolves to <tt>sqwebmail</tt>.</p>
+
+<h3>Download</h3>
+
+<p>Download sqwebmail: <a
+href="http://www.courier-mta.org/download.php#sqwebmail"><code>http://www.courier-mta.org/download.php#sqwebmail</code></a></p>
+
+<p>Semi-regular CVS snapshots are regularly uploaded to <a
+href="ftp://courier.sourceforge.net/pub/courier/sqwebmail"><code>ftp://courier.sourceforge.net/pub/courier/sqwebmail</code></a>.</p>
+
+<h3>CVS</h3>
+
+<p>SqWebMail can also be downloaded from an anonymous CVS repository. See <a
+href="http://www.courier-mta.org/status.html"><code>http://www.courier-mta.org/status.html</code></a>
+for more information.</p>
+
+<h3>RPMs</h3>
+
+<p>You can build a binary RPM directly from this tarball. Download this
+tarball, then type <tt>rpm -ta <i>filename</i></tt>. RPM 3.0, or higher, is
+required. Use <tt>rpmbuild -ta <i>filename</i></tt> with RPM 4.1, or higher
+(Red Hat 8.0, or higher).</p>
+
+<p><b>NOTE:</b> Prior to 0.31 I used to provide the source tarball repackaged
+as a source RPM, and two prebuilt binary RPMs - with and without vpopmail
+support. I've upgraded the source tarball so that binary RPMs can be built
+directly from the tarball. If you have vpopmail, the RPM should build to
+include vpopmail support, however since before 0.31 the vpopmail RPM package
+had a slightly different name, you cannot upgrade directly, and you must
+uninstall the pre-0.31 binary vchkpw RPM, install the new one that you just
+built, then restore any <tt>.rpmsave</tt>d configuration files.</p>
+
+<h2>Mailing list</h2>
+
+<p>Subscribe to the SqWebMail mailing list. Send an empty E-mail to
+<tt>sqwebmail-subscribe@inter7.com</tt>.</p>
+
+<h2>Enhancements</h2>
+
+<p>Note that some of the following patches may be against older versions of
+SqWebMail. Check the documentation in each patch for more information.</p>
+
+<p>Brian Cash <tt>&lt;bcash@</tt><tt>alpdev.com&gt;</tt> has a patch that
+allows different virtual domains on the same host <a
+href="http://www.alpdev.com/Misc/qmail/sqwebmail.html">to use different HTML
+templates</a>.</p>
+
+<h2>Links</h2>
+
+<p>Chapter 21 in the book <a
+href="http://www.samspublishing.com/catalog/product.asp?product_id={DEAB7C16-7768-4A60-991B-05F85BECE45F}">Postfix</a>
+talks about configuring the Postfix server for SqWebMail.</p>
+
+<p>It is possible to translate HTML templates for sqwebmail into a foreign
+language. NOTE: that after a new version of sqwebmail comes out which
+includes any changes in the HTML templates, it will take some time for the
+independent maintainers to update their translated versions as well.</p>
+
+<p>Davide Giunchi <tt>&lt;davidegiunchi</tt><tt>@libero.it&gt;</tt> created
+an Italian translation at: <a
+href="http://folug.linux.it/membri/davideg">http://folug.linux.it/membri/davideg</a>.</p>
+
+<p>Sebastian Pfeiffer <tt>&lt;basscontrol</tt><tt>@gmx.de&gt;</tt> created a
+German translation at: <a
+href="http://www.4e4.de/internet_eng.html">http://www.4e4.de/internet_eng.html</a>.</p>
+
+<p>Jarbas Celante <tt>&lt;jarbas</tt><tt>@celante.com&gt;</tt> created a
+Brazilian translation at: <a
+href="http://jarbas.celante.com/soft/linux/http/">http://jarbas.celante.com/soft/linux/http/</a>.</p>
+
+<p>Toshikazu Ichikawa <tt>&lt;ichikawa</tt><tt>@toshikazu.org&gt;</tt> works
+on a Japanese version of SqWebMail: <a
+href="http://www.tom.comm.waseda.ac.jp/~ichi/sqwebmail/">http://www.tom.comm.waseda.ac.jp/~ichi/sqwebmail/</a>.</p>
+
+<p>Rail Aliev <tt>&lt;rail</tt><tt>@iqchoice.ru&gt;</tt> created a Russian
+translation at <a
+href="http://www.iqchoice.ru/unix/sqwebmail/sqwebmail-ru.tar.gz">http://www.iqchoice.ru/unix/sqwebmail/sqwebmail-ru.tar.gz</a>.</p>
+
+<p>Another Russian translation: <a
+href="http://neva.vlink.ru/~dsh/projects/sqwebmail-ru.tar.gz">http://neva.vlink.ru/~dsh/projects/sqwebmail-ru.tar.gz</a>.</p>
+
+<p>Maciej Gruszczynski <tt>&lt;maciek</tt><tt>@mgt.pl&gt;</tt> created a
+Polish translation at <a
+href="ftp://ftp.mgt.pl/pub/Linux/qmail/sqwebmail/Polish">ftp://ftp.mgt.pl/pub/Linux/qmail/sqwebmail/Polish</a>.</p>
+
+<p>Atilim Boy <tt>&lt;aboy</tt><tt>@trunix.org&gt;</tt> has a Turkish
+translation at <a
+href="http://www.trunix.org/depo/sqwebmail-tr.tar.gz">http://www.trunix.org/depo/sqwebmail-tr.tar.gz</a>.</p>
+
+<p>Lars Althof <tt>&lt;lars</tt><tt>@larch.dk&gt;</tt> created a Danish
+translation at <a
+href="http://www.larch.dk/downloads">http://www.larch.dk/downloads</a>.</p>
+
+<p>Jordi Bruguera <tt>&lt;jordi</tt><tt>@t800.grn.es&gt;</tt> created a
+catalan and spanish translation at <a
+href="ftp://ftp.grn.es/pub/linux/">ftp://ftp.grn.es/pub/linux/</a>.</p>
+
+<p>César González Revilla <tt>&lt;cesar</tt><tt>@eureka-sistemas.com&gt;</tt>
+also has a spanish translation at <a
+href="http://www.eureka-sistemas.com/">http://www.eureka-sistemas.com/</a>.</p>
+
+<p>Emiliano Gabrielli has an Italian translation at <a
+href="http://www.SuperAlberT.it">http://www.SuperAlberT.it</a>.</p>
+
+<p>There's a German translation by at <a
+href="http://www.4e4.de/internet.html">http://www.4e4.de/internet.html</a>.</p>
+
+<p>Schalk W. Cronje has translated SqWebMail's HTML templates to Afrikaans,
+see <a
+href="http://www.af.org.za/aflaai/sqwebmail/">http://www.af.org.za/aflaai/sqwebmail/</a>.</p>
+
+<p>Leonardo Magallon &lt;<tt>leo.magallon@</tt><tt>grantgeo.com</tt>&gt; has
+a Spanish translation at <a
+href="http://www.linuxlatino.cc/contrib.php">http://www.linuxlatino.cc/contrib.php</a>.</p>
+
+<p>Nuno Cruz &lt;<tt>ncruz@</tt><tt>isel.pt</tt>&gt; has a Portuguese
+standard translation at <a
+href="http://www.isel.pt/~ncruz/sqwebmail/">http://www.isel.pt/~ncruz/sqwebmail/</a>.</p>
+
+<p>Uelinton B. dos Santos &lt;<tt>uelintons@</tt><tt>hotmail.com</tt>&gt; has
+a Brazilian Portuguese translation at <a
+href="http://planeta.terra.com.br/informatica/uelintons/sqwebmail/index.html">http://planeta.terra.com.br/informatica/uelintons/sqwebmail/index.html</a>.</p>
+
+<p>Johan Almqvist &lt;<tt>johan-qmail@</tt><tt>almqvist.net</tt>&gt; has a
+Swedish translation at <a
+href="http://www.almqvist.net/~johan/sqwebmail-0.36a-se.tar.gz">http://www.almqvist.net/~johan/sqwebmail-0.36a-se.tar.gz</a>.</p>
+<hr />
+
+<p>Sam Varshavchik &lt;mrsam@courier-mta.com&gt;</p>
+
+<p></p>
+</body>
+</html>

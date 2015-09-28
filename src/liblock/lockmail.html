@@ -1,0 +1,517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<HTML
+><HEAD
+><link rel='stylesheet' type='text/css' href='manpage.css'>
+  <!-- $Id: lockmail.html,v 1.1.1.1 2003/05/07 02:14:27 lfan Exp $ -->
+  <!-- Copyright 2002 Double Precision, Inc.  See COPYING for -->
+  <!-- distribution information. -->
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<link rel="icon" href="icon.gif" type="image/gif" />
+<TITLE
+>lockmail</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><H1
+><A
+name="lockmail"
+></A
+>lockmail</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+name="aen10"
+></A
+><H2
+>Name</H2
+>lockmail&nbsp;--&nbsp;create mail lock files</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+name="aen13"
+></A
+><H2
+>Synopsis</H2
+><P
+><B
+CLASS="COMMAND"
+>lockmail</B
+> [-r] [-t <TT
+CLASS="REPLACEABLE"
+><I
+>timeout</I
+></TT
+>] {<TT
+CLASS="REPLACEABLE"
+><I
+>lockfile</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+>} [argument...]</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen24"
+></A
+><H2
+>DESCRIPTION</H2
+><P
+><B
+CLASS="COMMAND"
+>lockmail</B
+> is a helper utility for working with mailbox
+files.
+Mailbox files must be locked to prevent other applications from modifying the
+mailbox at the same time.
+Different system use different locking conventions.
+<B
+CLASS="COMMAND"
+>lockmail</B
+> uses two of the most common locking mechanisms
+in use, which should work reliably on most systems.</P
+><P
+><TT
+CLASS="REPLACEABLE"
+><I
+>lockfile</I
+></TT
+> is the pathname to an existing mailbox
+file.
+By default, <B
+CLASS="COMMAND"
+>lockmail</B
+> tries to lock the mailbox every
+five seconds (if the mailbox is already locked), and will give up after
+three minutes.
+After the mailbox is succesfully locked, <B
+CLASS="COMMAND"
+>lockmail</B
+> runs
+<TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+> as a child process, with any optional
+<TT
+CLASS="REPLACEABLE"
+><I
+>argument</I
+></TT
+>s.
+When <TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+> terminates, <B
+CLASS="COMMAND"
+>lockmail</B
+>
+removes the mailbox lock, and terminates itself.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen37"
+></A
+><H2
+>OPTIONS</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+>-r</DT
+><DD
+><P
+>If a regular lock fails, try a read-only lock.
+Use this option to lock mailbox files in a read-only directory.</P
+></DD
+><DT
+>-t <TT
+CLASS="REPLACEABLE"
+><I
+>timeout</I
+></TT
+></DT
+><DD
+><P
+>If the lock attempt fails, try again for up to
+<TT
+CLASS="REPLACEABLE"
+><I
+>timeout</I
+></TT
+> seconds.
+The actual timeout is rounded up to the next five second interval
+(a lock attempt is tried every five seconds).</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen50"
+></A
+><H2
+>DESCRIPTION</H2
+><P
+>This section briefly describes the locking mechanism used by
+<B
+CLASS="COMMAND"
+>lockmail</B
+>.
+<B
+CLASS="COMMAND"
+>lockmail</B
+> uses three different locking conventions in
+order to maximize compatibility with other mail software:
+C-Client folder locks, dot-locks, and file locks.</P
+><DIV
+CLASS="REFSECT2"
+><A
+name="aen55"
+></A
+><H3
+>C-Client folder locks</H3
+><P
+>Mail software based on the <TT
+CLASS="LITERAL"
+>C-Client</TT
+> library creates
+lock files named
+<TT
+CLASS="FILENAME"
+>/tmp/.<TT
+CLASS="REPLACEABLE"
+><I
+>dddddd</I
+></TT
+>.<TT
+CLASS="REPLACEABLE"
+><I
+>iiiiii</I
+></TT
+></TT
+>.
+Here, <TT
+CLASS="REPLACEABLE"
+><I
+>dddddd</I
+></TT
+> and <TT
+CLASS="REPLACEABLE"
+><I
+>iiiiii</I
+></TT
+>
+are the device number and the inode number of the mailbox file
+(the <TT
+CLASS="STRUCTFIELD"
+><I
+>st_dev</I
+></TT
+> and <TT
+CLASS="STRUCTFIELD"
+><I
+>st_ino</I
+></TT
+>
+fields in the inode), in hexadecimal.
+If the process ID saved in the C-Client folder lock file is not valid,
+<B
+CLASS="COMMAND"
+>lockmail</B
+> concludes that it's a stale lock file, and
+will remove it.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>A race condition exists where a <TT
+CLASS="LITERAL"
+>C-Client</TT
+> process is
+killed after it creates a lock file, but before saving its process ID in the
+lock file.
+The race window is very small, but it exists.
+The <TT
+CLASS="LITERAL"
+>C-Client</TT
+> library does not appear to ever clear out
+the lock file.</P
+><P
+><B
+CLASS="COMMAND"
+>lockmail</B
+>
+attempts to resolve this race condition by deleting zero-length lock files
+that are at least five minutes old.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+name="aen73"
+></A
+><H3
+>dot-locks</H3
+><P
+><B
+CLASS="COMMAND"
+>lockmail</B
+>
+also creates, and honors dot-lock files.
+Dot-lock files are first created as temporary files, then linked to
+<TT
+CLASS="FILENAME"
+><TT
+CLASS="REPLACEABLE"
+><I
+>lockfile</I
+></TT
+>.lock</TT
+>.
+The link operation fails if the dot-lock file already exists.
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+uses an enhanced method of dot-locking, where its process ID, and the name
+of the server where <B
+CLASS="COMMAND"
+>lockmail</B
+> is running is also saved
+in its dot-lock file.
+If the operation fails due to an existing dot-lock file that was created
+by another <B
+CLASS="COMMAND"
+>lockmail</B
+> process on the same server, and the
+process ID no longer exists, this stale dot-lock file is removed immediately.
+In all other situations a dot-lock file older than five minutes is considered
+stale, and removed.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+>NOTE:</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>A failure to create a dot-lock file is silently ignored if the reason for
+the failure is because
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+does not have the write permission in the dot-lock file's directory.
+The incoming mail spool directory (usually
+<TT
+CLASS="FILENAME"
+>/var/spool/mail</TT
+>)
+typically does not have global write permissions, so the attempt to
+create the dot-lock file in the spool directory will fail, and
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+will be content with using file-locking only.</P
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT2"
+><A
+name="aen87"
+></A
+><H3
+>File locks</H3
+><P
+>The final locking mechanism
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+uses is the operating system's file locking facility.
+If
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+fails to obtain all three locks,
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+will sleep for five seconds and try again.
+The only exception is a failure to create a dot-lock because of no write
+access to the dot-lock file's directory, which is ignored.
+If
+<B
+CLASS="COMMAND"
+>lockmail</B
+>
+still fails to obtain all required locks in the amount of time specified
+by the <TT
+CLASS="OPTION"
+>-t</TT
+> option (or its default value),
+<B
+CLASS="COMMAND"
+>lockmail</B
+> will terminate with the
+<TT
+CLASS="LITERAL"
+>EX_TEMPFAIL</TT
+> exit code.</P
+><P
+><B
+CLASS="COMMAND"
+>lockmail</B
+>
+runs <TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+> after obtaining the last file
+lock, waits until <TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+> terminates, and
+releases all locks.
+<TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+> must terminate before any of the locks
+obtained by <B
+CLASS="COMMAND"
+>lockmail</B
+> expire, and are considered stale.
+<B
+CLASS="COMMAND"
+>lockmail</B
+> will then terminate with the same exit code
+as <TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen105"
+></A
+><H2
+>EXIT STATUS</H2
+><P
+><B
+CLASS="COMMAND"
+>lockmail</B
+> terminates with the same exit status as
+<TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+>
+<B
+CLASS="COMMAND"
+>lockmail</B
+> terminates with the <TT
+CLASS="LITERAL"
+>EX_TEMPFAIL</TT
+>
+exit status if it was unable to obtain a lock, or if
+<TT
+CLASS="REPLACEABLE"
+><I
+>program</I
+></TT
+>
+was killed by a signal.</P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+name="aen113"
+></A
+><H2
+>SEE ALSO</H2
+><P
+><A
+HREF="maildrop.html"
+TARGET="_top"
+><SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>maildrop</SPAN
+>(1)</SPAN
+></A
+>,
+<SPAN
+CLASS="CITEREFENTRY"
+><SPAN
+CLASS="REFENTRYTITLE"
+>sendmail</SPAN
+>(8)</SPAN
+>.</P
+></DIV
+></BODY
+></HTML
+>

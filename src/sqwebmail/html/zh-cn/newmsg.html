@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>写邮件</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<!--
+[#$DSPFMT_DATE=%Y年%b%d日, %p %I:%M:%S#]
+[#$DSPHDR_FROM=&nbsp;发件人#]
+[#$DSPHDR_TO= &nbsp;收件人#] 
+[#$DSPHDR_CC=&nbsp;抄送#]
+[#$DSPHDR_SUBJECT= 主题#]
+[#$DSPHDR_DATE= 日期#]
+[#$TOLAB=收件:#]
+[#$CCLAB=抄送:#]
+[#$BCCLAB=暗送:#]
+[#$SUBJECTLAB=主题:#]
+[#$MESSAGELAB=内容:#]
+[#$SENDLAB=&nbsp;发送&nbsp;#]
+[#$PREVIEWLAB=&nbsp;预览&nbsp;#]
+[#$FORWARDLAB=---------- 转发的邮件 ----------#]
+[#$SAVEDRAFT=存为草稿#]
+[#$UPLOAD=添加附件#]
+[#$ATTACHMENTS=<FONT class=ctype>%d 个附件</FONT>#]
+[#$SALUTATION=%s的信件内容:#]
+[#$SPELLCHECKDONE=<B CLASS="spellcheckdone">拼写检查完成</B>#]
+[#$CHECKSPELLING=检查拼写#]
+[#$QUOTAERR=<font color="#FF0000" class="error">错误: 您超过了信箱空间配额</font>#]
+[#$FROMLAB=发件:#]
+[#$REPLYTOLAB=回信地址:#]
+[#$ADDRESSBOOK=地址本:#]
+[#$PRESERVELAB=保存附本到发件箱中#]
+[#$SIGNLAB=签名档#]
+[#$ENCRYPTLAB=加密邮件#]
+[#$PASSPHRASE=语法解释&nbsp;(if&nbsp;required):&nbsp;#]
+[#$ATTACHMENT=附件: %s#]
+[#$DISPATT=<FONT CLASS="message-attachment-link">显示</FONT>#]
+[#$DOWNATT=<FONT CLASS="message-attachment-link">下载</FONT>#]
+[#$KEY=<table border=0 bgcolor="#000000" cellpadding=1><tr><td><table border=0 cellspacing=0 cellpadding=8 bgcolor="#EEEEEE"><tr><td>加密钥匙</td></tr></table></td></tr></table>#]
+
+-->
+<script language="Javascript">
+<!--
+function init()
+{
+	if (document.msg.focusto.value == "headers")
+	{
+		document.msg.headerto.focus();
+	}
+}
+
+function check() {
+	mesg = "";
+        if(document.msg.headerto.value == "") mesg = "没有输入收件人！\n";
+        if(mesg != ""){
+                alert(mesg);
+                return false;
+        }
+        return true;
+}
+//-->
+</script>
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0" onload="init();">
+[#include:navbar#]
+
+<form method="post" name="msg" action="[#p#]">
+[#P#]
+<table align=center width="90%" border="0" cellspacing="0" cellpadding="3" bgcolor=#93BEE2 class=ctype>
+  <tr> 
+    <td> 
+      [#W#]
+    </td>
+  </tr>
+</table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>

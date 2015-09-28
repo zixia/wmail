@@ -1,0 +1,168 @@
+=====================
+=== install qmail ===
+=====================
+
+tar zxf var-qmail-1.03-2-gnu-linux-i686.tar.gz
+cd var-qmail-1.03-2-gnu-linux-i686
+make
+
+#
+# reinstall Qmail
+#
+#change qmail uid/gid in /etc
+#rm -rf /var/qmail
+#reinstall qmail
+#
+
+===============================
+===== uninstall sendmail ======
+===============================
+rpm -qa | grep sendmail | xargs rpm -e --nodeps
+rpm -e postfix --nodeps
+ln -s /var/qmail/bin/sendmail /usr/lib/sendmail
+ln -s /var/qmail/bin/sendmail /usr/sbin/sendmail
+
+
+=========================
+=== install ucspi-tcp ===
+=========================
+
+rpmbuild --rebuild ucspi-tcp-0.88-1.src.rpm
+rpm -i /usr/src/redhat/RPMS/i386/ucspi-tcp-0.88-1.i386.rpm 
+
+#cat > /etc/mail/tcp.smtp
+#127.0.0.1:allow,RELAYCLIENT=""
+#^D
+
+#tcprules /etc/mail/tcp.smtp.cdb /etc/mail/tcp.smtp.tmp < /etc/mail/tcp.smtp
+
+
+===========================
+=== install daemontools ===
+===========================
+
+rpmbuild --rebuild daemontools-0.70-6mdk.src.rpm 
+rpm -i /usr/src/redhat/RPMS/i386/daemontools-0.70-6mdk.i386.rpm 
+rpm -i supervise-scripts-3.3-1.noarch.rpm 
+
+init q
+
+===========================
+==== install vpopmail =====
+===========================
+
+groupadd -g 89 vchkpw
+useradd -g vchkpw -u 89 vpopmail
+
+./configure --enable-admin-email=webmaster@ciae.bnu.edu.cn \
+--enable-relay-clear-minutes=20 \
+--enable-default-domain=ciae.bnu.edu.cn \
+--enable-large-site=y \
+--enable-defaultquota=20000000 \
+--enable-tcprules-prog=/usr/bin/tcprules \
+--enable-roaming-users=y \
+--enable-tcpserver-file=/etc/mail/tcp.smtp \
+--enable-clear-passwd=n \
+
+make
+make install-strip
+
+chmod ug+s ~vpopmail/bin/vchkpw
+
+=============================
+=== vadddomain & vadduser ===
+=============================
+./vadddomain localhost "a3fJ8f(34$3"
+./vadduser root@localhost "a3fJ8f(34$3"
+
+===============
+=== crontab ===
+===============
+crontab -e -u root
+40 * * * * ~vpopmail/bin/clearopensmtp 2>&1 > /dev/null
+
+=============================
+=== qmail-conf & smtp-auth===
+=============================
+tar zxf qmail-conf-0.60.tar.gz
+cd qmail-conf-0.60
+tar zxf ../djbdns-1.05.tar.gz
+
+make -f Makefile.ini
+make
+make setup check
+ln -s /var/qmail/bin/qmail-*-conf /usr/sbin
+
+# http://www.din.or.jp/~ushijima/qmail-conf.html
+
+#
+# POP3
+#
+qmail-pop3d-conf ~vpopmail/bin/vchkpw qmaill /var/qmail/service/pop3d
+cd /var/qmail/service/pop3d
+make
+ln -s /var/qmail/service/pop3d /service
+
+#
+# QMAIL
+#
+qmail-delivery-conf qmaill /var/qmail/service/qmail
+ln -s /var/qmail/service/qmail /service
+
+#
+# SMTP
+#
+qmail-smtpd-conf qmaild qmaill /var/qmail/service/smtpd
+cd /var/qmail/service/smtpd
+vi run #     /var/qmail/bin/qmail-smtpd ciae.bnu.edu.cn ~vpopmail/bin/vchkpw /bin/true
+ln -s /var/qmail/service/smtpd /service
+
+#
+# SMTP AUTH
+#
+cd /var/qmail/bin
+cp qmail-smtpd qmail-smtpd.bak
+cp /tmp/qmail-smtpd .
+
+
+=======================
+====== sqwebmail ======
+=======================
+./configure --prefix=/opt/sqwebmail \
+        --enable-cgibindir=/opt/sqwebmail/www/cgi-bin \
+        --enable-imagedir=/opt/sqwebmail/www/image \
+        --enable-imageurl=/image \
+        --with-cachedir=/opt/sqwebmail/var/cache \
+        --enable-webpass=no \
+        --without-ispell \
+        --with-maxmsgsize=5242880 \
+        --enable-maxpurge=7 \
+        --without-authpam --without-authuserdb --without-authpwd --without-authshadow \
+        --without-authldap --without-authdaemon --with-authvchkpw \
+        --with-defaultlang=zh-cn --enable-unicode  \
+        --with-fcgi \
+        --enable-https=auto \
+        --with-cacheowner=vpopmail
+
+<VirtualHost *>
+        BrowserMatch "MSIE" nokeepalive downgrade-1.0 force-response-1.0
+        SetEnv SQWEBMAIL_TEMPLATEDIR /opt/sqwebmail/html/ciae
+        ServerName mail.ciae.bnu.edu.cn
+        DocumentRoot /opt/sqwebmail/www
+        <Directory "/opt/sqwebmail/www">
+            AllowOverride All
+            Options +Includes
+        </Directory>
+        ScriptAlias /web/ "/opt/sqwebmail/www/cgi-bin/"
+        CustomLog logs/mail.ciae.bnu.edu.cn-access.log common
+        ErrorLog logs/mail.ciae.bnu.edu.cn-error.log
+</VirtualHost>
+
+#
+# index.html
+#
+<html>
+<head>
+<META HTTP-EQUIV="refresh" content="0;url=/web/mail">
+</head>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>GnuPG 加密设定</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body>
+<!--
+
+[#$DELETEFAIL=<p class="error">试图删除加密键时产生下列错误：</p>#]
+[#$SIGNFAIL=<p class="error">试图登记加密键时产生下列错误：</p>#]
+[#$DISABLED=警告：这个键已无效#]
+[#$REVOKED=警告：这个键已废除#]
+[#$EXPIRED=警告：这个键已过期#]
+
+-->
+
+<center>
+
+<table cellpadding="0" cellspacing="0" border="0" width="95%">
+    <tr>
+      <td align="left" valign="top">[#@graytopleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#cccccc"></td>
+      <td align="right" valign="top">[#@graytopright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+    </tr>
+    <tr bgcolor="#efefef">
+      <td></td>
+      <td width="100%">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="left" width="100%" valign="middle" class="pageheader">
+			  [#@logo.gif, width="263" height="39" alt="mail logo" align="absmiddle" border="0"@@#]
+			  GnuPG 加密设定
+			  </td>
+              <td align="right" valign="middle"><b>[#G#]</b></td>
+            </tr>
+        </table>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align="left" valign="bottom">
+	   [#@graybottomleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#cccccc"></td>
+      <td align="right" valign="bottom">
+	  [#@graybottomright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+    </tr>
+</table>
+<!-- End of Top Header -->
+<!-- Sections. Folders, Create Messages, Preferences, Etc. -->
+[#include:navbar#] [#DOGPG#]
+
+<table cellpadding="0" cellspacing="0" border="0" width="95%">
+  <tbody>
+    <tr style="line-height: 0">
+      <td align="left" valign="top">[#@bluetopleft.gif, width="11"
+        height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#99ccff" valign="middle"> </td>
+      <td style="line-height: 0" align="right"
+        valign="top">[#@bluetopright.gif, width="11" height="11" alt=""
+        border="0"@@#]</td>
+    </tr>
+    <tr bgcolor="#99ccff">
+      <td></td>
+      <td valign="middle" width="100%">
+        <form method=pos action="[#p#]">
+          [#P#] <input type="hidden" name="form" value="gpg">
+
+          <center class="gpgpublickeytitle">
+          公钥</center>
+          <br>
+          [#LISTPUB#]
+
+          <p>     
+          <input type="submit" value="删除公钥" name="delpub"></p>
+          <hr width="90%" noshade size="1" color="#000000">
+
+          <center class="gpgprivatekeytitle">
+          私钥</center>
+          <br>
+          [#LISTSEC#]
+
+          <p>     
+          <input type="submit" value="删除私钥"
+          name="delsec"><input type="checkbox" name="really">我确定要这么做</p>
+          <hr size="1" noshade size="1" color="#000000">
+
+          <p align="center" class="gpgsignkeytitle">登记公钥</p>
+          <!-- [#?6#] -->
+
+          <p>  私钥之传递语法: <input type="password" size="20"
+          name="passphrase"></p>
+          <!-- [#?#] -->
+
+          <p>  选择一个上面的公钥和私钥, 然后 
+          <input type="submit" value="登记" name="sign"></p>
+          <hr size="1" noshade size="1" color="#000000">
+          <p align="center" class="gpgdefaulttitle">缺省私钥</p>
+
+          <p>  选择一个缺省私钥, 然后 
+          <input type="submit" value="设置成缺省私钥"
+          name="setdefault"></p>
+        </form>
+        <hr size="1" noshade size="1" color="#000000">
+
+        <form method=pos action="[#p#]">
+          [#P#] <input type="hidden" name="form" value="gpgcreate">
+
+          <p align="center" class="gpgcreatetitle">建立一个键钥</p>
+
+          <table border="0" cellpadding="8">
+            <tbody>
+              <tr>
+                <td align="right">名称:</td>
+                <td><input type="text" size="20" name="newname"></td>
+              </tr>
+              <tr>
+                <td align="right">E-mail:</td>
+                <td><input type="text" size="20" name="newaddress"></td>
+              </tr>
+              <tr>
+                <td align="right">注释:</td>
+                <td><input type="text" size="20" name="newcomment"></td>
+              </tr>
+              <tr>
+                <td align="right">签名键长度(DSA):</td>
+                <td>
+                  <select name="skeylength">
+                    <option value="512">512 位</option>
+                    <option value="768">768 位</option>
+                    <option value="1024" selected="selected">1024
+                    位</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">加密键长度(ElGamal):</td>
+                <td>
+                  <select name="ekeylength">
+                    <option value="512">512 位</option>
+                    <option value="768">768 位</option>
+                    <option value="1024" selected="selected">1024
+                    位</option>
+                    <option value="2048">2048 位</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">有效期:</td>
+                <td><input type="text" size="4" name="newexpire"> 
+                  <select name="newexpirewhen">
+                    <option value="" selected="selected">-- 无截止期--
+                    </option>
+                    <option value="d">天 </option>
+                    <option value="w">周 </option>
+                    <option value="m">月 </option>
+                    <option value="y">年 </option>
+                  </select>
+                </td>
+              </tr>
+              <!-- [#?6#] -->
+              <tr>
+                <td align="right">传递语法(自选):</td>
+                <td><input type="password" size="20" name="passphrase"></td>
+              </tr>
+              <tr>
+                <td align="right">检查传递语法:</td>
+                <td><input type="password" size="20" name="passphrase2"></td>
+              </tr>
+              <!-- [#?#] -->
+              <tr>
+                <td> </td>
+                <td>
+                  <input type="submit" value="创建" name="submit"></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </td>
+      <td> </td>
+    </tr>
+    <tr style="line-height: 0">
+      <td align="left" valign="bottom">[#@bluebottomleft.gif, width="11"
+        height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#99ccff" valign="middle"> </td>
+      <td align="right" valign="bottom">[#@bluebottomright.gif, width="11"
+        height="11" alt="" border="0"@@#]</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p>[#B#]</p>
+</body>
+</html>

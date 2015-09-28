@@ -1,0 +1,8 @@
+# $Id: dbobj.config.in,v 1.1.1.1 2003/05/07 02:13:01 lfan Exp $
+#
+# Copyright 1998 - 1999 Double Precision, Inc.
+# See COPYING for distribution information.
+
+LIBDB="@LIBDB@"
+LIBGDBM="@LIBGDBM@"
+dblibrary="@dblibrary@"

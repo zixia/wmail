@@ -1,0 +1,25 @@
+td{FONT-SIZE: 14px; line-height: 16px}
+td{FONT-SIZE: 14px; line-height: 16px}
+tr{FONT-SIZE: 14px; line-height: 16px}
+th{FONT-SIZE: 14px; line-height: 16px ;font-family: "Verdana", "Arial", "Helvetica"}
+.p {font-size: 12px; line-height: 150%}
+
+.p0 {font-size: 14.8px; line-height: 150%}
+
+.p1 {FONT-SIZE: 12px;  font-family: "Verdana", "Arial", "Helvetica"}
+
+
+A:link {text-decoration: underline; color:#0055cc; FONT-SIZE: 14px}
+A:visited {text-decoration: underline; color:#0066ff; FONT-SIZE: 14px}
+A:active {text-decoration: underline;color:#3300FF; FONT-SIZE: 14px}
+A:hover {text-decoration: underline; color:#0055cc; FONT-SIZE: 14px}
+
+A.as03:link {text-decoration: underline; color:#0055cc; FONT-SIZE: 14px}
+A.as03:visited {text-decoration: underline; color:#0066ff; FONT-SIZE: 14px}
+A.as03:active {text-decoration: underline;color:#3300FF; FONT-SIZE: 14px}
+A.as03:hover {text-decoration: underline; color:#0055cc; FONT-SIZE: 14px}
+
+
+.3dfont{color:333399;filter:glow(color=ffffff,strength=1) shadow(color=cccccc,direction:180);position:relative;width=100%;}
+ .a10 {text-decoration:underline; font-family: "Tahoma", "Verdana"; color: #4a6dbf;}
+ .a11 {text-decoration:none; font-family: "Tahoma", "verdana"; color: #4a6dbf; }

@@ -1,0 +1,16 @@
+
+                                   SqWebMail
+
+   SqWebMail is a CGI Webmail client for Maildir mailboxes.
+
+   For  installation  instructions,  see INSTALL. Please subscribe to the
+   sqwebmail  mailing list to stay up to date as to any bugs or hot fixes
+   for SqWebMail. To subscribe, send mail to
+   sqwebmail-subscribe@inter7.com.
+
+   For a list of known bugs, see BUGS (in the sqwebmail subdirectory).
+
+   See NEWS and ChangeLog for late-breaking news.
+
+   Before  using  SqWebMail,  make  sure  that  you read SECURITY (in the
+   sqwebmail subdirectory), and understand every word of it.

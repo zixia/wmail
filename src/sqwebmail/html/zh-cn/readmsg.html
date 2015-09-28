@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>阅读邮件</title>
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+<!--
+
+[#$DSPFMT_DATE=%Y年%b%d日, %p %I:%M:%S#]
+[#$DSPHDR_FROM=&nbsp;发件人#]
+[#$DSPHDR_TO= &nbsp;收件人#] 
+[#$DSPHDR_CC=&nbsp;抄送#]
+[#$DSPHDR_SUBJECT= 主题#]
+[#$DSPHDR_DATE= 日期#]
+[#$NEXTLAB= 下一封#]
+[#$PREVLAB= 上一封#]
+[#$DELETELAB= 删除#]
+[#$FULLHDRS= 原文#]
+[#$PURGELAB=清除#]
+[#$FOLDERLAB= 返回#]
+[#$BADCONTENTTYPE=无法显示未知MIME类型: %s#]
+[#$ATTACHMENT=附件: %s#]
+[#$DISPATT=<FONT CLASS="message-attachment-link">显示</FONT>#]
+[#$DOWNATT=<FONT CLASS="message-attachment-link">下载</FONT>#]
+[#$REPLY= 回复#]
+[#$REPLYALL= 回复所有#]
+[#$FORWARD= 转发#]
+[#$MSGNUM=第 %d/%d 封#]
+[#$MSGNEWNUM=第 %d/%d 封 <font color="red">新</font>#]
+[#$MOVETO=把此信移动到:#]
+[#$INBOX=收件箱#]
+[#$DRAFTS=草稿箱#]
+[#$TRASH=垃圾箱#]
+[#$SENT=发件箱#]
+[#$SPAM=垃圾邮件#]
+[#$CREATEFAIL=<font color="#FF0000" class="error">错误：您没有权限在此邮件夹新建邮件，或是您的磁盘空间配额已满。</font>#]
+[#$GOLAB=确定#]
+[#$QUICKADD=快速添加到地址簿#]
+[#$CHSET=<table width="90%%" align=center border=0 bgcolor="#000000" cellspacing=1 cellpadding=0><tr><td><table width="100%%" border=0 cellspacing=1 cellpadding=8 bgcolor="#EEEEEE"><tr><td>下面的文本使用 <tt>%s</tt> 编码格式.  您的显示编码是 <tt>%s</tt> , 因此有些字符可能不能正确显示.</td></tr></table></td></tr></table>#]
+[#$MIMEGPGNOTICE=<p align=center>下面的信息包含签名或加密内容.</p>#]
+[#$PASSPHRASE=<p align=center>语法解释&nbsp;(if&nbsp;required):&nbsp;<input type=password name=passphrase></p>
+[#$DECRYPT=<p align=center><input type=submit name=mimegpg value="解密/检查"></p>#]
+[#$NOTCOMPACTGPG=<p align=center style="color: #800000" class="message-gpg-unsupported">下面信息的加密算法目前不被支持</p>#]
+[#$PUBKEY=导入公共的加密钥匙#]
+[#$PRIVKEY=导入私人的加密钥匙#]
+-->
+<STYLE type=text/css>
+A {
+        COLOR: #000099; TEXT-DECORATION: none
+}
+A:hover {
+        TEXT-DECORATION: underline
+}
+</STYLE>
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<table width="90%" border="0" cellpadding="1" cellspacing="0" align="center">
+  <tbody>
+    <tr>
+      <td>
+        <table class=ctype width="100%" border="0" cellpadding="5" cellspacing="0">
+          <tbody>
+            <tr>
+              <td>
+                <form method="post" action="[#p#]">
+                  [#n#] 
+		  <input type="hidden" name="form" value="delmsg">[#P#]
+                  [#N#]
+                </form>
+
+                <table border="0" cellspacing="0" cellpadding="8" width="100%">
+                  <tbody>
+                    <tr>
+                      <td align="left">[#M#]</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <form method="post" action="[#p#]">
+                  <input type="hidden" name="form" value="delmsg">[#P#]
+                  [#N#]
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>[#B#]</p>
+</body>
+</html>

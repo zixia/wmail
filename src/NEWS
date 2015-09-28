@@ -1,0 +1,201 @@
+
+                                   SqWebMail
+
+   SqWebMail  is  a web CGI client for sending and receiving E-mail using
+   Maildir  mailboxes.  SqWebMail  DOES  NOT  support traditional Mailbox
+   files, only Maildirs.
+
+   This  is  the  same webmail server that's included in the Courier mail
+   server,  but  packaged  independently.  If  you  already  have Courier
+   installed, you do not need to download this version.
+
+Features
+
+     * Very lightweight. Reads mail directly from maildirs.
+     * Dynamically-generated  HTML is stored in external files. Many (but
+       not  all)  display elements can be customized without changing the
+       program code.
+     * Hierarchical mail folders. Shared folders. (43Kb screenshot)
+     * Virtual  accounts - the account database is implemented via a fast
+       GDBM  or  DB database lookup. The account database is created from
+       plain text files, and some Perl scripts are provided to modify the
+       account database from the command line.
+     * LDAP authentication.
+     * Address book. (36Kb screenshot)
+     * Import  E-mail  addresses  from external LDAP address books. (40Kb
+       screenshot)
+     * vpopmail authentication.
+     * Displays HTML messages (optional). (44Kb screenshot)
+     * Extensive  MIME  support.  Even  MIME  flowed  text  format, (43Kb
+       screenshot)  and  delivery status notifications (41Kb screenshot),
+       are recognized and nicely formatted.
+     * Javascript and cookies are not required. Most of the functionality
+       is  accessible  from  Lynx.  (There  is some Javascript and cookie
+       usage for value-added features, such as print preview).
+     * Spell  checking  is available, if you have ispell installed. (35Kb
+       screenshot)
+     * Mail filtering is available, if you have maildrop installed as the
+       local mail delivery agent. (47Kb screenshot)
+     * Ability to reply to individual messages in a MIME message digest.
+     * 8-bit message headers decoded and displayed.
+     * Message  dates and times automatically converted to the local time
+       zone.
+     * Experimental  support  for encryption and digital signatures. This
+       is  an  experimental  feature that uses GnuPG to create and manage
+       encryption  keys  (45kb  screenshot),  encrypt/sign messages (22kb
+       screenshot), and decrypt/verify messages (48kb screenshot).
+     * Can  optionally  use  gzip  compression  to  return some large web
+       pages, if a modern browser is used that supports gzip compression.
+
+  Calendaring
+
+   Calendaring   services   can  be  optionally  enabled  by  the  system
+   administrator.  When  enabled, basic calendar management is available.
+   NOTE: this is an experimental beta feature.
+     * Recurring events (41kb screenshot).
+     * Weekly  (34kb  screenshot)  and monthly (30kb screenshot) calendar
+       views.
+
+Demo
+
+   There's  a  demo of SqWebMail available at http://webmail.inter7.com/.
+   Use  the  user  id  webmail@webmail.com  and  password webmail. Please
+   note:only  one  person  can  access  the  account at the same time. If
+   someone  attempts  to log in after you, you will be bumped off with an
+   authentication failure (in cases of multiple logins, the oldest one is
+   bumped).
+
+Requirements
+
+   SqWebMail  requires  that  either  the  GDBM or the DB library must be
+   installed. Perl is also required.
+
+   GNU  make  and  gcc/egcs  is  also highly recommended. There have been
+   intermittent  reports  of  various  problems  with  using  other  make
+   utilities,  or  other  compilers.  Chances  are  that  everything will
+   compile and install properly, though. Currently, some of the component
+   libraries include some self-test code written in C++. SqWebMail itself
+   is written entirely in C, and the C++ components are not used; however
+   you have to be able to compile C++, for now.
+
+INSTALLATION overview
+
+   Read  INSTALL,  SECURITY  and  BUGS  before  compiling  and installing
+   SqWebMail.  You  will  install  the sqwebmail program as a setuid root
+   binary    in    your    cgi-bin    directory   by   default.   Loading
+   http://yourwebsite/cgi-bin/sqwebmail will present the log-on page. You
+   can  manually  move  sqwebmail to any other directory, and use any URL
+   that resolves to sqwebmail.
+
+  Download
+
+   Download sqwebmail: http://www.courier-mta.org/download.php#sqwebmail
+
+   Semi-regular    CVS    snapshots    are    regularly    uploaded    to
+   ftp://courier.sourceforge.net/pub/courier/sqwebmail.
+
+  CVS
+
+   SqWebMail can also be downloaded from an anonymous CVS repository. See
+   http://www.courier-mta.org/status.html for more information.
+
+  RPMs
+
+   You  can  build a binary RPM directly from this tarball. Download this
+   tarball,  then type rpm -ta filename. RPM 3.0, or higher, is required.
+   Use  rpmbuild  -ta  filename  with RPM 4.1, or higher (Red Hat 8.0, or
+   higher).
+
+   NOTE: Prior to 0.31 I used to provide the source tarball repackaged as
+   a source RPM, and two prebuilt binary RPMs - with and without vpopmail
+   support.  I've  upgraded the source tarball so that binary RPMs can be
+   built  directly from the tarball. If you have vpopmail, the RPM should
+   build  to  include  vpopmail  support,  however  since before 0.31 the
+   vpopmail RPM package had a slightly different name, you cannot upgrade
+   directly,  and  you  must  uninstall  the  pre-0.31 binary vchkpw RPM,
+   install  the  new  one that you just built, then restore any .rpmsaved
+   configuration files.
+
+Mailing list
+
+   Subscribe  to  the  SqWebMail  mailing  list.  Send an empty E-mail to
+   sqwebmail-subscribe@inter7.com.
+
+Enhancements
+
+   Note  that some of the following patches may be against older versions
+   of   SqWebMail.  Check  the  documentation  in  each  patch  for  more
+   information.
+
+   Brian  Cash  <bcash@alpdev.com>  has  a  patch  that  allows different
+   virtual domains on the same host to use different HTML templates.
+
+Links
+
+   Chapter  21  in  the  book Postfix talks about configuring the Postfix
+   server for SqWebMail.
+
+   It  is  possible  to  translate  HTML  templates  for sqwebmail into a
+   foreign  language.  NOTE:  that after a new version of sqwebmail comes
+   out  which  includes  any  changes in the HTML templates, it will take
+   some  time  for the independent maintainers to update their translated
+   versions as well.
+
+   Davide    Giunchi   <davidegiunchi@libero.it>   created   an   Italian
+   translation at: http://folug.linux.it/membri/davideg.
+
+   Sebastian  Pfeiffer  <basscontrol@gmx.de> created a German translation
+   at: http://www.4e4.de/internet_eng.html.
+
+   Jarbas  Celante  <jarbas@celante.com>  created a Brazilian translation
+   at: http://jarbas.celante.com/soft/linux/http/.
+
+   Toshikazu   Ichikawa  <ichikawa@toshikazu.org>  works  on  a  Japanese
+   version of SqWebMail:
+   http://www.tom.comm.waseda.ac.jp/~ichi/sqwebmail/.
+
+   Rail   Aliev  <rail@iqchoice.ru>  created  a  Russian  translation  at
+   http://www.iqchoice.ru/unix/sqwebmail/sqwebmail-ru.tar.gz.
+
+   Another Russian translation:
+   http://neva.vlink.ru/~dsh/projects/sqwebmail-ru.tar.gz.
+
+   Maciej  Gruszczynski  <maciek@mgt.pl>  created a Polish translation at
+   ftp://ftp.mgt.pl/pub/Linux/qmail/sqwebmail/Polish.
+
+   Atilim   Boy   <aboy@trunix.org>   has   a   Turkish   translation  at
+   http://www.trunix.org/depo/sqwebmail-tr.tar.gz.
+
+   Lars   Althof   <lars@larch.dk>   created   a  Danish  translation  at
+   http://www.larch.dk/downloads.
+
+   Jordi  Bruguera  <jordi@t800.grn.es>  created  a  catalan  and spanish
+   translation at ftp://ftp.grn.es/pub/linux/.
+
+   César  González Revilla <cesar@eureka-sistemas.com> also has a spanish
+   translation at http://www.eureka-sistemas.com/.
+
+   Emiliano     Gabrielli     has     an     Italian    translation    at
+   http://www.SuperAlberT.it.
+
+   There's a German translation by at http://www.4e4.de/internet.html.
+
+   Schalk   W.  Cronje  has  translated  SqWebMail's  HTML  templates  to
+   Afrikaans, see http://www.af.org.za/aflaai/sqwebmail/.
+
+   Leonardo    Magallon   <leo.magallon@grantgeo.com>   has   a   Spanish
+   translation at http://www.linuxlatino.cc/contrib.php.
+
+   Nuno  Cruz  <ncruz@isel.pt>  has  a Portuguese standard translation at
+   http://www.isel.pt/~ncruz/sqwebmail/.
+
+   Uelinton   B.  dos  Santos  <uelintons@hotmail.com>  has  a  Brazilian
+   Portuguese translation at
+   http://planeta.terra.com.br/informatica/uelintons/sqwebmail/index.html
+   .
+
+   Johan Almqvist <johan-qmail@almqvist.net> has a Swedish translation at
+   http://www.almqvist.net/~johan/sqwebmail-0.36a-se.tar.gz.
+     _________________________________________________________________
+
+   Sam Varshavchik <mrsam@courier-mta.com>

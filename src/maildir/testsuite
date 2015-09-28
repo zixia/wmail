@@ -1,0 +1,47 @@
+
+rm -rf testmd
+./maildirmake testmd
+./maildirmake -q 3C testmd
+ls | ./deliverquota testmd
+echo $?
+ls | ./deliverquota testmd
+echo $?
+ls | ./deliverquota testmd
+echo $?
+ls | ./deliverquota testmd
+echo $?
+
+
+rm -f testrules
+
+./testmaildirfilter "rule1" "startswith" "subject" "important" ""
+./testmaildirfilter "rule2" "-endswith" "subject" "notimportant" "folder1"
+./testmaildirfilter "rule3" "contains" "subject" "everything" "everything"
+./testmaildirfilter "rule4" "hasrecipient" "" "nobody@example.com" "junk1"
+./testmaildirfilter "rule5" "mimemultipart" "" "" "attachments"
+./testmaildirfilter "rule6" "-textplain" "" "" "nottext"
+./testmaildirfilter "err1" "startswith" "subject" "no/good" ""
+./testmaildirfilter "rule7" "startswith" "subject" "no\/\'\"good" ""
+./testmaildirfilter "err2" "startswith" "subject" "no$good" ""
+./testmaildirfilter "err3" "startswith" "subject" "no!good" ""
+./testmaildirfilter "err4" "startswith" "subject" "no'good" ""
+./testmaildirfilter "err5" "startswith" "subject" "no(good" ""
+./testmaildirfilter "err6" "startswith" "subject" "no()good" ""
+./testmaildirfilter "err7" "startswith" "subject" "no)good" ""
+./testmaildirfilter "rule8" "startswith" "subject" "(good)" ""
+./testmaildirfilter "err8" "startswith" "subject:" "nogood" ""
+./testmaildirfilter "err9" "startswith" "subject:" "nogood" ""
+./testmaildirfilter "err10" "startswith" "subject:" "nogood" ""
+./testmaildirfilter "rule9" "startswith" "subject" "x" "!john@example.com mary@example.com"
+./testmaildirfilter "err11" "startswith" "subject" "x" "!john@example.com; foo"
+./testmaildirfilter "err12" "startswith" "subject" "x" '!john@example.com `foo`'
+./testmaildirfilter "rule9b" "/startswith" "" "x" "Sent"
+./testmaildirfilter "rule10" "startswith" "subject" "x" "*bounce"
+./testmaildirfilter "err13" "startswith" "/subject" "x" "*bounce"
+./testmaildirfilter "rule11" "islargerthan" "" "100000" "*bounce"
+./testmaildirfilter "err14" "islargerthan" "" "x100000" "*bounce"
+./testmaildirfilter "rule12" "-islargerthan" "" "100000" "*bounce"
+./testmaildirfilter "ruleauto1" "islargerthan" "" 0 "+dummy dsn=1 days=7"
+./testmaildirfilter "ruleauto2" "islargerthan" "" 0 "+dummy2"
+cat testrules | sed 's:/.*mailbot:mailbot:'
+rm -f testrules

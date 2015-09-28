@@ -1,0 +1,66 @@
+2003-06-10	Fan Lin <lfan@lfan.net>
+	folder.c maildir.c folder.html
+			在浏览邮件时增加附件标识
+	folder.c	更改显示邮箱容量不准确的问题（感谢网友wait）
+	attachment.c	解决中文附件在OE下乱码的错误
+	
+2003-06-10	Fan Lin <lfan@lfan.net>
+	attachment.html	修正上一版本添加附件时不能返回的bug
+	install		修改安装脚本，支持指定安装目录
+	maildirfilter2.c pref.c mailfilter.c
+			调整.qmail文件位置，增强转发功能
+	cginocache.c	禁止浏览器cache邮件内容
+	sqwebmail.c	调整session，将其存储到cookie中
+	rfc2045reply.c	多次回复时不会出现多个Re: Re:...的现象
+
+2003-06-05	Fan Lin <lfan@lfan.net>
+	sqwebmail.c	修正注销后仍能通过URL访问信箱的安全问题
+
+2003-05-30	Fan Lin <lfan@lfan.net>
+	makemime.c attachment.c
+			解决附件中文名在某些邮件系统下无法识别的问题
+	attachment.c folder.c newmsg.c attachment.html newmsg.html
+			支持邮件预览
+	folder.c	修正存储草稿时出现的发送成功
+
+2003-05-26	Fan Lin <lfan@lfan.net>
+	newmsg_create.c 解决发件人重复编码的问题
+	sqwebmail.c	支持默认域名，修正登录过期的bug
+	folder.c	解决读取邮件时删除后cache没有刷新的问题
+	readmsg.html newmsg.html
+			增加少量中文翻译
+
+2003-05-18	Fan Lin <lfan@lfan.net>
+	folder.c	优化文本信件的显示
+	sqwebmail.c	支持quota设置为20M，1000K这样的形式
+			更改帐号多登录的一个bug
+	*.html		美观错误显示，修改部分JavaScript错误
+	cgi.c		更改提示
+
+2003-05-15	Fan Lin <lfan@lfan.net>
+	newmsg.c sqwebmail.c sendok.html sendok*.gif
+			添加发信成功界面
+	newmsg.c newmsg.html
+			修改添加附件
+	sqwebmail.c	添加版权信息显示
+	maildirquota.c sqwebmail.c
+			每次登录重新计算quota，解决pop3收件
+			以后quota计算的错误
+	sqwebmail.c	支持帐号的多个窗口登录
+			去掉了未使用的日历模块
+
+
+2003-05-08      Fan Lin <lfan@lfan.net>
+	rfc2646create.c folder.c
+			发信中文乱码得bug和显示标题得半个字符问题
+	mailfilter.c	生成过滤文件的bug
+
+2003-05-07	Fan Lin <lfan@lfan.net>
+	folder.c	解决邮箱刚创建时没有Quota信息的问题
+	Makefile.in configure
+			安装bug的修改
+
+2003-05-04	Fan Lin <lfan@lfan.net>
+	newmsg.html newmsg.c 没有收件人不会报错
+	folder.c	附件中文名不能正常显示
+			MIME解码时不能识别boundary

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Courier MySQL authentication module</title>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B"
+alink="#FF0000">
+<h1>Courier MySQL authentication module</h1>
+
+<p>This module allows authentication information to be stored in a MySQL
+database.</p>
+<ul>
+  <li>Supports both physical and virtual mail accounts.<br>
+    <br>
+  </li>
+  <li>Can be configured to use either crypted or cleartext passwords (or
+    both).  Cleartext passwords allow CRAM-MD5 authentication to be
+    implemented.</li>
+</ul>
+
+<p>When <code>authmysql</code> is installed, a default configuration file,
+<code>authmysqlrc</code> will be installed too.  You must edit this file to
+set up your MySQL authentication.</p>
+
+<p><b>NOTE: this authentication module should NOT be used if you are using the
+vpopmail virtual mailing list manager. You should select the
+<code>authvchkpw</code> authentication module instead (which should happen
+automatically). It may be necessary to use the
+<code>--without-authmysql</code> flag to the <code>configure</code> script,
+because <code>configure</code> by default will include <code>authmysql</code>
+if it finds MySQL client libraries.</b>.</p>
+<hr>
+
+<p>Edit <code>authmysqlrc</code>, and initialize the following variables:</p>
+<ul>
+  <li><code>MYSQL_SERVER</code> - MySQL server name (required).</li>
+  <li><code>MYSQL_PORT</code> - server port where MySQL accepts
+  connections.</li>
+  <li><code>MYSQL_SOCKET</code> - If MySQL is running on the same machine and
+    can accept connections from a filesystem socket, enter the path to the
+    filesystem socket here, and do not initialize SERVER/PORT.</li>
+  <li><code>MYSQL_USERNAME</code> - MySQL username with log in with
+    (required).</li>
+  <li><code>MYSQL_PASSWORD</code> - MySQL password with log in with
+    (required).</li>
+  <li><code>MYSQL_DATABASE</code> - MySQL database to log in to
+  (required).</li>
+  <li><code>MYSQL_USER_TABLE</code> - name of the MySQL with the
+    authentication information (see below) (required).</li>
+  <li><code>MYSQL_LOGIN_FIELD</code> - field that contains the login id for
+    this account.</li>
+  <li><code>MYSQL_CRYPT_PWFIELD</code> - name of the field containing the
+    crypt-ed password (either <code>MYSQL_CRYPT_PWFIELD</code> or
+    <code>MYSQL_CLEAR_PWFIELD</code> is required). <b>NOTE: this password must
+    be crypt-ed using the operating system's crypt function, NOT MySQL's crypt
+    function.  MySQL's crypt() function is non-standard and is not generally
+    compatible with the operating system's crypt function.</b></li>
+  <li><code>MYSQL_CLEAR_PWFIELD</code> - name of the field containing the
+    cleartext password (either <code>MYSQL_CRYPT_PWFIELD</code> or
+    <code>MYSQL_CLEAR_PWFIELD</code> is required).</li>
+  <li><code>MYSQL_UID_FIELD</code> - field that contains the system userid for
+    this account.</li>
+  <li><code>MYSQL_GID_FIELD</code> - field that contains the system groupid
+    for this account.</li>
+  <li><code>MYSQL_MAILDIR_FIELD</code> - name of the field containing a
+    non-default location of the account's system mailbox (optional).</li>
+  <li><code>MYSQL_QUOTA_FIELD</code> - name of the field containing a maildir
+    quota (optional).</li>
+  <li><code>DEFAULT_DOMAIN</code> - if the user logs in without specifying
+    <code>@domain</code>, use the following domain (in this case the id field
+    must always contain <code>user@host</code>) (optional).</li>
+  <li><code>MYSQL_WHERE_CLAUSE</code> - optional freeform SQL that is appended
+    to the SQL query string.</li>
+</ul>
+
+<p>The table specified by <code>MYSQL_USER_TABLE</code> should look as follows
+(recommended):</p>
+<pre>CREATE TABLE passwd (
+        id                    char(128) DEFAULT '' NOT NULL,
+        crypt                 char(128) DEFAULT '' NOT NULL,
+        clear                 char(128) DEFAULT '' NOT NULL,
+        name                  char(128) DEFAULT '' NOT NULL,
+        uid                   int(10) unsigned DEFAULT '65534' NOT NULL,
+        gid                   int(10) unsigned DEFAULT '65534' NOT NULL,
+        home                  char(255) DEFAULT '' NOT NULL,
+        maildir               char(255) DEFAULT '' NOT NULL,
+        quota                 char(255) DEFAULT '' NOT NULL,
+        KEY id (id(128))
+);</pre>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>附件</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+<!-- Copyright Aka Information Technology Co., Ltd  http://www.aka.cn -->
+<!--                     Fan Lin <lfan@lfan.net>                      -->
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<!--
+
+[#$NOATTACH=无附件...#]
+[#$QUOTAERR=<font color="#FF0000" class="error">错误: 磁盘空间配额已满</font>#]
+[#$LIMITERR=<font color="#FF0000" class="error">错误: 附件大小不可以超过 %lu KB</font>#]
+[#$MAKEMIMEERR=<font color="#FF0000" class="error">%s: 附件 MIME 编码失败，请联系系统管理员。</font>#]
+[#$PRESERVELAB=保存一份副本到发件箱中#]
+[#$SIGNLAB=签名档 #]
+[#$ENCRYPTLAB=邮件加密: #]
+[#$PASSPHRASE=Passphrase&nbsp;(if&nbsp;required):&nbsp;#]
+[#$KEYDESCR=GnuPG key#]
+-->
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" action="[#p#]" enctype="multipart/form-data">
+  [#P#]
+  <input type="hidden" name="form" value="doattach">
+  <table align=center cellpadding="0" cellspacing="0" border="0" width="90%" class="ctype">
+    <tbody>
+      <tr>
+        <td colspan="3" valign="middle">
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+	    <tbody>
+	      <tr bgcolor="#93BEE2">
+	        <th align="left">附件名称</th>
+		<th align="center">附件类型</th>
+	        <th align="right">大小</th>
+	      </tr>
+	    </tbody>
+	  </table>
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+	    <tbody>
+	      <tr>
+	        <td>[#A#]</td>
+	      </tr>
+	    </tbody>
+	  </table>
+
+	  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+	    <tr><td align=center>
+	      查找文件
+	      <input type="file" size="20" name="uploadfile">
+	      <input class="mybtn" type="submit" value="上载" name="upload">
+	      <input class="mybtn" type="submit" value="返回" name="return">
+              <input class="mybtn" type="submit" value="删除" name="dodelete">
+	    </td></tr>
+	    <tr><td>
+	      <!-- [#?5#]-->
+	    </td></tr>
+	    <tr><td>
+	      <select name="pubkey">
+	        <option selected="selected">[#ATTACHPUB#]
+	        </option>
+	      </select>
+	           
+	      <input type="submit" value="附加公钥" name="uppubkey"></td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <select name="privkey">
+	          <option selected="selected">[#ATTACHSEC#]
+	          </option>
+	        </select>
+	           
+	        <input type="submit" value="附加秘钥" name="upprivkey">
+		<input type="checkbox" name="really">确定要用秘钥
+	      <!-- [#?#]-->
+	    </td></tr>
+	  </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+<p>[#B#]</p>
+</body>
+</html>
